@@ -1,0 +1,48 @@
+<% title "Tag" %>
+
+<p>
+  <strong>Tag Name:</strong>
+  <%=h @tag.tag_name %>
+</p>
+<p>
+  <strong>Size:</strong>
+  <%=h @tag.size %>
+</p>
+<p>
+  <strong>Value:</strong>
+  $<%=h @tag.value %>
+</p>
+<p>
+  <strong>Enabled:</strong>
+  <%=h @tag.enabled_s %>
+</p>
+<p>
+  <strong>Always Fill:</strong>
+  <%=h @tag.always_fill_s %>
+</p>
+<p>
+  <strong>Sample Rate:</strong>
+  <%=h @tag.sample_rate %>
+</p>
+<p>
+  <strong>Tier:</strong>
+  <%=h @tag.tier %>
+</p>
+<p>
+  <strong>Frequency Cap:</strong>
+  <%=h @tag.frequency_cap %>
+</p>
+<p>
+  <strong>Rejection Time:</strong>
+  <%=h @tag.rejection_time %>
+</p>
+<p>
+  <strong>Tag:</strong>
+  <pre><%=h @tag.tag %></pre>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_tag_path(@tag) %> |
+  <%= link_to "Delete", @tag, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+  <%= link_to "View All", tags_path %>
+</p>
