@@ -1,5 +1,6 @@
 ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'mocha'
 require 'test_help'
 # http://rdoc.info/rdoc/binarylogic/authlogic/blob/f2f6988d3b97e11770b00b72a7a9733df69ffa5b/Authlogic/TestCase.html
 require "authlogic/test_case"
@@ -18,7 +19,7 @@ class ActiveSupport::TestCase
   # don't care one way or the other, switching from MyISAM to InnoDB tables
   # is recommended.
   #
-  # The only drawback to using transactional fixtures is when you actually 
+  # The only drawback to using transactional fixtures is when you actually
   # need to test transactions.  Since your test is bracketed by a transaction,
   # any transactions started in your code will be automatically rolled back.
   self.use_transactional_fixtures = true
@@ -48,5 +49,4 @@ class ActiveSupport::TestCase
   def login_as_publisher
     login_as(User.find(:first, :conditions => [ "admin = ?", 0]))
   end
-
 end
