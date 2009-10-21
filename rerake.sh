@@ -14,6 +14,8 @@ if [ "$1" == "live" ] ; then
   echo "No more reraking the live website. You owe Nick a lunch for putting this check here, you would have just dropped the live database."
 fi
 
+echo "Running rake for environment: $env"
+
 rake db:drop RAILS_ENV=$env
 rake db:create RAILS_ENV=$env
 rake db:migrate RAILS_ENV=$env
