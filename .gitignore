@@ -1,0 +1,10 @@
+.idea
+db/schema.rb
+.DS_Store
+*.tmproj
+tmp
+log/*
+*.log
+*.iml
+*.ipr
+*.iws
