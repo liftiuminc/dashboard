@@ -1,6 +1,11 @@
 #!/bin/bash
 if [ "$1" == "" ] ; then
-  env="development"
+  if [ "RAILS_ENV" == "" ] ; then
+    env="development"
+  else
+    env=$RAILS_ENV
+  fi
+
 else
   env=$1
 fi
