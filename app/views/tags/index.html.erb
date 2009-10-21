@@ -3,7 +3,7 @@
 <% title "Tags" %>
 
 <div class="filter_form" id="tag_filter_form">
-  <form>
+  <% form_tag tags_path, :method => :get do %>
      <ul>
 	<% if params[:debug] -%>
 	  <%= params.inspect -%>
@@ -12,35 +12,36 @@
 	    <!-- FIXME. Use built in rails helper instead? -->
 	    <select name="publisher_id" id="publisherDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Publisher.all.collect, :id, :site_name, params[:publisher_id].to_i %>
+	      <%= options_from_collection_for_select Publisher.all.collect, :id, :site_name, @publisher_id.to_i %>
 	    </select>
 	</li>
 
 	<li><%= label_tag :network %>
 	    <select name="network_id" id="networkDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Network.all.collect, :id, :network_name_and_id, params[:network_id].to_i %>
+	      <%= options_from_collection_for_select Network.all.collect, :id, :network_name_and_id, @network_id.to_i %>
 	    </select>
 	</li>
 
 	<li><%= label_tag :size %>
 	    <select name="size" id="sizeDD">
 	      <option value="">
-	      <%= options_from_collection_for_select AdFormat.all.collect, :size, :name_with_size, params[:size] %>
+	      <%= options_from_collection_for_select AdFormat.all.collect, :size, :name_with_size, @size %>
 	    </select>
 	</li>
 
 	<li><%= label_tag "Tag name or ID" %>
-	    <%= text_field_tag :name_search, params[:name_search] %>
+	    <%= text_field_tag :name_search, @name_search %>
 	</li>
 
 	<li><%= label_tag :include_disabled, "Include Disabled Tags"%>
-	    <%= radio_button_tag "include_disabled", "true", !params[:include_disabled].blank?%>Yes
-	    <%= radio_button_tag "include_disabled", "", params[:include_disabled].blank?%>No
+	    <%= radio_button_tag "include_disabled", "true", !@include_disabled.blank?%>Yes
+	    <%= radio_button_tag "include_disabled", "", @include_disabled.blank?%>No
 	</li>
 
 	<li><%= liftium_submit "Filter Tags"%></li>
-  </form>
+  </ul>
+  <% end %>
 </div>
 
 <table class="record_listing" width="800" cellpadding="0" cellspacing="0">
