@@ -28,10 +28,8 @@ class TagsControllerTest < ActionController::TestCase
     context "filtering" do
       should "filter the tags by the specified criteria and redisplay the list of tags" do
         login_as_admin
-        get :index, params = {:size => "728x90", :network_id => "1", :name_search => "foo",
-                              :include_disabled => "", :publisher_id =>"1"}
-
-        assert Tag.new.search(params), assigns(:tags)
+        get :index, params = {:size => "728x90", :network_id => "1", :include_disabled => "", :publisher_id =>"1"}
+        assert_equal Tag.new.search(params), assigns(:tags)
         assert_template 'index'
       end
 
@@ -54,6 +52,13 @@ class TagsControllerTest < ActionController::TestCase
         session[:tag_params] = {:name_search => name_search = "Cool Name Search"}
         get :index
         assert @response.body.include?(name_search)
+      end
+
+      should "apply the session filter fields to the search if none provided" do
+        login_as_admin
+        session[:tag_params] = params = {:size => "728x90", :network_id => "1", :include_disabled => "", :publisher_id =>"1"}
+        get :index
+        assert_equal Tag.new.search(params), assigns(:tags)
       end
 
       should "display a flash warning if no tags were found from the filter criteria" do

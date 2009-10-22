@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   before_filter :debug_sql, :only => [:index]
 
   def index
-    @tags = Tag.new.search(params)
+    @tags = Tag.new.search(session[:tag_params] || "")
     flash[:warning] = "No matching tags found" if @tags.empty?
   end
 
