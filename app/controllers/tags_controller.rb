@@ -132,6 +132,20 @@ class TagsController < ApplicationController
     end
   end
 
+  def toggle 
+    @tag    = Tag.find( params[:id] )
+    diag    = (@tag.enabled = !@tag.enabled) ? "enabled" : "disabled"
+    
+    if @tag.save
+      flash[:notice] = "Successfully #{diag} tag #{@tag.tag_name}"
+    else 
+      flash[:error] = "Failed to #{diag} tag #{@tag.tag_name}"   
+    end
+    
+    redirect_to tags_url
+
+  end
+
   def destroy
     @tag = Tag.find(params[:id])
     @tag.destroy

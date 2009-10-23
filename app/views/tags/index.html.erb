@@ -54,7 +54,7 @@
     <th>Value</th>
     <th>Always Fill</th>
     <th>Criteria</th>
-    <th colspan="4">Actions</th>
+    <th colspan="5">Actions</th>
     <th colspan="2">Fill Rate (last hour)</th>
   </tr>
 
@@ -104,6 +104,7 @@
       <td class="record_action"><%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %></td>
 	<!-- FIXME: Use correct rails link helper -->
       <td class="record_action"><%= link_to "Copy", "/tags/copy/#{tag.id}" %></td>
+      <td class="record_action"><%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %></td>
       <td class="record_action">
       <% if tag.enabled %>
 	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
