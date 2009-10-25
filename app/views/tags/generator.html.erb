@@ -6,7 +6,10 @@
     @publishers = Publisher.find :all;
 %>
 <script>
-function generateTag() {
+var dimRegexp = /^([0-9]{2,4})x([0-9]{2,4})/;
+var deliveryHost = "http://cdn.liftium.com";
+var deliveryHost = "http://nick.dev.liftium.com";
+function generateTag(f) {
   try {
 	var pubid = $("pubid").value;
 	if (pubid == ""){
@@ -18,25 +21,23 @@ function generateTag() {
 		alert("You must select a size to continue.");	
 		return false;
 	}
+	var delivery = $("delivery_iframe").checked ? "iframe" : "script";
+	var comments = $("comments").checked;
 
-	comments = $("comments").checked;
-	var t='';
-	if (comments){
-		t += '<!-- Begin Liftium set up. \n' +
-		     'This only needs to appear once on your page, anywhere above the tag is ok. -->\n';
-	}
-
-	t += '<script>LiftiumOptions = {pubid:' + pubid + '}</\script>\n' +
-	    '<script src="http://cdn.liftium.com/js/Liftium.js"><\/script>\n';
-
-	if (comments){ t += '<!-- End Liftium set up -->\n'; }
-	if (comments){ t += '<!-- Display Tag. Put this in the exact place where you want the ad -->\n'; }
-	t += '<script>Liftium.callAd("' + size + '")<\/script>';
-
-	$("tag").value = t;
-
-	if ($("preview").checked){
-		doPreview();
+	if (delivery == "iframe") {
+		var t = $("tag").value = generateIframeTag(pubid, size, comments);
+		$("tag").value = t;
+		if ($("preview").checked){
+			$("preview_div").innerHTML = t;
+			$("preview_iframe").hide();
+			$("preview_div").show();
+		}
+	} else {
+		$("tag").value = generateScriptTag(pubid, size, comments);
+		if ($("preview").checked){
+			$("preview_div").innerHTML = "";
+			doPreview();
+		}
 	}
 
 	return false;
@@ -46,9 +47,43 @@ function generateTag() {
   }
 }
 
+function generateIframeTag (pubid, size, comments){
+	var url = deliveryHost + "/tag_iframe?pubid=" + pubid + '&size=' + size
+	var t = '';
+	if (comments){ t += '<!-- Begin Liftium Tag. -->\n'; }
+
+	var dim = size.match(dimRegexp);
+	if (! dim){
+		return false;
+	}
+
+	t += '<iframe src="' + url + '" width="' + dim[1] + '" height="' + dim[2] + '"' + 
+		' noresize="true" scrolling="no" frameborder="0" marginheight="0"' +
+		' marginwidth="0" style="border:none" target="_blank"></iframe>';
+
+	if (comments){ t += '<!-- End Liftium Tag -->\n'; }
+	return t;
+}
+
+function generateScriptTag (pubid, size, comments){
+	var t = '';
+	if (comments){
+		t += '<!-- Begin Liftium set up. \n' +
+		     'This only needs to appear once on your page, anywhere above the tag is ok. -->\n';
+	}
+
+	t += '<script>LiftiumOptions = {pubid:' + pubid + '}</\script>\n' +
+	    '<script src="' + deliveryHost + '/js/Liftium.js"><\/script>\n';
+
+	if (comments){ t += '<!-- End Liftium set up -->\n'; }
+	if (comments){ t += '<!-- Display Tag. Put this in the exact place where you want the ad -->\n'; }
+	t += '<script>Liftium.callAd("' + size + '")<\/script>';
+	return t;
+}
+
 function doPreview(){
 	var size = $("size").value;
-	var dim = size.match(/^([0-9]{2,4})x([0-9]{2,4})/);
+	var dim = size.match(dimRegexp);
 	if (! dim){
 		return false;
 	}
@@ -56,7 +91,6 @@ function doPreview(){
 	iframe = document.getElementById("preview_iframe");
 	iframe.width=dim[1];
 	iframe.height=dim[2];
-	iframe.style.border="1px dashed #660099";
 	iframe.style.display="block";
 
 	var f = document.getElementById("preview_form");
@@ -81,9 +115,14 @@ function doPreview(){
     </select>
   </div>
   <div class="fieldset">
-    <%= label_tag :options, nil, :class => "left_label" %><br />
+    <%= label_tag :options, nil, :class => "left_label" %>
     <%= check_box_tag("comments", 1, true) %><%= label_tag :comments, "Helpful comments" %> 
     <%= check_box_tag("preview", 1, true) %><%= label_tag :preview, "Show Preview" %>
+  </div>
+  <div class="fieldset">
+    <%= label_tag :delivery, "Delivery Method", :class => "left_label" %>
+    <%= radio_button_tag("delivery", "script", true) %>Inline Javascript <span class="hint">(recommended)</span>
+    <%= radio_button_tag("delivery", "iframe", false) %>Iframe
   </div>
   <div class="fieldset" id="tag_template_fieldset">
     <%= label_tag :tag %><br />
@@ -95,4 +134,5 @@ function doPreview(){
 <form id="preview_form" target="preview_iframe" method="post" action="/tags/html_preview"><!-- FIXME: url for html preview? -->
 <input type="hidden" name="html"/>
 </form>
-<iframe name="preview_iframe" id="preview_iframe" style="display:none"></iframe>
+<iframe name="preview_iframe" id="preview_iframe" style="border: 1px dashed #660099;display:none"></iframe>
+<div id="preview_div" style="border: 1px dashed #660099;display:none"></div>

@@ -399,3 +399,50 @@ hoptime3:
   size          : '336x280'
   tag           : 'This is an always_fill'
 
+iframereject1:
+  id: 60
+  publisher_id: 1042
+  tag_name: "Test: Iframe reject 1"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 2
+  value: 1.5
+  size: "468x60"
+  tag: '<iframe src="/tests/iframehop.html" width="468" height="60"></iframe>'
+
+iframereject2:
+  id: 61
+  publisher_id: 1042
+  tag_name: "Test: Iframe reject 2"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 3
+  value: 1.25
+  size: "468x60"
+  tag: '<iframe src="/tests/iframehop.html" width="468" height="60"></iframe>'
+
+iframefill:
+  id: 62
+  publisher_id: 1042
+  tag_name: "Test: Iframe fill"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "468x60"
+  tag: 'This is a fill from "Test: Iframe fill (tag 62)'
+
+iframefill_call_top:
+  id: 70
+  publisher_id: 1042
+  tag_name: "Test: Iframe fill"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 4
+  value: 1.00
+  size: "234x60"
+  tag: 'This is a fill from "Test: Iframe fill with testPassed" (tag 70) <script>top.LiftiumTest.testPassed();</script>'
