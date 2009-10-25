@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   before_filter :debug_sql, :only => [:index]
 
   def index
-    @tags = Tag.new.search(params)
+    @tags = Tag.new.search(session[:tag_params] || "")
     flash[:warning] = "No matching tags found" if @tags.empty?
   end
 
@@ -130,6 +130,20 @@ class TagsController < ApplicationController
     else
       render :action => 'edit'
     end
+  end
+
+  def toggle 
+    @tag    = Tag.find( params[:id] )
+    diag    = (@tag.enabled = !@tag.enabled) ? "enabled" : "disabled"
+    
+    if @tag.save
+      flash[:notice] = "Successfully #{diag} tag #{@tag.tag_name}"
+    else 
+      flash[:error] = "Failed to #{diag} tag #{@tag.tag_name}"   
+    end
+    
+    redirect_to tags_url
+
   end
 
   def destroy
