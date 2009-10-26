@@ -113,9 +113,9 @@
       <td class="record_action" style="font-size:smaller" nowrap="true">
 	<% fill_stats = tag.get_fill_stats("last 60 minutes")%>
 	<%- if fill_stats[:attempts] > 0 %>
-	  <%= fill_stats[:attempts].to_s + " attempts "%><br />
+	  <%= number_with_delimiter(fill_stats[:attempts]).to_s + " attempts "%><br />
 	  <span style="<%= fill_stats[:fill_rate].to_i < 15 ? "color:red" : "" %>">
-	  <%= fill_stats[:fill_rate].to_s + "% filled" %>
+	  <%= number_with_delimiter(fill_stats[:fill_rate]).to_s + "% filled" %>
 	  </span>
 	<%- else %>
 	   0 attempts

@@ -32,10 +32,10 @@ total_slip = 0
       <td class="record_column">#<%= fill_stat.tag_id%> - <a href="<%=tag_url fill_stat.tag %>"><%= fill_stat.tag.tag_name%></a></td>
       <td class="record_column"><%= fill_stat.tag.size%></a></td>
       <td class="record_column"><%=fill_stat.time%></td>
-      <td class="record_column"><%= fill_stat.attempts%></td>
-      <td class="record_column"><%= fill_stat.loads%></td>
-      <td class="record_column"><%= fill_stat.rejects%></td>
-      <td class="record_column"><%= fill_stat.slip%></td>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column"><a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a></td>
     </tr>
   <%
@@ -47,10 +47,10 @@ total_slip = 0
   end %>
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
       <td class="record_column" colspan="5">Totals</td>
-      <td class="record_column"><%= total_attempts%></td>
-      <td class="record_column"><%= total_loads%></td>
-      <td class="record_column"><%= total_rejects%></td>
-      <td class="record_column"><%= total_slip%></td>
+      <td class="record_column"><%= number_with_delimiter(total_attempts)%></td>
+      <td class="record_column"><%= number_with_delimiter(total_loads)%></td>
+      <td class="record_column"><%= number_with_delimiter(total_rejects)%></td>
+      <td class="record_column"><%= number_with_delimiter(total_slip)%></td>
       <td class="record_column"><%= @fill_stats.length > 0 ? @fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%": "-" %></td>
     </tr>
   
