@@ -4,5 +4,6 @@
 
 <p>
   <%= link_to "Show", @tag %> |
+  <%= link_to "Copy", :controller => "tags", :action => "copy", :id => @tag.id  %>
   <%= link_to "View All", tags_path %>
 </p>

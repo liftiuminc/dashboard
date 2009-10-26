@@ -20,11 +20,11 @@
 </p>
 <p>
   <strong>Login Count:</strong>
-  <%=h @user.login_count %>
+  <%=h number_with_delimiter(@user.login_count) %>
 </p>
 <p>
   <strong>Failed Login Count:</strong>
-  <%=h @user.failed_login_count %>
+  <%=h number_with_delimiter(@user.failed_login_count) %>
 </p>
 <p>
   <strong>Current Login At:</strong>
