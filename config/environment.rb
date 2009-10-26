@@ -17,7 +17,7 @@ Rails::Initializer.run do |config|
   # Specify gems that this application depends on and have them installed with rake gems:install
   # To copy system wide gems into the rails app, use:
   # rake gems:unpack    # Unpacks all required gems into vendor/gems.
-  
+
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
@@ -25,6 +25,9 @@ Rails::Initializer.run do |config|
   config.gem "nifty-generators", :lib => false
   config.gem "fastercsv", :lib => false
   config.gem "calendar_date_select"
+
+  #Add this to change the global cache store to memcache
+  #config.cache_store = :mem_cache_store
 
   ### email exceptions. See FB 60
   ### not yet working, disabled for now --jos
@@ -36,7 +39,7 @@ Rails::Initializer.run do |config|
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
- 
+
 
   # Skip frameworks you're not going to use. To use Rails without a database,
   # you must remove the Active Record framework.
