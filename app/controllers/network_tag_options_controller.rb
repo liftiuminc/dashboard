@@ -1,5 +1,5 @@
 class NetworkTagOptionsController < ApplicationController
-  before_filter :require_user
+  before_filter :require_admin
 
   def index
     @network_tag_options = NetworkTagOption.all

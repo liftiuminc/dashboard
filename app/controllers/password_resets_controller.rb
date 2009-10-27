@@ -1,8 +1,6 @@
 class PasswordResetsController < ApplicationController
-  if Rails.configuration.environment != "test"
-     before_filter :load_user_using_perishable_token, :only => [:edit, :update]
-     before_filter :require_no_user
-  end
+   before_filter :load_user_using_perishable_token, :only => [:edit, :update]
+   before_filter :require_no_user
 
   def new
     render

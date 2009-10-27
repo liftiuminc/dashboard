@@ -1,5 +1,5 @@
 class AdFormatsController < ApplicationController
-  before_filter :require_user
+  before_filter :require_admin
 
   def index
     @ad_formats = AdFormat.all
