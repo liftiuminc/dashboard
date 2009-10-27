@@ -1,4 +1,6 @@
 <%= calendar_date_select_includes "silver" %>
+<% @timeframes = ["This Hour", "Last Hour", "Last 3 Hours", "Last 12 Hours", "Today", "Yesterday", "Last 7 Days", "This Month", "Last 30 days", "This Quarter", "Last Quarter", "This Year", "All Time"] %>
+
 <div class="filter_form" id="tag_filter_form">
   <form action="<%= create_data_export_url%>">
      <ul>
@@ -6,31 +8,34 @@
 	  <%= params.inspect -%>
 	<% end -%>
 	<li><%= label_tag :publisher %>
-	    <!-- FIXME. Use built in rails helper instead? -->
+	  <%- if @publishers && current_user.admin? %>
 	    <select name="publisher_id" id="publisherDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Publisher.all.collect, :id, :site_name, params[:publisher_id].to_i %>
+	      <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
 	    </select>
+          <%- else %>
+	    <%=h current_user.publisher.site_name %>
+	  <%- end %>
 	</li>
 
 	<li><%= label_tag :network %>
 	    <select name="network_id" id="networkDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Network.all.collect, :id, :network_name, params[:network_id].to_i %>
+	      <%= options_from_collection_for_select @networks, :id, :network_name, params[:network_id].to_i %>
 	    </select>
 	</li>
 
 	<li><%= label_tag :size %>
 	    <select name="size" id="sizeDD">
 	      <option value="">
-	      <%= options_from_collection_for_select AdFormat.all.collect, :size, :name_with_size, params[:size] %>
+	      <%= options_from_collection_for_select @adformats, :size, :name_with_size, params[:size] %>
 	    </select>
 	</li>
 
 	<li><%= label_tag :interval%>
-	    <%= radio_button_tag "interval", "minute", params[:interval]=="minute" || params[:interval].blank? %>Minute
+	    <%= radio_button_tag "interval", "day", params[:interval]=="day" || params[:interval].blank? %>Day <span class="hint">(eCPM only available for "Day")</span>
 	    <%= radio_button_tag "interval", "hour", params[:interval]=="hour"%>Hour
-	    <%= radio_button_tag "interval", "day", params[:interval]=="day"%>Day
+	    <%= radio_button_tag "interval", "minute", params[:interval]=="minute" %>Minute
 
 	<li><%= label_tag :format, "Ouptut to"%>
 	    <%= radio_button_tag "format", "csv", params[:format]=="csv"%>CSV File
@@ -44,7 +49,7 @@
 	<li><%= label_tag :date_select %>
 	    <select name="date_select" id="date_selectDD" onChange="dateSelect(this)">
 	    <option value="">
-	    <%= options_for_select(["This Hour", "Last Hour", "Last 3 Hours", "Last 12 Hours", "Today", "Yesterday", "Last 7 Days", "This Month", "Last 30 days", "This Quarter", "Last Quarter", "This Year", "All Time"], params[:date_select])%>
+	    <%= options_for_select(@timeframes, params[:date_select])%>
 	    </select>
 	</li>
 	<li><%= label_tag "", " - OR -" %></li>

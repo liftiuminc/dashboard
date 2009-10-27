@@ -41,7 +41,7 @@ class HomesControllerTest < ActionController::TestCase
   end
 
   context "admin action logged in as PUBLISHER" do
-    should "render publisher template" do
+    should "render 403" do
       login_as_publisher
       get :admin 
       assert_template "public/403.html"

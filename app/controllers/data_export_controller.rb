@@ -2,10 +2,34 @@ class DataExportController < ApplicationController
   before_filter :require_user
 
   def index
+    setup_vars
+  end
+
+  def setup_vars 
+    if current_user.admin? 
+	@publishers = Publisher.all(:order => "site_name")
+        @networks = Network.all(:conditions => ["enabled => ?", 1], :order => "network_name")
+        @adformats = AdFormat.all
+    else 
+	# FIXME, there is probably a more ActiveRecordy way to handle this 
+        @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
+        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
+    end
+    @limit = 250
   end
 
   def create 
-    @limit = 250
+    setup_vars
+
+    if !current_user.admin? 
+      if current_user.publisher_id
+	 params[:publisher_id] = current_user.publisher_id
+      else 
+        # Belt & Suspenders
+	permission_denied "Your account is not an administrator and it is not associated with a publisher";
+	return false
+      end  
+    end
 
     case params[:interval]
       when "day" 

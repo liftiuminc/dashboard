@@ -1,5 +1,6 @@
 class HomesController < ApplicationController
-  before_filter :require_user, :only => ["admin", "publisher"]
+  before_filter :require_user, :only => ["publisher", "admin"]
+  before_filter :require_admin, :only => ["admin"]
 
   def index
     if current_user 
@@ -8,13 +9,12 @@ class HomesController < ApplicationController
       elsif !current_user.admin && current_user.publisher
         render :publisher
       end
+    else 
+	# not logged in, render home
     end
   end
 
   def admin
-    if !current_user.admin 
-      render(:file => 'public/403.html', :status => :forbidden) 
-    end 
   end
 
   def publisher

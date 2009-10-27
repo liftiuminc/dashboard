@@ -47,6 +47,6 @@ class ActiveSupport::TestCase
   end
 
   def login_as_publisher
-    login_as(User.find(:first, :conditions => [ "admin = ?", 0]))
+    login_as(User.find(:first, :conditions => [ "admin = ? and publisher_id > ?", 0, 0]))
   end
 end

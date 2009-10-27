@@ -53,4 +53,15 @@ class ApplicationController < ActionController::Base
       session[:return_to] = nil
     end
 
+    def require_admin
+      if !current_user || !current_user.admin?
+        permission_denied ("You must be an administrator to access this page")
+	return false
+      end
+    end
+
+    def permission_denied (msg)
+	flash[:notice] = msg
+        render(:file => 'public/403.html', :status => :forbidden)
+    end
 end

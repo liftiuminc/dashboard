@@ -42,4 +42,22 @@ class DataExportControllerTest < ActionController::TestCase
       respond_with_content_type 'text/html'
     end
   end
+
+  # Admin vs publisher
+  context "index action with a admin login" do
+    setup do
+      login_as_admin
+      get :index
+    end
+    should_assign_to :publishers
+  end
+
+  context "index action with a publisher login" do
+    setup do
+      login_as_publisher
+      get :index
+    end
+    should_not_assign_to :publishers
+  end
+
 end
