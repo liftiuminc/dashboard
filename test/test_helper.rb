@@ -43,10 +43,10 @@ class ActiveSupport::TestCase
   end
 
   def login_as_admin
-    login_as(User.find(:first, :conditions => [ "admin = ?", 1]))
+    login_as(User.first(:conditions => ["email = ?", "unit_test_admin@liftium.com"]))
   end
 
   def login_as_publisher
-    login_as(User.find(:first, :conditions => [ "admin = ? and publisher_id > ?", 0, 0]))
+    login_as(User.first(:conditions => ["email = ?", "unit_test_publisher@liftium.com"]))
   end
 end
