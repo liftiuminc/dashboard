@@ -8,4 +8,10 @@ test:
 
 production:
   servers:
-    - localhost:11211
+    - salt.liftium.com:11211
+    - lime.liftium.com:11211
+
+live:
+  servers:
+    - salt.liftium.com:11211
+    - lime.liftium.com:11211
