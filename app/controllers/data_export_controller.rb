@@ -8,7 +8,7 @@ class DataExportController < ApplicationController
   def setup_vars 
     if current_user.admin? 
 	@publishers = Publisher.all(:order => "site_name")
-        @networks = Network.all(:conditions => ["enabled => ?", 1], :order => "network_name")
+        @networks = Network.all(:conditions => ["enabled = ?", 1], :order => "network_name")
         @adformats = AdFormat.all
     else 
 	# FIXME, there is probably a more ActiveRecordy way to handle this 
