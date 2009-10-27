@@ -1,0 +1,39 @@
+one:
+  tag_id: 13
+  user_id: 42
+  day: <%= (Time.now - 3.days).to_s(:db) %>
+  attempts: 23
+  rejects: 0
+  clicks: 5  
+  revenue: 0.0006
+  ecpm: 0.12
+
+two:
+  tag_id: 13
+  user_id: 42
+  day: <%= (Time.now - 2.days).to_s(:db) %>
+  attempts: 22
+  rejects: 1
+  clicks: 4
+  revenue: 0.002
+  ecpm: 0.5
+
+three:
+  tag_id: 13
+  user_id: 42  
+  day: <%= (Time.now - 1.days).to_s(:db) %>
+  attempts: 21
+  rejects: 7
+  clicks: 3  
+  revenue: 0.009
+  ecpm: 3
+
+four:
+  tag_id: 13
+  user_id: 42  
+  day: <%= Time.now.to_s(:db) %>
+  attempts: 5
+  rejects: 0
+  clicks: 5  
+  revenue: 0.0010
+  ecpm: 2

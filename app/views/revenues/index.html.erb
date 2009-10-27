@@ -1,0 +1,31 @@
+<% @title_bar_right_text = '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Revenue", new_revenue_path) %>
+
+<% title "Revenues" %>
+
+<br clear="all"/>
+
+<table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Attempts</th>
+    <th>Rejects</th>
+    <th>Clicks</th>
+    <th>Revenue</th>
+    <th>Ecpm</th>
+    <th>Revenue Date</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% for revenue in @revenues %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column"><%=h revenue.attempts %></td>
+      <td class="record_column"><%=h revenue.rejects %></td>
+      <td class="record_column"><%=h revenue.clicks %></td>
+      <td class="record_column"><%=h revenue.revenue %></td>
+      <td class="record_column"><%=h revenue.ecpm %></td>
+      <td class="record_column"><%=h revenue.revenue_date %></td>
+      <td class="record_action"><%= link_to "View", revenue, :action=> :show %></td>
+      <td class="record_action"><%= link_to "Edit", edit_revenue_path(revenue) %></td>
+      <td class="record_action"><%= link_to "Delete", revenue, :confirm => 'Are you sure?', :method => "delete" %></td>
+    </tr>
+  <% end %>
+</table>
+

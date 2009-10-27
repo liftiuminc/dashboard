@@ -1,0 +1,28 @@
+<% form_for @revenue do |f| %>
+  <%= f.error_messages %>
+  <div class="fieldset">
+    <%= f.label :attempts %><br />
+    <%= f.text_field :attempts %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :rejects %><br />
+    <%= f.text_field :rejects %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :clicks %><br />
+    <%= f.text_field :clicks %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :revenue %><br />
+    <%= f.text_field :revenue %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :ecpm %><br />
+    <%= f.text_field :ecpm %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :revenue_date %><br />
+    <%= f.text_field :revenue_date %>
+  </div>
+  <p><%= liftium_submit "Save Changes" %></p>
+<% end %>

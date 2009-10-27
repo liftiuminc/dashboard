@@ -1,0 +1,32 @@
+<% title "Revenue" %>
+
+<p>
+  <strong>Attempts:</strong>
+  <%=h @revenue.attempts %>
+</p>
+<p>
+  <strong>Rejects:</strong>
+  <%=h @revenue.rejects %>
+</p>
+<p>
+  <strong>Clicks:</strong>
+  <%=h @revenue.clicks %>
+</p>
+<p>
+  <strong>Revenue:</strong>
+  <%=h @revenue.revenue %>
+</p>
+<p>
+  <strong>Ecpm:</strong>
+  <%=h @revenue.ecpm %>
+</p>
+<p>
+  <strong>Revenue Date:</strong>
+  <%=h @revenue.revenue_date %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_revenue_path(@revenue) %> |
+  <%= link_to "Delete", @revenue, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+  <%= link_to "View All", revenues_path %>
+</p>
