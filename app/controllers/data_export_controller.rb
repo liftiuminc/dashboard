@@ -6,7 +6,7 @@ class DataExportController < ApplicationController
   end
 
   def setup_vars 
-    if current_user.admin? 
+    if ! current_user.publisher_id 
 	@publishers = Publisher.all(:order => "site_name")
         @networks = Network.all(:conditions => ["enabled = ?", 1], :order => "network_name")
         @adformats = AdFormat.all
@@ -21,14 +21,12 @@ class DataExportController < ApplicationController
   def create 
     setup_vars
 
-    if !current_user.admin? 
-      if current_user.publisher_id
-	 params[:publisher_id] = current_user.publisher_id
-      else 
-        # Belt & Suspenders
-	permission_denied "Your account is not an administrator and it is not associated with a publisher";
-	return false
-      end  
+    if current_user.publisher_id
+       params[:publisher_id] = current_user.publisher_id
+    elsif !current_user.admin?
+       # Belt & Suspenders, just to make sure we don't give out everyone's data
+       permission_denied "Your account is not an administrator and it is not associated with a publisher";
+       return false
     end
 
     case params[:interval]
