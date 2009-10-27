@@ -113,12 +113,5 @@ class EventRecorderTest < ActiveSupport::TestCase
       end
     end
 
-    context "#get_events_by_type" do
-      should "return the unserialized key if it matched the event_type" do
-        EventRecorder.stubs(:cache_key_list).returns([EventRecorder.serialize_key(@event_array)])
-        results = { :events => @event_array, :time => "20091201_20", :rotation => "hour" }
-        assert_equal results, EventRecorder.get_events_by_type("Ad Delivered")
-      end
-    end
   end
 end

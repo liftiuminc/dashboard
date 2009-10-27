@@ -23,18 +23,7 @@ class EventRecorder
       {:events => pieces.collect{ |element| URI.unescape(element) }, :time => time, :rotation => get_rotation(time)}
     end
 
-    def get_events_by_type(event_type)
-      cache_key_list.inject([]) do |arr, key|
-        data = unserialize_key(key)
-        arr = data if data[:events][0] == event_type
-      end
-    end
-
     private
-
-    def cache_key_list
-      #TODO - how to do this??
-    end
 
     def ensure_cache_key_exists(key, rotation, lifetime)
       unless get_cache.exist?(key, MEMCACHE_READ_OPTIONS)
