@@ -30,23 +30,23 @@
 	</li>
 
 	<li><%= label_tag :interval%>
-	    <%= radio_button_tag "interval", "day", params[:interval]=="day" || params[:interval].blank? %>Day <span class="hint">(eCPM only available for "Day")</span>
+	    <%= radio_button_tag "interval", "day", params[:interval]=="day" || params[:interval].blank? %>Day <span class="hint">(include eCPM data)</span>
 	    <%= radio_button_tag "interval", "hour", params[:interval]=="hour"%>Hour
 	    <%= radio_button_tag "interval", "minute", params[:interval]=="minute" %>Minute
 
 	<li><%= label_tag :format, "Ouptut to"%>
+	    <%= radio_button_tag "format", "html", params[:format]!="csv"%>Screen <span class="hint">(max <%= @limit %> results)</span>
 	    <%= radio_button_tag "format", "csv", params[:format]=="csv"%>CSV File
-	    <%= radio_button_tag "format", "html", params[:format]!="csv"%>Screen <span class="hint">(limit <%= @limit %> records)</span>
 	</li>
 
 	<li><%= label_tag :include_disabled, "Include Disabled Tags"%>
-	    <%= radio_button_tag "include_disabled", "true", !params[:include_disabled].blank?%>Yes
 	    <%= radio_button_tag "include_disabled", "", params[:include_disabled].blank?%>No
+	    <%= radio_button_tag "include_disabled", "true", !params[:include_disabled].blank?%>Yes
 	</li>
 	<li><%= label_tag :date_select %>
 	    <%= date_range_dropdown %><!-- From app/helpers/layout -->
 	</li>
-	<li><%= label_tag "", " - OR -" %></li>
+	<li><%= label_tag "", "<i> - OR - </i>" %></li>
 	<li><%= label_tag :date_range %>
 	    <%
 	    s = !params[:start_date].blank? ? params[:start_date].to_time.strftime("%m/%d/%Y %I:%M %p") : ""

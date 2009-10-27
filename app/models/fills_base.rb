@@ -26,7 +26,14 @@ class FillsBase < ActiveRecord::Base
 
     col = model.new.time_column
     query = []
-    query.push("SELECT * FROM " + model.table_name + " INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id WHERE 1=1");
+    query.push("SELECT * FROM " + model.table_name)
+
+    # Supply eCPM and CTR data at the daily interval
+    if  model.table_name == "fills_day"
+	query[0] += " INNER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
+    end
+
+    query[0] += " INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id WHERE 1 = 1";
 
     if (params[:include_disabled].blank?)
        query[0] += " AND enabled = ?"
@@ -76,7 +83,7 @@ class FillsBase < ActiveRecord::Base
       when "tag_name"
 	query[0] += " ORDER BY " + tag_name + " ASC"
       else 
-	query[0] += " ORDER BY " + col + " ASC"
+	query[0] += " ORDER BY " + model.table_name + "." + col + " ASC"
     end
 
     if (! params[:limit].to_s.empty?)
@@ -100,15 +107,16 @@ class FillsBase < ActiveRecord::Base
   end 
 
   def export_to_csv(fill_stats)
-    
+
+    if fill_stats[0].respond_to?("day")
+	return export_to_csv_with_revenue(fill_stats)
+    end
+      
     require 'fastercsv'
 
     @outfile = "fills_" + time_name + "_" + Time.now.strftime("%m-%d-%Y") + ".csv"
     
-    total_attempts = 0
-    total_loads = 0
-    total_rejects = 0
-    total_slip = 0
+    total_attempts = total_loads = total_rejects = total_slip = 0
 
     csv_data = FasterCSV.generate do |csv|
       csv << [
@@ -158,6 +166,88 @@ class FillsBase < ActiveRecord::Base
 	total_rejects,
 	total_slip,
         fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%"
+      ] 
+
+    end
+  end
+
+
+  def export_to_csv_with_revenue(fill_stats)
+    
+    require 'fastercsv'
+
+    @outfile = "fills_" + time_name + "_" + Time.now.strftime("%m-%d-%Y") + ".csv"
+    
+    total_attempts = total_loads = total_rejects = total_slip = total_clicks = 0
+    total_revenue = total_ecpm = 0.00
+
+    csv_data = FasterCSV.generate do |csv|
+      csv << [
+	"Publisher",
+	"Ad Network",
+	"Tag #",
+	"Tag Name",
+	"Size",
+	time_name,
+	"Attempts",
+	"Loads",
+	"Rejects",
+	"Clicks",
+	"Slip",
+	"Fill Rate",
+	"Revenue",
+	"eCPM"
+      ]
+      fill_stats.each do |fill|
+	csv << [
+	fill.tag.publisher.site_name,
+	fill.tag.network.network_name,
+	fill.tag_id,
+	fill.tag.tag_name,
+	fill.tag.size,
+	fill.time,
+	fill.attempts,
+	fill.loads,
+	fill.rejects,
+	fill.clicks,
+	fill.slip,
+	fill.fill_rate.to_s + "%",
+	"$" + fill.revenue.to_f.round(2).to_s, 
+	"$" + fill.ecpm.to_f.round(2).to_s 
+	]
+
+	# Add up the totals
+        total_attempts += fill.attempts
+        total_loads += fill.loads
+        total_rejects += fill.rejects
+        total_slip += fill.slip
+        total_clicks += fill.clicks.to_i
+        total_revenue += fill.revenue.to_f
+        total_ecpm += fill.ecpm.to_f
+      end
+
+      # Total line
+      if fill_stats.length > 0
+	total_avg_ecpm = '$' + ((total_revenue/total_loads).round(2) * 1000).to_s
+      else
+	total_avg_ecpm = "-"
+      end
+
+      csv << [
+	"Totals",
+	"",
+	"",
+	"",
+	"",
+	"",
+	total_attempts,
+	total_loads,
+	total_rejects,
+	total_clicks,
+	total_slip,
+        fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%",
+	'$' + total_revenue.to_f.round(2).to_s,
+	total_avg_ecpm
       ] 
 
     end

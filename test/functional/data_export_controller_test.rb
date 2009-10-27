@@ -21,15 +21,23 @@ class DataExportControllerTest < ActionController::TestCase
   context "create action" do
     should "render create template" do
       login_as_admin
-      get :create, :network_id => "1"
+      get :create, :network_id => "1", :interval => "day"
       assert_template 'create'
     end
   end
 
-  context "create action with csv" do
+  context "create action with csv, minute" do
     should "respond with csv data type" do
       login_as_admin
       get :create, :network_id => "1", "format" => "csv"
+      respond_with_content_type 'text/csv'
+    end
+  end
+
+  context "create action with csv, daily" do
+    should "respond with csv data type" do
+      login_as_admin
+      get :create, :network_id => "1", :format => "csv", :interval => "day"
       respond_with_content_type 'text/csv'
     end
   end

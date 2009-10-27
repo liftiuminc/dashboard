@@ -1,8 +1,6 @@
 <% title "Data Export"
-total_attempts = 0
-total_loads = 0
-total_rejects = 0
-total_slip = 0
+total_attempts = total_loads = total_rejects = total_clicks = total_slip = 0 
+total_ecpm = total_revenue = 0.00
 %>
 <%= render :partial => 'filter_form' %>
 
@@ -16,8 +14,15 @@ total_slip = 0
     <th>Attempts</th>
     <th>Loads</th>
     <th>Rejects</th>
+   <%- if params[:interval] == "day" %>
+    <th>Clicks</th>
+   <%- end %>
     <th>Slip</th>
     <th>Fill Rate</th>
+   <%- if params[:interval] == "day" %>
+    <th>Revenue</th>
+    <th>eCPM</th>
+   <%- end %>
   </tr>
   <% counter = 0 %>
   <%- for fill_stat in @fill_stats %>
@@ -35,8 +40,19 @@ total_slip = 0
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
+    <%- if params[:interval] == "day" %>
+      <% total_clicks += fill_stat.clicks.to_i %>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.clicks)%></td>
+    <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column"><a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a></td>
+    <%- if params[:interval] == "day" 
+      total_revenue += fill_stat.revenue.to_f
+      total_ecpm += fill_stat.ecpm.to_f
+      %>
+      <td class="record_column">$<%= fill_stat.revenue.to_f.round(2) %></td>
+      <td class="record_column">$<%= fill_stat.ecpm.to_f.round(2) %></td>
+    <%- end %>
     </tr>
   <%
   # Add up the totals
@@ -50,8 +66,15 @@ total_slip = 0
       <td class="record_column"><%= number_with_delimiter(total_attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(total_loads)%></td>
       <td class="record_column"><%= number_with_delimiter(total_rejects)%></td>
+    <%- if params[:interval] == "day" %>
+      <td class="record_column"><%= number_with_delimiter(total_clicks)%></td>
+    <%- end %>
       <td class="record_column"><%= number_with_delimiter(total_slip)%></td>
       <td class="record_column"><%= @fill_stats.length > 0 ? @fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%": "-" %></td>
+    <%- if params[:interval] == "day" %>
+      <td class="record_column">$<%= total_revenue.round(2)%></td>
+      <td class="record_column">$<%= @fill_stats.length > 0 ? (total_revenue/total_loads).round(2) * 1000 : "-"%></td>
+    <%- end %>
     </tr>
   
 </table>
