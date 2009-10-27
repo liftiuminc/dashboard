@@ -1,0 +1,24 @@
+DateRangeHelper
+===============
+
+Chronic is great, but couldn't handle the date ranges that I needed, like "last quarter"
+
+
+Example
+=======
+
+In your view, you can provide a drop down with the date ranges like this:
+            <select name="date_select">
+            <option value="">
+            <%= options_for_select(DateRangeHelper.timeframes, params[:date_select])%>          
+            </select>
+
+Then in your model, you can get a start/end date for date based searching like this:
+
+      dates = DateRangeHelper.get_date_range(params[:date_select])
+      start_date = dates[0]
+      end_date = dates[1]
+
+
+
+Copyright (c) 2009 Nick Sullivan, released under the MIT license

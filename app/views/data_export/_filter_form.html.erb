@@ -1,5 +1,4 @@
 <%= calendar_date_select_includes "silver" %>
-<% @timeframes = ["This Hour", "Last Hour", "Last 3 Hours", "Last 12 Hours", "Today", "Yesterday", "Last 7 Days", "This Month", "Last 30 days", "This Quarter", "Last Quarter", "This Year", "All Time"] %>
 
 <div class="filter_form" id="tag_filter_form">
   <form action="<%= create_data_export_url%>">
@@ -47,7 +46,7 @@
 	<li><%= label_tag :date_select %>
 	    <select name="date_select" id="date_selectDD" onChange="dateSelect(this)">
 	    <option value="">
-	    <%= options_for_select(@timeframes, params[:date_select])%>
+	    <%= options_for_select(DateRangeHelper.timeframes, params[:date_select])%>
 	    </select>
 	</li>
 	<li><%= label_tag "", " - OR -" %></li>

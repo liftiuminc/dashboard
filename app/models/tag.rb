@@ -1,4 +1,5 @@
 class Tag < ActiveRecord::Base
+  require "date_range_helper"
 
   belongs_to :network
   belongs_to :publisher
@@ -153,7 +154,7 @@ class Tag < ActiveRecord::Base
 
   def get_fill_stats (range)
     conditions = ["tag_id = ?", id]
-    dates = FillsMinute.new.get_date_range(range)
+    dates = DateRangeHelper.get_date_range(range)
     if dates[0]
       conditions[0] += " AND minute >= ?"
       conditions.push(dates[0])
