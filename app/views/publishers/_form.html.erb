@@ -9,6 +9,10 @@
     <%= f.text_field :site_url %>
   </div>
   <div class="fieldset">
+    <%= f.label :category %><br />
+    <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
+  </div>
+  <div class="fieldset">
     <%= f.label :brand_safety_level %><br />
     <%= f.text_field :brand_safety_level %>
   </div>

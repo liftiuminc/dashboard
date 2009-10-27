@@ -1,6 +1,10 @@
 class Publisher < ActiveRecord::Base
   require 'uri'
 
+  CATEGORIES = ["Auto","Creative","Education","Entertainment","Finance",
+		"Gaming","Green","Humor","Lifestyle","Music","Philosophy",
+		"Politics","Science","Sports","Technology","Toys","Travel"]
+
   has_many :users
   has_many :tags, :dependent => :destroy
   has_many :publisher_network_logins, :dependent => :destroy  
@@ -10,6 +14,8 @@ class Publisher < ActiveRecord::Base
   validates_presence_of :site_url
   validates_format_of :xdm_iframe_path, :with => /^\/[^ ]+/, :allow_blank => true, :message => "must be a local path Ex. /liftium_iframe.html"
   validates_numericality_of :beacon_throttle, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 1
+  validates_inclusion_of :category, :in => CATEGORIES, :message => "must be one of: " + CATEGORIES.join(', '), :allow_blank => true
+
 
    ### make sure all urls start with http(s?). See FB 32
    def site_url=(url)
