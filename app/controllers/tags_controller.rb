@@ -183,12 +183,4 @@ class TagsController < ApplicationController
     @name_search = params[:name_search]
     @include_disabled = params[:include_disabled]
   end
-
-  def find_enabled_networks
-    @networks = Network.find :all, :conditions => {:enabled => true}
-  end
-
-  def find_all_publishers
-    @publishers = Publisher.find :all;
-  end
 end
