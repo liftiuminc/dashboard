@@ -7,16 +7,14 @@
 	<% if params[:debug] -%>
 	  <%= params.inspect -%>
 	<% end -%>
+      <%- if @publishers && current_user.admin? %>
 	<li><%= label_tag :publisher %>
-	  <%- if @publishers && current_user.admin? %>
 	    <select name="publisher_id" id="publisherDD">
 	      <option value="">
 	      <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
 	    </select>
-          <%- else %>
-	    <%=h current_user.publisher.site_name %>
-	  <%- end %>
 	</li>
+      <%- end %>
 
 	<li><%= label_tag :network %>
 	    <select name="network_id" id="networkDD">
