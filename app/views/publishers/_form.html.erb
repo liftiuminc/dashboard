@@ -9,15 +9,28 @@
     <%= f.text_field :site_url %>
   </div>
   <div class="fieldset">
+    <%= f.label :site_description %><br />
+    <%= f.text_area :site_description %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :site_keywords %><br />
+    <%= f.text_field :site_keywords %>
+  </div>
+  <div class="fieldset">
     <%= f.label :category %><br />
     <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :privacy_policy, "Site has a Privacy Policy", :class => "left_label"%>
+    <%= radio_button "publisher", "privacy_policy", "true"%>Yes
+    <%= radio_button "publisher", "privacy_policy", "false"%>No
   </div>
   <div class="fieldset">
     <%= f.label :brand_safety_level %><br />
     <%= f.text_field :brand_safety_level %>
   </div>
   <div class="fieldset">
-    <%= f.label :hoptime %><br />
+    <%= f.label :hoptime, "Hop Time" %><br />
     <%= f.text_field :hoptime %>
   </div>
   <div class="fieldset">
