@@ -21,7 +21,7 @@
       <td class="record_column"><%=h revenue.clicks %></td>
       <td class="record_column"><%=h revenue.revenue %></td>
       <td class="record_column"><%=h revenue.ecpm %></td>
-      <td class="record_column"><%=h revenue.revenue_date %></td>
+      <td class="record_column"><%=h revenue.day %></td>
       <td class="record_action"><%= link_to "View", revenue, :action=> :show %></td>
       <td class="record_action"><%= link_to "Edit", edit_revenue_path(revenue) %></td>
       <td class="record_action"><%= link_to "Delete", revenue, :confirm => 'Are you sure?', :method => "delete" %></td>
