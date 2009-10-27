@@ -70,4 +70,13 @@ class ApplicationController < ActionController::Base
 	flash[:notice] = msg
         render(:file => 'public/403.html', :status => :forbidden)
     end
+    
+    ### XXX FIXME -- these should probably live Elsewhere(tm) -jos
+    def find_enabled_networks
+      @networks = Network.find :all, :conditions => {:enabled => true}
+    end
+    
+    def find_all_publishers
+      @publishers = Publisher.find :all;
+    end
 end

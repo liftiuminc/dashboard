@@ -1,5 +1,6 @@
 class RevenuesController < ApplicationController
   before_filter :require_admin 
+  before_filter :find_enabled_networks
 
   def index
     @revenues = Revenue.all
