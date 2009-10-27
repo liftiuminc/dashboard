@@ -5,6 +5,7 @@ script/generate nifty_scaffold --shoulda network network_name:string website:str
 script/generate nifty_scaffold --shoulda network_tag_option option_name:string required:boolean
 script/generate nifty_scaffold --shoulda publisher site_name:string site_url:string brand_safety_level:integer hoptime:integer
 script/generate nifty_scaffold --shoulda publisher_network_logins username:string password:string
+script/generate nifty_scaffold --shoulda revenue attempts:integer rejects:integer clicks:integer revenue:decimal ecpm:decimal day:date
 script/generate nifty_scaffold --shoulda tag tag_name:string value_in_cents:integer enabled:boolean always_fill:boolean sample_rate:integer tier:integer frequency_cap:integer rejection_time:integer tag:text
 script/generate nifty_scaffold --shoulda tag_option option_name:string option_value:string
 script/generate nifty_scaffold --shoulda tag_target key_name:string key_value:string
@@ -16,3 +17,5 @@ script/generate nifty_scaffold --shoulda data_export index
 script/generate nifty_scaffold --shoulda password_reset new create edit update
 script/generate nifty_scaffold --shoulda user_session new create destroy
 script/generate nifty_scaffold --shoulda home index
+
+
