@@ -1,12 +1,12 @@
 class DateRangeHelper
 
-  def timeframes 
+  def self.timeframes 
     ["This Hour", "Last Hour", "Last 3 Hours", "Last 12 Hours",
      "Today", "Yesterday", "Last 7 Days", "This Month", "Last 30 days",
      "This Quarter", "Last Quarter", "This Year", "All Time"] 
   end
 
-  def get_date_range(timeframe)
+  def self.get_date_range(timeframe)
    now = DateTime.now
    dates = [nil, nil]
 
