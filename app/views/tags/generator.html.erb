@@ -1,10 +1,5 @@
 <% title "Tag Generator / Publisher Preview" %>
 
-<% # FIXME: How do I put this in the model?
-
-    # Get the list of publishers for admin users
-    @publishers = Publisher.find :all;
-%>
 <script>
 var dimRegexp = /^([0-9]{2,4})x([0-9]{2,4})/;
 var deliveryHost = "http://cdn.liftium.com";
@@ -100,6 +95,7 @@ function doPreview(){
 </script>
 
 <form onSubmit="return generateTag(this);">
+ <%- if @publishers %>
   <div class="fieldset">
     <%= label_tag :publisher, nil, :class => "left_label" %>
     <select name="pubid" id="pubid">
@@ -107,11 +103,14 @@ function doPreview(){
     <%= options_from_collection_for_select(@publishers, :id, :site_name) %>
     </select>
   </div>
+ <%-else%>
+  <%= hidden_field_tag "pubid", current_user.publisher_id %>
+ <%-end %>
   <div class="fieldset">
     <%= label_tag :size, nil, :class => "left_label" %>
     <select name="size" id="size">
     <option value="">Select a Size
-    <%= options_from_collection_for_select(AdFormat.all.collect, :size, :name_with_size) %>
+    <%= options_from_collection_for_select(@adformats, :size, :name_with_size) %>
     </select>
   </div>
   <div class="fieldset">

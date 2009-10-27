@@ -154,10 +154,14 @@ class TagsController < ApplicationController
   end
 
   def generator
-    if params[:id]
-      @tag = Tag.find(params[:id])
+    @tag = Tag.new
+
+    if ! current_user.publisher_id
+        @publishers = Publisher.all(:order => "site_name")
+        @adformats = AdFormat.all
     else
-      @tag = Tag.new
+        # FIXME, there is probably a more ActiveRecordy way to handle this 
+        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
     end
   end
 
