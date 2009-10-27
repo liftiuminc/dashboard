@@ -25,6 +25,10 @@ class EventRecorderTest < ActiveSupport::TestCase
       should "append YYYYMMDD if 'day' is specified in the rotation" do
         assert_equal "Ad%20Delivered:AdBrite:US:20091201", EventRecorder.serialize_key(@event_array, "day")
       end
+
+      should "not append a time if 'none' is specified in the rotation" do
+        assert_equal "Ad%20Delivered:AdBrite:US", EventRecorder.serialize_key(@event_array, "none")
+      end
     end
 
     context "#unserialize_key" do

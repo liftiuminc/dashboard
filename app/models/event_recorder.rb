@@ -13,7 +13,8 @@ class EventRecorder
     end
 
     def serialize_key(event, rotation = "hour", time = nil)
-      pieces = event.collect{ |element| URI.escape(element) } << get_time_floor(rotation, time || Time.now)
+      pieces = event.collect{ |element| URI.escape(element) }
+      pieces << get_time_floor(rotation, time || Time.now) unless rotation == "none"
       pieces.join(":")
     end
 
