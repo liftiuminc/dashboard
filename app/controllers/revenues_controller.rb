@@ -1,4 +1,6 @@
 class RevenuesController < ApplicationController
+  before_filter :require_admin 
+
   def index
     @revenues = Revenue.all
   end
