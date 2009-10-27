@@ -10,10 +10,11 @@ function dateSelect(dd){
 
 <% for stat in misc_stat_types do -%>
   <div style="float:left">
-    <%= stat %>: <%= EventRecorder.read(EventRecorder.serialize_key([stat])) || "Unknown" %><br/>
+    <%= stat %>: <%= EventRecorder.read(EventRecorder.serialize_key([stat], "minute", 61.seconds.ago)) || "Unknown" %><br/>
     <a href="<%=h url_for :controller => 'charts', :action => 'misc_stat', :stat => stat %>">
       <img src="<%= misc_stat_url stat, @range %>" width="400" height="190"/>
     </a>
   </div>
 <% end -%>
+
 
