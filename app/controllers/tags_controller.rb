@@ -2,6 +2,8 @@ class TagsController < ApplicationController
   before_filter :require_user
   before_filter :save_filter_fields, :only => [:index]
   before_filter :debug_sql, :only => [:index]
+  before_filter :find_enabled_networks, :only => [:select_network, :new, :edit, :copy]
+  before_filter :find_all_publishers, :only => [:new, :edit, :copy]
 
   def index
     @tags = Tag.new.search(session[:tag_params] || "")
@@ -13,8 +15,6 @@ class TagsController < ApplicationController
   end
 
   def select_network
-    # Get a list of enabled networks
-    @networks = Network.find :all, :conditions => {:enabled => true}
     @tag = Tag.new
   end
 
@@ -23,12 +23,6 @@ class TagsController < ApplicationController
       flash[:notice] = "Please select a network to continue"
       redirect_to :action => 'select_network'
     else
-
-      # Get a list of enabled networks
-      @networks = Network.find :all, :conditions => {:enabled => true}
-
-      # Get the list of publishers for admin users
-      @publishers = Publisher.find :all;
       @tag = Tag.new
       @tag.network_id = params[:network_id]
       @tag.tag_options.build
@@ -64,21 +58,10 @@ class TagsController < ApplicationController
   end
 
   def edit
-    # Get a list of enabled networks
-    @networks = Network.find :all, :conditions => {:enabled => true}
-
-    # Get the list of publishers for admin users
-    @publishers = Publisher.find :all;
     @tag = Tag.find(params[:id])
   end
 
   def copy
-    # Get a list of enabled networks
-    @networks = Network.find :all, :conditions => {:enabled => true}
-
-    # Get the list of publishers for admin users
-    @publishers = Publisher.find :all;
-
     @tag_orig = Tag.find(params[:id])
     @tag = @tag_orig.clone
 
@@ -132,16 +115,16 @@ class TagsController < ApplicationController
     end
   end
 
-  def toggle 
+  def toggle
     @tag    = Tag.find( params[:id] )
     diag    = (@tag.enabled = !@tag.enabled) ? "enabled" : "disabled"
-    
+
     if @tag.save
       flash[:notice] = "Successfully #{diag} tag #{@tag.tag_name}"
-    else 
-      flash[:error] = "Failed to #{diag} tag #{@tag.tag_name}"   
+    else
+      flash[:error] = "Failed to #{diag} tag #{@tag.tag_name}"
     end
-    
+
     redirect_to tags_url
 
   end
@@ -160,7 +143,7 @@ class TagsController < ApplicationController
         @publishers = Publisher.all(:order => "site_name")
         @adformats = AdFormat.all
     else
-        # FIXME, there is probably a more ActiveRecordy way to handle this 
+        # FIXME, there is probably a more ActiveRecordy way to handle this
         @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
     end
   end
@@ -199,5 +182,13 @@ class TagsController < ApplicationController
     @size = params[:size]
     @name_search = params[:name_search]
     @include_disabled = params[:include_disabled]
+  end
+
+  def find_enabled_networks
+    @networks = Network.find :all, :conditions => {:enabled => true}
+  end
+
+  def find_all_publishers
+    @publishers = Publisher.find :all;
   end
 end
