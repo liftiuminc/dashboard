@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   acts_as_authentic
   belongs_to :publisher
+  has_many   :revenues
 
   validate :must_associate_publisher_if_not_admin
 

@@ -5,6 +5,7 @@ class Tag < ActiveRecord::Base
   belongs_to :publisher
   has_many :tag_options, :dependent => :destroy
   has_many :tag_targets, :dependent => :destroy
+  has_many :revenues,    :dependent => :destroy
 
   ### enable comments on tags. See FB 24
   ### Requires db/migrate/20091013122159_add_tag_comments.rb
