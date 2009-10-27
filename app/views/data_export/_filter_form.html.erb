@@ -44,10 +44,7 @@
 	    <%= radio_button_tag "include_disabled", "", params[:include_disabled].blank?%>No
 	</li>
 	<li><%= label_tag :date_select %>
-	    <select name="date_select" id="date_selectDD" onChange="dateSelect(this)">
-	    <option value="">
-	    <%= options_for_select(DateRangeHelper.timeframes, params[:date_select])%>
-	    </select>
+	    <%= date_range_dropdown %><!-- From app/helpers/layout -->
 	</li>
 	<li><%= label_tag "", " - OR -" %></li>
 	<li><%= label_tag :date_range %>

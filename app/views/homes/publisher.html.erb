@@ -1,1 +1,7 @@
+<% @title_bar_right_text = date_range_dropdown %>
 <% title "Publisher Home" %>
+<script>
+function dateSelect(dd){
+	window.location.href = window.location.pathname + '?date_select=' + escape(dd.options[dd.selectedIndex].value);	
+}
+</script>

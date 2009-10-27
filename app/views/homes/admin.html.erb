@@ -1,7 +1,14 @@
-<% @show_nav = false %>
+<% @title_bar_right_text = date_range_dropdown %>
 <% title "Admin Home" %>
+<% params[:date_select] ||= "This Hour" %>
+<% @range = date_range_to_graph_range(params[:date_select]) %>
+<script>
+function dateSelect(dd){
+        window.location.href = window.location.pathname + '?date_select=' + escape(dd.options[dd.selectedIndex].value); 
+}
+</script>
 
 <% for stat in misc_stat_types do -%>
-	<a href="<%=h url_for :controller => 'charts', :action => 'misc_stat', :stat => stat %>"><img src="<%= misc_stat_url stat, "1h" %>" width="400" height="190"/></a>
+	<a href="<%=h url_for :controller => 'charts', :action => 'misc_stat', :stat => stat %>"><img src="<%= misc_stat_url stat, @range %>" width="400" height="190"/></a>
 <% end -%>
 

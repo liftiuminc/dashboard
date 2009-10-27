@@ -4,14 +4,13 @@ class HomesController < ApplicationController
 
   def index
     if current_user 
-      if current_user.admin
-        render :admin
-      elsif !current_user.admin && current_user.publisher
+      if current_user.publisher
         render :publisher
+      elsif current_user.admin 
+        render :admin
       end
-    else 
-	# not logged in, render home
     end
+    # not logged in, render home
   end
 
   def admin
