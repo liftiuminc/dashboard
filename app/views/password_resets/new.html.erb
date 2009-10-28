@@ -1,11 +1,19 @@
-<h1>Forgot Password</h1>
+<% title "Forgot Password" %>
 
 Fill out the form below and instructions to reset your password will be emailed to you:<br />
 <br />
 
-<% form_tag password_resets_path do %>
-  <label>Email:</label><br />
-  <%= text_field_tag "email" %><br />
-  <br />
-  <%= submit_tag "Send me my password reset instructions" %>
+<% form_for :password_reset, :url => { :action => 'create' } do |f| %>
+<div width="400">
+  <%= f.error_messages %>
+
+  <div class="fieldset">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, {:style=> "width: 200px"}  %>
+  </div>
+  <%= liftium_submit "Send me my password reset instructions" %>
+</div>
 <% end %>
+
+
+

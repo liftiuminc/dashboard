@@ -14,7 +14,9 @@
     <!-- Left Nav -->
     <div id="leftnav">
      <% if !current_user %>
-	 <%= link_to "Login", new_user_session_path %>
+       <ul>
+         <li><%= link_to "Login", new_user_session_path %></li>
+       </ul>
      <% else %>
 
       <div class="navsection">
