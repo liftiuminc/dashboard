@@ -1,6 +1,23 @@
 <% title "Revenue" %>
 
 <p>
+  <strong>Tag:</strong>
+  <%= link_to "#{@tag.tag_name} - #{@tag.size} (#{@tag.id})", @tag %>
+</p>
+<p>
+  <strong>Network:</strong>
+  <%= link_to "#{@tag.network.network_name} - #{@tag.network.pay_type}", @tag.network %>
+</p>
+<p>
+  <strong>Day:</strong>
+  <%=h @revenue.day %>
+</p>
+
+<p>
+  <strong>Clicks:</strong>
+  <%=h @revenue.clicks %>
+</p>
+<p>
   <strong>Attempts:</strong>
   <%=h @revenue.attempts %>
 </p>
@@ -9,20 +26,12 @@
   <%=h @revenue.rejects %>
 </p>
 <p>
-  <strong>Clicks:</strong>
-  <%=h @revenue.clicks %>
-</p>
-<p>
   <strong>Revenue:</strong>
   <%=h @revenue.revenue %>
 </p>
 <p>
   <strong>Ecpm:</strong>
   <%=h @revenue.ecpm %>
-</p>
-<p>
-  <strong>Revenue Date:</strong>
-  <%=h @revenue.day %>
 </p>
 
 <p>
