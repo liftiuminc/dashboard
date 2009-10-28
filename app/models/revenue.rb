@@ -6,31 +6,31 @@ class Revenue < ActiveRecord::Base
 
     ### ints
     %w( attempts rejects clicks ).each do |f|
-        validates_numericality_of f, 
+        validates_numericality_of f,
             :only_integer               => true,
-            :greater_than_or_equal_to   => 0, 
+            :greater_than_or_equal_to   => 0,
             :allow_nil                  => true
-    end    
-    
+    end
+
     ### floats
     %w( ecpm revenue ).each do |f|
-        validates_numericality_of f, 
+        validates_numericality_of f,
             :only_integer               => false,
-            :greater_than_or_equal_to   => 0, 
+            :greater_than_or_equal_to   => 0,
             :allow_nil                  => true
     end
 
     validates_date :day
     validates_numericality_of   :tag_id,    :greater_than => 0
     validates_numericality_of   :user_id,   :greater_than => 0
-    
-    validates_each :tag_id do |record, attr, value| 
-        record.errors.add attr, "No such tag #{value}" unless Tag.find(value)
+
+    validates_each :tag_id do |record, attr, value|
+        record.errors.add attr, "No such tag #{value}" unless Tag.find_by_id(value)
     end
 
-    validates_each :user_id do |record, attr, value| 
-        record.errors.add attr, "No such user #{value}" unless User.find(value)
-    end       
+    validates_each :user_id do |record, attr, value|
+        record.errors.add attr, "No such user #{value}" unless User.find_by_id(value)
+    end
 
     ### fix up the record so we have all our fields in order
     ### also verify settings based on pay type
@@ -38,7 +38,7 @@ class Revenue < ActiveRecord::Base
         ### depending on pay type, we need to use a different method
         ### XXX FIXME some duplication here, clean me up
 
-        if r.tag.network.pay_type == 'Per Click' 
+        if r.tag.network.pay_type == 'Per Click'
 
             ### calculate missing ecpm
             if r.revenue and r.clicks and ( not r.ecpm or not r.ecpm.length )
@@ -51,8 +51,8 @@ class Revenue < ActiveRecord::Base
 
             ### per click networks will never reject
             r.rejects = 0
-            
-        elsif r.tag.network.pay_type == 'Per Impression'             
+
+        elsif r.tag.network.pay_type == 'Per Impression'
 
             ### calculate missing ecpm
             if r.revenue and r.attempts and ( not r.ecpm or not r.ecpm.length )
@@ -62,7 +62,7 @@ class Revenue < ActiveRecord::Base
             elsif r.revenue and r.ecpm and ( not r.attempts or not r.attempts.length )
                 r.attempts = ( r.revenue * r.ecpm ) / 1000
             end
-        
+
         end
 
         ### format the date
