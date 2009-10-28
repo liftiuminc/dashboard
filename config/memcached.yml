@@ -2,6 +2,10 @@ development:
   servers:
     - localhost:11211
 
+dev_jos:
+  servers:
+    - localhost:11211
+
 test:
   servers:
     - localhost:11211
