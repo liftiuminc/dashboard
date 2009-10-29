@@ -35,33 +35,18 @@ class Revenue < ActiveRecord::Base
     ### fix up the record so we have all our fields in order
     ### also verify settings based on pay type
     before_save { |r|
-        ### depending on pay type, we need to use a different method
-        ### XXX FIXME some duplication here, clean me up
+        ### calculate missing ecpm
+        if r.revenue and r.attempts and ( not r.ecpm or not r.ecpm > 0 )
+            r.ecpm = ( r.revenue / r.attempts ) * 1000
+
+        ### calculate missing attempts
+        elsif r.revenue and r.ecpm and ( not r.attempts or not r.attempts > 0 )
+            r.attempts = ( r.revenue * r.ecpm ) / 1000
+        end
+
+        ### pay per click never rejects
         if r.tag.network.pay_type == 'Per Click'
-
-            ### calculate missing ecpm
-            if r.revenue and r.clicks and ( not r.ecpm or not r.ecpm >= 0 )
-                r.ecpm = ( r.revenue / r.clicks ) * 1000
-
-            ### calculate missing attempts
-            elsif r.revenue and r.ecpm and ( not r.clicks or not r.clicks >= 0 )
-                r.clicks = ( r.revenue * r.ecpm ) / 1000
-            end
-
-            ### per click networks will never reject
             r.rejects = 0
-
-        elsif r.tag.network.pay_type == 'Per Impression'
-
-            ### calculate missing ecpm
-            if r.revenue and r.attempts and ( not r.ecpm or not r.ecpm >= 0 )
-                r.ecpm = ( r.revenue / r.attempts ) * 1000
-
-            ### calculate missing attempts
-            elsif r.revenue and r.ecpm and ( not r.attempts or not r.attempts >= 0 )
-                r.attempts = ( r.revenue * r.ecpm ) / 1000
-            end
-
         end
 
         ### format the date

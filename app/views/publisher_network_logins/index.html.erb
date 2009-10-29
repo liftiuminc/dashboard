@@ -10,6 +10,8 @@
 	<% if params[:debug] -%>
 	  <%= params.inspect -%>
 	<% end -%>
+	
+	<% if current_user.admin? %>
 	<li><%= label_tag :publisher %>
 	    <!-- FIXME. Use built in rails helper instead? -->
 	    <select name="publisher_id" id="publisherDD">
@@ -17,6 +19,7 @@
 	      <%= options_from_collection_for_select Publisher.all.collect, :id, :site_name, params[:publisher_id].to_i %>
 	    </select>
 	</li>
+    <% end %>
 
 	<li><%= label_tag :network %>
 	    <select name="network_id" id="networkDD">
@@ -43,7 +46,9 @@
       <td class="record_column"><%=h publisher_network_login.network.network_name_and_id %></td>
       <td class="record_column"><%=h publisher_network_login.publisher.site_name %></td>      
       <td class="record_column"><%=h publisher_network_login.username %></td>
-      <td class="record_column"><%=h publisher_network_login.password %></td>
+      <td class="record_column">
+        <%=h current_user.admin? ? publisher_network_login.password : '*****' %>
+      </td>
       <td class="record_column">
         <%= link_to "Login", publisher_network_login.network.website, :popup => true %>
       </td>

@@ -30,12 +30,12 @@
   
   <div class="fieldset">
     <%= f.label :attempts %>
-    <span class="hint">Amount of Impressions</span><br />
+    <span class="hint">Amount of Impressions. Optional if eCPM is provided</span><br />
     <%= f.text_field :attempts %>
   </div>
   <div class="fieldset">
     <%= f.label :clicks %>
-    <span class="hint">Only required for "Pay per Click".</span><br />
+    <span class="hint">Only required for "Pay per Click"</span><br />
     <%= f.text_field :clicks %>
   </div>
   <div class="fieldset">
@@ -54,7 +54,7 @@
   </div>
   <div class="fieldset">
     <%= f.label :ecpm %>
-    <span class="hint">Optional if 'clicks/impressions' are provided</span><br />
+    <span class="hint">Optional if 'impressions' are provided</span><br />
     <%= f.text_field :ecpm %>
   </div>
 
