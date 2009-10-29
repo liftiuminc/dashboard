@@ -43,7 +43,7 @@
               <td class="record_action"><%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %></td>
           <% else %>
             <td class="record_action">
-            <%= '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create", new_revenue_path(:tag_id => tag.id, :day => @day.to_s ) ) %></td>
+            <%= '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create", new_revenue_path(:tag_id => tag.id, :day => @day.to_s ), :popup => true ) %></td>
              <td class="record_action"></td>
              <td class="record_action"></td>             
           <% end %>
