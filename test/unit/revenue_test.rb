@@ -28,7 +28,7 @@ class RevenueTest < ActiveSupport::TestCase
   end
 
   should "Calculate ecpm" do
-    rev = Revenue.new :day => @@day, :clicks => 1, :revenue => 1,
+    rev = Revenue.new :day => @@day, :attempts => 1, :revenue => 1,
                       :tag_id => "13",  :user_id => "42"
     assert rev.save
     assert rev.ecpm == 1000
@@ -36,11 +36,11 @@ class RevenueTest < ActiveSupport::TestCase
     assert rev.destroy
   end
 
-  should "Calculate clicks" do
-    rev = Revenue.new :day => @@day, :clicks => 1, :ecpm => 1000,
+  should "Calculate attempts" do
+    rev = Revenue.new :day => @@day, :revenue => 1, :ecpm => 1000,
                       :tag_id => "13",  :user_id => "42"
     assert rev.save
-    assert rev.clicks == 1
+    assert rev.attempts == 1
     assert rev.destroy
   end
 end
