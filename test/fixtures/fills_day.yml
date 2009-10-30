@@ -22,3 +22,9 @@ nine:
   attempts: 5
   loads: 5
   rejects: 0
+must_not_exist_in_revenues_table:
+  tag_id: 13
+  day: <%= (Time.now - 4.days).to_s(:db) %>
+  attempts: 7
+  loads: 7
+  rejects: 0

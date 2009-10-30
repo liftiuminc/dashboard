@@ -80,20 +80,8 @@ class Tag < ActiveRecord::Base
    end 
 
   def search_sql (params)
-
-    # FIXME: There has to be a better way...
-    adapter = Rails.configuration.database_configuration[Rails.configuration.environment]["adapter"]
-    if adapter == "sqlite3"
-      # sqllite calls it rand
-      random = "random"
-    else 
-      # mysql calls it rand
-      random = "rand"
-    end
-
     query = []
-    query.push("SELECT *, (" +  random + "() * (0.1 * value)) AS weighted_random_value
-		FROM tags WHERE 1=1");
+    query.push("SELECT * FROM tags WHERE 1=1");
 
     if (params[:include_disabled].blank?)
        query[0] += " AND enabled = ?"
@@ -114,6 +102,16 @@ class Tag < ActiveRecord::Base
        query[0] += " AND size = ?"
        query.push(params[:size])
     end
+    
+    ### created before a certain date?
+    ### mysql will not truncate a date to the same amount of significance,
+    ### so a tag created DURING '2009-10-10' is not returned for a query
+    ### with 'created_at <= 2009-10-10'. The solution is to do <= the
+    ## NEXT date -jos
+    if (! params[:created_before].blank? ) 
+       query[0] += " AND created_at <= ?"
+       query.push( params[:created_before].to_date.next )
+    end       
 
     ### search for both name & ids
     if (! params[:name_search].blank?)
@@ -122,13 +120,18 @@ class Tag < ActiveRecord::Base
        query.push( params[:name_search] )       
     end
 
-    case (params[:order])
-      when "tag_name"
-	query[0] += " ORDER BY tag_name ASC"
-      else 
-        # Same order as the chain (without the randomization)
-	query[0] += " ORDER BY tier ASC, value DESC"
-    end
+    ### we're not currently using ':order' anywhere, so the code is
+    ### commented out. When we do use :order, we should probably
+    ### delegate it to 'active_record_random' which takes care of
+    ### the :order on searches, and supports 'random' cross db
+    ### implementation -Jos. See FB 108
+#     case (params[:order])
+#       when "tag_name"
+#         query[0] += " ORDER BY tag_name ASC"
+#       else 
+#         # Same order as the chain (without the randomization)
+#         query[0] += " ORDER BY tier ASC, value DESC"
+#     end
 
     if (! params[:limit].to_s.empty? && params[:limit].to_i < 100)
        query[0] += " LIMIT ?"

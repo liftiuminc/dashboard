@@ -1,28 +1,75 @@
+<%= calendar_date_select_includes "silver" %>
+
+<p>
+  <strong>Tag:</strong>
+  <%= link_to "#{@tag.tag_name} - #{@tag.size} (#{@tag.id})", @tag %>
+</p>
+<p>
+  <strong>Network:</strong>
+  <%= link_to "#{@tag.network.network_name} - #{@tag.network.pay_type}", @tag.network %>
+</p>
+
 <% form_for @revenue do |f| %>
   <%= f.error_messages %>
+
+  <!-- rails can't do this on it's own it seems, so we have to write it out -jos -->
+  <input type="hidden" id="revenue_tag_id" name="revenue[tag_id]" value="<%= @tag.id %>" />
+
   <div class="fieldset">
-    <%= f.label :attempts %><br />
+    <%= f.label :day %><br />
+    <% if !params[:day].blank? 
+         s = params[:day].to_s
+       elsif !@revenue.day.blank?
+         s = @revenue.day.to_s
+       else 
+         s = ""
+       end  
+    %>         
+    <%= calendar_date_select_tag "revenue[day]", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>             
+  </div>
+  
+  <div class="fieldset">
+    <%= f.label :attempts %>
+    <span class="hint">Amount of Impressions. Optional if eCPM is provided</span><br />
     <%= f.text_field :attempts %>
   </div>
   <div class="fieldset">
-    <%= f.label :rejects %><br />
-    <%= f.text_field :rejects %>
-  </div>
-  <div class="fieldset">
-    <%= f.label :clicks %><br />
+    <%= f.label :clicks %>
+    <span class="hint">Only required for "Pay per Click"</span><br />
     <%= f.text_field :clicks %>
   </div>
+  <div class="fieldset">
+    <%= f.label :rejects %>
+    <span class="hint">Automatically set to 0 for 'Pay per Click'</span><br />
+    <% if @tag.network.pay_type == 'Per Click' %>
+      <strong>0</strong>
+    <% else %>
+      <%= f.text_field :rejects %>
+    <% end %>
+  </div>
+
   <div class="fieldset">
     <%= f.label :revenue %><br />
     <%= f.text_field :revenue %>
   </div>
   <div class="fieldset">
-    <%= f.label :ecpm %><br />
+    <%= f.label :ecpm %>
+    <span class="hint">Optional if 'impressions' are provided</span><br />
     <%= f.text_field :ecpm %>
   </div>
-  <div class="fieldset">
-    <%= f.label :day %><br />
-    <%= f.text_field :day %>
-  </div>
+
   <p><%= liftium_submit "Save Changes" %></p>
 <% end %>
+
+
+<script>
+function dateSelect(select){
+    if (select.selectedIndex > 7) {
+        $("interval_day").checked = true;
+    }
+    if (select.selectedIndex > 0){
+        $("start_date").value = "";
+        $("end_date").value = "";
+    }
+}
+</script>

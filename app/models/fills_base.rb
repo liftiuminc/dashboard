@@ -24,13 +24,18 @@ class FillsBase < ActiveRecord::Base
   
   def search_sql (model, params)
 
-    col = model.new.time_column
+    ### make the column name fully qualified, to avoid ambiguities
+    ### with the revenue table (they both have a 'day' column for
+    ### example) -Jos
+    col = "#{model.table_name}.#{model.new.time_column}"
     query = []
     query.push("SELECT * FROM " + model.table_name)
 
-    # Supply eCPM and CTR data at the daily interval
+    ### Supply eCPM and CTR data at the daily interval
+    ### Make sure to use a left outer join; the revenue for these days may not
+    ### be filled in yet; a regular join would then not return results -jos
     if  model.table_name == "fills_day"
-	query[0] += " INNER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
+	query[0] += " LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
     end
 
     query[0] += " INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id WHERE 1 = 1";
@@ -83,7 +88,7 @@ class FillsBase < ActiveRecord::Base
       when "tag_name"
 	query[0] += " ORDER BY " + tag_name + " ASC"
       else 
-	query[0] += " ORDER BY " + model.table_name + "." + col + " ASC"
+	query[0] += " ORDER BY " + col + " ASC"
     end
 
     if (! params[:limit].to_s.empty?)

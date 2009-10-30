@@ -29,12 +29,12 @@ class RevenuesControllerTest < ActionController::TestCase
   context "new action" do
     should "render new template" do
       login_as_admin
-      get :new
+      get :new, :tag_id => 13, :day => '2009-10-10'
       assert_template 'new'
     end
   end
   
-# FIXME
+# FIXME -- these tests won't work without a 'tag' being provided
 #  context "create action" do
 #    should "render new template when model is invalid" do
 #      login_as_admin
@@ -49,7 +49,7 @@ class RevenuesControllerTest < ActionController::TestCase
 #      post :create
 #      assert_redirected_to revenue_url(assigns(:revenue))
 #    end
-#  end
+# end
   
   context "edit action" do
     should "render edit template" do
@@ -60,22 +60,22 @@ class RevenuesControllerTest < ActionController::TestCase
   end
   
 #FIXME
-#  context "update action" do
-#    should "render edit template when model is invalid" do
-#      login_as_admin
-#      Revenue.any_instance.stubs(:valid?).returns(false)
-#      put :update, :id => Revenue.first
-#      assert_template 'edit'
-#    end
-#  
-#    should "redirect when model is valid" do
-#      login_as_admin
-#      Revenue.any_instance.stubs(:valid?).returns(true)
-#      put :update, :id => Revenue.first
-#      assert_redirected_to revenue_url(assigns(:revenue))
-#    end
-#  end
-#  
+ context "update action" do
+   should "render edit template when model is invalid" do
+     login_as_admin
+     Revenue.any_instance.stubs(:valid?).returns(false)
+     put :update, :id => Revenue.first
+     assert_template 'edit'
+   end
+ 
+   should "redirect when model is valid" do
+     login_as_admin
+     Revenue.any_instance.stubs(:valid?).returns(true)
+     put :update, :id => Revenue.first
+     assert_redirected_to revenue_url(assigns(:revenue))
+   end
+ end
+ 
   context "destroy action" do
     should "destroy model and redirect to index action" do
       login_as_admin

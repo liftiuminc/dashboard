@@ -1,0 +1,35 @@
+<!-- XXX FIXME heavily borrowed from data export -->
+
+<%= calendar_date_select_includes "silver" %>
+<div class="filter_form" id="tag_filter_form">
+  <form action="<%= revenues_url%>">
+     <ul>
+        <li><%= label_tag :network %>
+            <select name="network_id" id="networkDD">
+              <option value="">
+              <%= options_from_collection_for_select @networks, :id, :network_name, params[:network_id].to_i %>
+            </select>
+        </li>
+        <li>
+          <%= label_tag :date %>
+          <% s = !params[:day].blank? ? params[:day].to_s : "" %>
+          <%= calendar_date_select_tag "day", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>            
+        </li>
+        
+        <% if show_submit %>
+            <li><%= liftium_submit "Submit"%></li>
+        <% end %>
+    </ul>
+  </form>
+</div>
+<script>
+function dateSelect(select){
+    if (select.selectedIndex > 7) {
+        $("interval_day").checked = true;
+    }
+    if (select.selectedIndex > 0){
+        $("start_date").value = "";
+        $("end_date").value = "";
+    }
+}
+</script>

@@ -26,6 +26,14 @@ class ApplicationController < ActionController::Base
       @current_user = current_user_session && current_user_session.user
     end
 
+    def current_publisher
+        return @current_publisher if defined?(@current_publisher)
+        
+        if @current_user and @current_user.publisher
+            @current_publisher = @current_user.publisher
+        end
+    end        
+
     def require_user
       unless current_user
         store_location
@@ -62,7 +70,7 @@ class ApplicationController < ActionController::Base
       end
       if !current_user.admin?
         permission_denied ("You must be an administrator to access this page")
-	return false
+        return false
       end
     end
 
@@ -79,4 +87,14 @@ class ApplicationController < ActionController::Base
     def find_all_publishers
       @publishers = Publisher.find :all;
     end
+
+    ### the list of publishers accessible to this user
+    def allowed_publishers
+        if !current_user.admin? 
+            @publishers = [ current_publisher ]
+        else 
+            # Get the list of publishers for admin users
+            @publishers = Publisher.find :all;
+        end
+    end  
 end

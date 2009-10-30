@@ -1,18 +1,15 @@
 class UsersController < ApplicationController
   # before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:show, :edit, :update]
-  before_filter :require_admin, :only => [:index]
+  before_filter :require_user,      :only => [:show, :edit, :update]
+  before_filter :require_admin,     :only => [:new, :index, :create, :destroy]
+  before_filter :allowed_user
+  before_filter :allowed_publishers
 
   def index
     @users = User.all
   end
   
   def show
-    if params[:id] 
-      @user = User.find(params[:id])
-    else 
-      @user = current_user
-    end
   end
   
   def new
@@ -30,15 +27,9 @@ class UsersController < ApplicationController
   end
   
   def edit
-    if params[:id] 
-      @user = User.find(params[:id])
-    else 
-      @user = current_user
-    end
   end
   
   def update
-    @user = User.find(params[:id])
     if @user.update_attributes(params[:user])
       flash[:notice] = "Successfully updated user."
       redirect_to users_url
@@ -48,9 +39,16 @@ class UsersController < ApplicationController
   end
   
   def destroy
-    @user = User.find(params[:id])
-    @user.destroy
     flash[:notice] = "Successfully destroyed user."
     redirect_to users_url
   end
+  
+    ### load the user you're allowed to load
+    def allowed_user
+        if !current_user.admin? or !params[:id]
+            @user = current_user
+        else params[:id] 
+            @user = User.find(params[:id])
+        end
+    end     
 end
