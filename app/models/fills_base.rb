@@ -24,7 +24,10 @@ class FillsBase < ActiveRecord::Base
   
   def search_sql (model, params)
 
-    col = model.new.time_column
+    ### make the column name fully qualified, to avoid ambiguities
+    ### with the revenue table (they both have a 'day' column for
+    ### example) -Jos
+    col = "#{model.table_name}.#{model.new.time_column}"
     query = []
     query.push("SELECT * FROM " + model.table_name)
 
@@ -83,7 +86,7 @@ class FillsBase < ActiveRecord::Base
       when "tag_name"
 	query[0] += " ORDER BY " + tag_name + " ASC"
       else 
-	query[0] += " ORDER BY " + model.table_name + "." + col + " ASC"
+	query[0] += " ORDER BY " + col + " ASC"
     end
 
     if (! params[:limit].to_s.empty?)
