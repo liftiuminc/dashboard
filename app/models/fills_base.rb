@@ -31,9 +31,11 @@ class FillsBase < ActiveRecord::Base
     query = []
     query.push("SELECT * FROM " + model.table_name)
 
-    # Supply eCPM and CTR data at the daily interval
+    ### Supply eCPM and CTR data at the daily interval
+    ### Make sure to use a left outer join; the revenue for these days may not
+    ### be filled in yet; a regular join would then not return results -jos
     if  model.table_name == "fills_day"
-	query[0] += " INNER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
+	query[0] += " LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
     end
 
     query[0] += " INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id WHERE 1 = 1";
