@@ -87,4 +87,14 @@ class ApplicationController < ActionController::Base
     def find_all_publishers
       @publishers = Publisher.find :all;
     end
+
+    ### the list of publishers accessible to this user
+    def allowed_publishers
+        if !current_user.admin? 
+            @publishers = [ current_publisher ]
+        else 
+            # Get the list of publishers for admin users
+            @publishers = Publisher.find :all;
+        end
+    end  
 end

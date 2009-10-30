@@ -62,16 +62,6 @@ class PublisherNetworkLoginsController < ApplicationController
     flash[:notice] = "Successfully destroyed publisher network login."
     redirect_to publisher_network_logins_url
   end
-  
-    ### the list of publishers accessible to this user
-    def allowed_publishers
-        if !current_user.admin? 
-            @publishers = [ current_publisher ]
-        else 
-            # Get the list of publishers for admin users
-            @publishers = Publisher.find :all;
-        end
-    end  
     
     ### load the publisher_network_login if allowed
     def allowed_publisher_network_login
