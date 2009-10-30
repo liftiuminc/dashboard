@@ -44,7 +44,7 @@ class DataExportController < ApplicationController
     params[:start_date1] = params[:start_date]
     # Sanity checking on dates
     if !params[:date_select].blank? 
-	dates = @model.new.get_date_range(params[:date_select])
+        dates = DateRangeHelper.get_date_range(params[:date_select])
         params[:start_date] = dates[0]
         params[:end_date] = dates[1]
     end
@@ -53,7 +53,7 @@ class DataExportController < ApplicationController
     if !params[:start_date].blank?
       s = params[:start_date].to_time
       if params[:interval] != "day" && s + (31*86400) < Time.now 
-	flash.now[:error] = "Please select 'Day' for interval for dates older than 30 days"
+        flash.now[:error] = "Please select 'Day' for interval for dates older than 30 days"
         render :index and return
       elsif params[:interval] == "minute" && s + (8*86400) < Time.now 
 	flash.now[:error] = "Please select 'Hour' or 'Day' for interval for dates older than 7 days"
