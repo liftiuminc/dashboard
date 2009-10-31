@@ -6,6 +6,8 @@ class Tag < ActiveRecord::Base
   has_many :tag_options, :dependent => :destroy
   has_many :tag_targets, :dependent => :destroy
   has_many :revenues,    :dependent => :destroy
+  has_many :fills_days,  :dependent => :destroy
+
 
   ### enable comments on tags. See FB 24
   ### Requires db/migrate/20091013122159_add_tag_comments.rb
