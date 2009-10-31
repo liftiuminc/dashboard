@@ -38,7 +38,8 @@ class FillsBase < ActiveRecord::Base
         :publisher_id   => "publisher_id    = ?",
         :network_id     => "network_id      = ?",
         :size           => "size            = ?",
-        :name_search    => "tag_name     like ?",
+        ### not used currently
+        #:name_search    => "tag_name     like ?",
     }.each do |param, condition|
       if !params[param].blank?
         con.push( condition )
