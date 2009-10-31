@@ -4,13 +4,14 @@ total_ecpm = total_revenue = 0.00
 %>
 <%= render :partial => 'filter_form' %>
 
+<% if @fill_stats %>
 <table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
   <tr class="record_listing_header">
     <th>Publisher</th>
     <th>Ad Network</th>
     <th>Tag</th>
     <th>Size</th>
-    <th><%=@time_name %></th>
+    <th><%= @fill_stats[0].time_name %></th>
     <th>Attempts</th>
     <th>Loads</th>
     <th>Rejects</th>
@@ -78,3 +79,4 @@ total_ecpm = total_revenue = 0.00
     </tr>
   
 </table>
+<% end %>
