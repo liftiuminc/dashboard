@@ -21,8 +21,8 @@
 development:
   adapter: mysql
   database: liftiumdev
-  username: liftiumdev
-  password: monkey
+  username: root
+  password:
   host: localhost
   encoding: utf8
 
@@ -52,8 +52,8 @@ dev_mysql:
 test:
   adapter: mysql
   database: liftiumtest
-  username: liftiumtest
-  password: monkey
+  username: root
+  password: 
   host: localhost
   encoding: utf8
 
