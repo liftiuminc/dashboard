@@ -40,6 +40,11 @@ class DataExportController < ApplicationController
         params[:end_date]   = dates[1]
     end
 
+    # radio buttons are annoying :(
+    if !params[:only_enabled].blank? 
+        params[:enabled] = 1 if params[:only_enabled].to_i > 0
+    end        
+
     ### tables will be rotated, so we have a maximum amount of data in
     ### the tables at any given time. Make sure the dates requested 
     ### are held in the tables -Jos

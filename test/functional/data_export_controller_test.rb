@@ -59,13 +59,4 @@ class DataExportControllerTest < ActionController::TestCase
     end
     should_assign_to :publishers
   end
-
-  context "index action with a publisher login" do
-    setup do
-      login_as_publisher
-      get :index
-    end
-    should_not_assign_to :publishers
-  end
-
 end

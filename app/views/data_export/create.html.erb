@@ -4,7 +4,7 @@ total_ecpm = total_revenue = 0.00
 %>
 <%= render :partial => 'filter_form' %>
 
-<% if @fill_stats %>
+<% if !@fill_stats.empty? %>
 <table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
   <tr class="record_listing_header">
     <th>Publisher</th>
@@ -27,6 +27,14 @@ total_ecpm = total_revenue = 0.00
   </tr>
   <% counter = 0 %>
   <%- for fill_stat in @fill_stats %>
+
+    <!-- pull in the revenue table -->
+    <% if params[:interval] == "day" %> 
+      <% rev = Revenue.find( :first, :conditions => {
+                             :tag_id => fill_stat.tag.id, :day => fill_stat.day } ) %>
+    <% end %>
+
+  
     <%- counter +=1
 	if counter > @limit
 	  break
@@ -41,18 +49,18 @@ total_ecpm = total_revenue = 0.00
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
-    <%- if params[:interval] == "day" %>
-      <% total_clicks += fill_stat.clicks.to_i %>
-      <td class="record_column"><%= number_with_delimiter(fill_stat.clicks)%></td>
+    <%- if rev  %>
+      <% total_clicks += rev.clicks.to_i %>
+      <td class="record_column"><%= number_with_delimiter( rev.clicks )%></td>
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column"><a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a></td>
-    <%- if params[:interval] == "day" 
-      total_revenue += fill_stat.revenue.to_f
-      total_ecpm += fill_stat.ecpm.to_f
+    <%- if rev
+      total_revenue += rev.revenue.to_f
+      total_ecpm += rev.ecpm.to_f
       %>
-      <td class="record_column">$<%= fill_stat.revenue.to_f.round(2) %></td>
-      <td class="record_column">$<%= fill_stat.ecpm.to_f.round(2) %></td>
+      <td class="record_column">$<%= rev.revenue.to_f.round(2) %></td>
+      <td class="record_column">$<%= rev.ecpm.to_f.round(2) %></td>
     <%- end %>
     </tr>
   <%
