@@ -6,7 +6,7 @@ class Tag < ActiveRecord::Base
   has_many :tag_options, :dependent => :destroy
   has_many :tag_targets, :dependent => :destroy
   has_many :revenues,    :dependent => :destroy
-  has_many :fills_days,  :dependent => :destroy
+  has_many :fills_days
 
 
   ### enable comments on tags. See FB 24
