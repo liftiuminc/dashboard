@@ -1,7 +1,42 @@
-<% @title_bar_right_text = date_range_dropdown %>
+<% @title_bar_right_text = date_range_dropdown("Select Timeframe...") %>
 <% title "Publisher Home" %>
 <script>
 function dateSelect(dd){
 	window.location.href = window.location.pathname + '?date_select=' + escape(dd.options[dd.selectedIndex].value);	
 }
 </script>
+<style type="text/css">
+.chart_block {
+	width: 33.3%;
+	float: left;
+	font-weight: bold;
+}
+.fake_graph {
+	width: 230px;
+	height: 150px;
+	border: 1px dashed black;
+}
+#publisher_home_charts {
+	width:800px;
+}
+</style>
+<div id="publisher_home_charts">
+  <div class="chart_block">
+	<h2>Impressions</h2>
+	<div class="fake_graph">Pretty Graph</div>
+	<%= params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
+	<%= percentage_difference(@previous_impressions, @impressions) %>
+  </div>
+  <div class="chart_block">
+	<h2>Revenue</h2>
+	<div class="fake_graph">Pretty Graph</div>
+	<%= params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
+	<%= percentage_difference(@previous_revenue, @revenue) %>
+  </div>
+  <div class="chart_block">
+	<h2>eCPM</h2>
+	<div class="fake_graph">Pretty Graph</div>
+	<%= params[:date_select] %> : $<%= @ecpm.round(2) %>
+	<%= percentage_difference(@previous_ecpm, @ecpm) %>
+  </div>
+</div>

@@ -20,9 +20,9 @@ module LayoutHelper
     content_for(:head) { javascript_include_tag(*args) }
   end
 
-  def date_range_dropdown 
+  def date_range_dropdown (firstOption = "")
 	out = '<select name="date_select" id="date_selectDD" onChange="window.dateSelect && dateSelect(this)">
-		<option value="">' +
+		<option value="">' + firstOption +
 		options_for_select(DateRangeHelper.timeframes, params[:date_select]) +
               '</select>'
   end
@@ -44,4 +44,23 @@ module LayoutHelper
         else "1h"
      end
   end
+
+  def percentage_difference (from, to)
+   from = from.to_f
+   to = to.to_f
+   if from <= 0 || to <= 0
+     # not going to work out
+     return ""
+   end 
+
+   if from < to 
+     diff = ((from-to)/from * -100).to_f.round(1).to_s
+     return "<span style='color: green'>UP " + diff + "%</span>"
+   elsif from > to 
+     diff = ((to-from)/from * 100).to_f.round(1).to_s
+     return "<span style='color: red'>DOWN " + diff + "%</span>"
+   else
+     return ""
+   end 
+ end
 end

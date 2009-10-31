@@ -37,7 +37,7 @@ class Revenue < ActiveRecord::Base
     before_save { |r|
         ### calculate missing ecpm
         if r.revenue and r.attempts and ( not r.ecpm or not r.ecpm > 0 )
-            r.ecpm = ( r.revenue / r.attempts ) * 1000
+            r.ecpm = calculate_ecpm( r.attempts, r.revenue)
 
         ### calculate missing attempts
         elsif r.revenue and r.ecpm and ( not r.attempts or not r.attempts > 0 )
@@ -52,4 +52,14 @@ class Revenue < ActiveRecord::Base
         ### format the date
         r.day = r.day.to_date.to_s
     }
+
+    def self.calculate_ecpm (impressions, revenue)
+	i = impressions.to_i
+	r = revenue.to_f
+	if (i.zero? or r.zero?)
+		return 0.00
+	end
+
+        return ( r / i ) * 1000
+    end
 end

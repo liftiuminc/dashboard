@@ -70,7 +70,7 @@
 		<h1><%=h yield(:title) %></h1>
 	</div>
       <%- end -%>
-      <div id="content">
+      <div id="content"> 
 	<br clear="all"><!-- I hate CSS float -->
 
        <%- flash.each do |name, msg| -%>
@@ -78,6 +78,7 @@
       <%- end -%>
       
       <%= yield %>
+	<br clear="all"><!-- I hate CSS float -->
       </div><!-- content -->
     </div><!-- container -->
   </body>
