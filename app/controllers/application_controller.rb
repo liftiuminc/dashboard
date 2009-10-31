@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
       if !current_user.admin? 
         if current_publisher
           ### XXX FIXME there is probably a more ActiveRecordy way to handle this 
-          @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher_id, 1])        
+          @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])        
         else 
           require_admin
         end
