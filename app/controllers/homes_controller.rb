@@ -5,9 +5,9 @@ class HomesController < ApplicationController
   def index
     if current_user 
       if current_user.publisher
-        render :publisher
+        redirect_to url_for(:action => "publisher") and return
       elsif current_user.admin 
-        render :admin
+        redirect_to url_for(:action => "admin") and return
       end
     end
     # not logged in, render home
@@ -41,8 +41,8 @@ class HomesController < ApplicationController
 	
     stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
-    @impressions = stats[0].loads
-    @previous_impressions = previous_stats[0].loads
+    @impressions = stats[0].loads.to_i
+    @previous_impressions = previous_stats[0].loads.to_i
 
     sql = "SELECT SUM(revenue) AS revenue FROM revenues " +
 	" WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +

@@ -24,13 +24,13 @@ function dateSelect(dd){
   <div class="chart_block">
 	<h2>Impressions</h2>
 	<div class="fake_graph">Pretty Graph</div>
-	<%= params[:date_select] %> : <%= @impressions %>
+	<%= params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
   </div>
   <div class="chart_block">
 	<h2>Revenue</h2>
 	<div class="fake_graph">Pretty Graph</div>
-	<%= params[:date_select] %> : $<%= @revenue.round(2) %>
+	<%= params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
 	<%= percentage_difference(@previous_revenue, @revenue) %>
   </div>
   <div class="chart_block">

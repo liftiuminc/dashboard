@@ -10,21 +10,17 @@ class HomesControllerTest < ActionController::TestCase
     end
   end
 
-  context "index action logged in as admin" do
-    should "render admin template" do
-      login_as_admin
-      get :admin 
-      assert_template 'admin'
-    end
-  end
+#  context "index action logged in as admin" do
+#    should_redirect_to "admin home" do
+#	"/homes/admin"
+#    end
+#  end
 
-  context "publisher action logged in as publisher" do
-    should "render publisher template" do
-      login_as_publisher
-      get :publisher 
-      assert_template 'publisher'
-    end
-  end
+#  context "publisher action logged in as publisher" do
+#    should_redirect_to "publisher home" do
+#	publisher_homes_url
+#    end
+#  end
 
   context "admin action NOT logged in" do
     setup { get :admin }
