@@ -43,7 +43,8 @@ class ActiveSupport::TestCase
   end
 
   def login_as_admin
-    login_as(User.first(:conditions => ["email = ?", "unit_test_admin@liftium.com"]))
+    login_as(user = User.first(:conditions => ["email = ?", "unit_test_admin@liftium.com"]))
+    user
   end
 
   def login_as_publisher
