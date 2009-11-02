@@ -70,4 +70,17 @@ class ActiveSupport::TestCase
       end
     end
   end
+
+  @@unique_id = 0
+  def login_as_new_user
+    ### @@x++ is a syntax error? odd... -Jos
+    ### That's because there isn't a ++ operator in Ruby. += is correct. SJT
+    @@unique_id += 1
+
+    user = User.create( :email          => "liftium#{@@unique_id}@example.com",
+                        :password       => 'password',
+                        :publisher_id   => 1 )
+    login_as( user )
+    return user
+  end
 end

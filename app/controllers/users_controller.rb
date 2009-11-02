@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user,      :only => [:show, :edit, :update]
-  before_filter :require_admin,     :only => [:new, :index, :create, :destroy]
+  before_filter :require_user,      :only => [:show, :edit, :update, :destroy]
+  before_filter :require_admin,     :only => [:new, :index, :create ]
   before_filter :allowed_user
   before_filter :allowed_publishers
 
@@ -39,6 +39,7 @@ class UsersController < ApplicationController
   end
   
   def destroy
+    @user.destroy
     flash[:notice] = "Successfully destroyed user."
     redirect_to users_url
   end

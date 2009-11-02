@@ -12,10 +12,16 @@ test:
 
 production:
   servers:
-    - salt.liftium.com:11211
-    - lime.liftium.com:11211
+### disabled memcached2 for now, because the ruby & php libraries are using different
+### hashing strategies. See FB 118 for details. -Jos
+#    - salt.liftium.com:11211
+#    - lime.liftium.com:11211
+    - memcached1.liftium.com:11211
 
 live:
   servers:
-    - salt.liftium.com:11211
-    - lime.liftium.com:11211
+### disabled memcached2 for now, because the ruby & php libraries are using different
+### hashing strategies. See FB 118 for details. -Jos
+#    - salt.liftium.com:11211
+#    - lime.liftium.com:11211
+    - memcached1.liftium.com:11211

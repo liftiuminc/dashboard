@@ -22,93 +22,78 @@ class FillsBase < ActiveRecord::Base
     time_column.capitalize
   end 
   
-  def search_sql (model, params)
+  def search_options (model, params)
 
     ### make the column name fully qualified, to avoid ambiguities
     ### with the revenue table (they both have a 'day' column for
     ### example) -Jos
     col = "#{model.table_name}.#{model.new.time_column}"
-    query = []
-    query.push("SELECT * FROM " + model.table_name)
+
+    ### the condition & the bind variables
+    con = []
+    var = []
+
+    ### dispatch table
+    {   :enabled        => "enabled         = ?",
+        :publisher_id   => "publisher_id    = ?",
+        :network_id     => "network_id      = ?",
+        :size           => "size            = ?",
+        ### not used currently
+        #:name_search    => "tag_name     like ?",
+    }.each do |param, condition|
+      if !params[param].blank?
+        con.push( condition )
+        var.push( params[param] )
+      end
+    end
+
+    ### fix dates
+    {   :start_date     => col + " >= ?",
+        :end_date       => col + " <= ?"
+    }.each do |param, condition|        
+      if !params[param].to_s.blank?
+        con.push( condition )
+        var.push( params[param].to_time.to_s( :db ) )
+      end        
+    end
+
 
     ### Supply eCPM and CTR data at the daily interval
     ### Make sure to use a left outer join; the revenue for these days may not
     ### be filled in yet; a regular join would then not return results -jos
-    if  model.table_name == "fills_day"
-	query[0] += " LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND fills_day.day = revenues.day";
-    end
+    ### XXX FIXME can't get the association to work. For now, we'll look this
+    ### up from the view instead & code instead :(
+#     if  model.table_name == "fills_day"
+#       inc.push( :revenues )
+#       con.push( 'fills_day.tag_id = revenues.tag_id' );
+#       con.push( 'fills_day.day = revenues.day' )
+#     end
 
-    query[0] += " INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id WHERE 1 = 1";
+    ### XXX FIXME can't get this association to work either. Using raw sql :(
+#     inc.push( :tag )
+#     con.push( 'fills_day.tag_id = tags.id' )
 
-    if (params[:include_disabled].blank?)
-       query[0] += " AND enabled = ?"
-       query.push(1)
-    end
-
-    if (! params[:publisher_id].blank?)
-       query[0] += " AND publisher_id = ?"
-       query.push(params[:publisher_id].to_i)
-    end
-
-    if (! params[:network_id].blank?)
-       query[0] += " AND network_id = ?"
-       query.push(params[:network_id].to_i)
-    end
-
-    if (! params[:size].blank?)
-       query[0] += " AND size = ?"
-       query.push(params[:size])
-    end
-
-    if (! params[:name_search].blank?)
-       query[0] += " AND tag_name like ?"
-       query.push('%' + params[:name_search] + '%')
-    end
-
-    if (!params[:date_select].blank?)
-      dates = DateRangeHelper.get_date_range(params[:date_select])
-      start_date = dates[0].to_s
-      end_date = dates[1].to_s
-    else
-      start_date = params[:start_date]
-      end_date = params[:end_date]
-    end
-
-    if (!start_date.to_s.blank?)
-       query[0] += " AND " + col + " >= ? "
-       query.push(params[:start_date].to_time.to_s(:db))
-    end
-
-    if (!end_date.to_s.blank?)
-       query[0] += " AND " + col + " <= ? "
-       query.push(params[:end_date].to_time.to_s(:db))
-    end
-
-    case (params[:order])
-      when "tag_name"
-	query[0] += " ORDER BY " + tag_name + " ASC"
-      else 
-	query[0] += " ORDER BY " + col + " ASC"
-    end
+    ### done with includes/conditions
+    options = {
+        :conditions => [ con.join( " AND " ), *var ],
+        :order      => col + " ASC",
+        :joins      => [ "INNER JOIN tags ON " + model.table_name + ".tag_id = tags.id" ]
+    }
 
     if (! params[:limit].to_s.empty?)
-       query[0] += " LIMIT ?"
-       query.push(params[:limit].to_i)
- 
-      if (! params[:offset].blank?)
-         query[0] += " OFFSET ? "
-         query.push(params[:offset].to_i)
-      else
-         query[0] += " OFFSET 0"
-      end
-    end
+      options[:limit] = params[:limit].to_i
 
-    return query
-      
+      if (! params[:offset].blank?)
+        options[:offset] = params[:offset].to_i;
+      end
+    end      
+    
+    return options
   end
 
   def search (model, params)
-    model.find_by_sql self.search_sql(model, params)
+    options = self.search_options( model, params )    
+    model.find( :all, options )
   end 
 
   def export_to_csv(fill_stats)
@@ -204,6 +189,11 @@ class FillsBase < ActiveRecord::Base
 	"eCPM"
       ]
       fill_stats.each do |fill|
+      
+      ### this may be emptys
+      rev = Revenue.find( :first, :conditions => {
+                          :tag_id => fill.tag.id, :day => fill.day } )
+      
 	csv << [
 	fill.tag.publisher.site_name,
 	fill.tag.network.network_name,
@@ -214,11 +204,11 @@ class FillsBase < ActiveRecord::Base
 	fill.attempts,
 	fill.loads,
 	fill.rejects,
-	fill.clicks,
+	(rev ? rev.clicks : ''),
 	fill.slip,
 	fill.fill_rate.to_s + "%",
-	"$" + fill.revenue.to_f.round(2).to_s, 
-	"$" + fill.ecpm.to_f.round(2).to_s 
+	( rev ? "$" + rev.revenue.to_f.round(2).to_s : '' ), 
+	( rev ? "$" + rev.ecpm.to_f.round(2).to_s : '' ), 
 	]
 
 	# Add up the totals
@@ -226,9 +216,11 @@ class FillsBase < ActiveRecord::Base
         total_loads += fill.loads
         total_rejects += fill.rejects
         total_slip += fill.slip
-        total_clicks += fill.clicks.to_i
-        total_revenue += fill.revenue.to_f
-        total_ecpm += fill.ecpm.to_f
+        if rev
+          total_clicks  += rev.clicks.to_i
+          total_revenue += rev.revenue.to_f
+          total_ecpm    += rev.ecpm.to_f
+        end
       end
 
       # Total line

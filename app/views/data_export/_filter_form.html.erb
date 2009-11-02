@@ -39,9 +39,9 @@
 	    <%= radio_button_tag "format", "csv", params[:format]=="csv"%>CSV File
 	</li>
 
-	<li><%= label_tag :include_disabled, "Include Disabled Tags"%>
-	    <%= radio_button_tag "include_disabled", "", params[:include_disabled].blank?%>No
-	    <%= radio_button_tag "include_disabled", "true", !params[:include_disabled].blank?%>Yes
+	<li><%= label_tag :only_enabled, "Include Disabled Tags"%>
+	    <%= radio_button_tag "only_enabled", "1", (params[:only_enabled].blank? || params[:only_enabled] == "1") %>No
+	    <%= radio_button_tag "only_enabled", "0", params[:only_enabled] == "0" %>Yes
 	</li>
 	<li><%= label_tag :date_select %>
 	    <%= date_range_dropdown %><!-- From app/helpers/layout -->

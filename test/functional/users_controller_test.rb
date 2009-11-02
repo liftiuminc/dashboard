@@ -20,6 +20,30 @@ class UsersControllerTest < ActionController::TestCase
     end
   end
   
+  ### check permissions on protected controller actions
+  %w( new index create ).each do |action|
+    context "Action #{action} requires admin rights" do
+      should "render 403" do
+        login_as_publisher
+        get action
+        assert_template "public/403.html"
+        respond_with 403
+      end
+    end
+  end
+  
+  ### check that all other actions are available to users
+  ### grab a new user, as destroy is destructive
+  %w( show edit update destroy ).each do |action|
+    context "Action #{action} should be available to all users" do
+      should "Render template" do
+        login_as_new_user
+        get action
+        respond_with 200
+      end
+    end
+  end  
+  
   context "show action" do
     should "render show template" do
       login_as_admin

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   # Auth logic http://github.com/binarylogic/authlogic_example
   helper_method :current_user_session, :current_user
-  
+
   before_filter :set_acts_as_changelogable_current_user
 
   private
@@ -77,31 +77,65 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  ### according to: http://api.rubyonrails.org/classes/ActionController/Base.html#M000658
+  ### render( :file => ... ) only takes an absolute path. This was breaking
+  ### the tests in user_controller to verify 403s. Oddly enough, it did NOT
+  ### break the tests in homes_controller verifying 403s. Mystery! Adding
+  ### the #{RAILS_ROOT} here works for both tests. --Jos
   def permission_denied (msg)
     flash[:notice] = msg
-    render(:file => 'public/403.html', :status => :forbidden)
+    render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
   end
 
   ### XXX FIXME -- these should probably live Elsewhere(tm) -jos
   def find_enabled_networks
-    @networks = Network.find :all, :conditions => {:enabled => true}
+    @networks = Network.find :all,
+                             :conditions => {:enabled => true},
+                             :order => "network_name ASC"
+  end
+
+  def find_user_networks
+    if !current_user.admin?
+      if current_publisher
+        ### XXX FIXME there is probably a more ActiveRecordy way to handle this
+        @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ? ORDER BY network_name ASC)", current_publisher.id, 1])
+      else
+        require_admin
+      end
+    else
+      find_enabled_networks
+    end
+  end
+
+  def find_user_adformats
+    if !current_user.admin?
+      if current_publisher
+        ### XXX FIXME there is probably a more ActiveRecordy way to handle this
+        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])
+      else
+        require_admin
+      end
+    else
+      @adformats = AdFormat.all :order => "ad_format_name ASC"
+    end
+
   end
 
   def find_all_publishers
-    @publishers = Publisher.find :all;
+    @publishers = Publisher.find :all, :order => 'site_name ASC';
   end
 
-  ### the list of publishers accessible to this user
+  def set_acts_as_changelogable_current_user
+    Changelog.current_user = current_user
+  end
+
+### the list of publishers accessible to this user
   def allowed_publishers
     if !current_user.admin?
       @publishers = [ current_publisher ]
     else
       # Get the list of publishers for admin users
-      @publishers = Publisher.find :all;
+      find_all_publishers
     end
-  end
-
-  def set_acts_as_changelogable_current_user
-    Changelog.current_user = current_user
   end
 end

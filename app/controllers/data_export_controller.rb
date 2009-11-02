@@ -1,84 +1,85 @@
 class DataExportController < ApplicationController
   before_filter :require_user
+  before_filter :allowed_publishers
+  before_filter :find_user_networks
+  before_filter :find_user_adformats
+  before_filter :set_limit
 
-  def index
-    setup_vars
-  end
-
-  def setup_vars 
-    if ! current_user.publisher_id 
-	@publishers = Publisher.all(:order => "site_name")
-        @networks = Network.all(:conditions => ["enabled = ?", 1], :order => "network_name")
-        @adformats = AdFormat.all
-    else 
-	# FIXME, there is probably a more ActiveRecordy way to handle this 
-        @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
-        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
-    end
+  ### setting this does not seem to work with a proc.. riddle me this ;(  
+  def set_limit
     @limit = 250
   end
 
-  def create 
-    setup_vars
+  def index
+  end
 
-    if current_user.publisher_id
-       params[:publisher_id] = current_user.publisher_id
-    elsif !current_user.admin?
-       # Belt & Suspenders, just to make sure we don't give out everyone's data
-       permission_denied "Your account is not an administrator and it is not associated with a publisher";
-       return false
-    end
+  def create 
+
+    ### if you're not an admin, you only get to see your own publisher
+    if !current_user.admin?
+      if current_publisher
+        params[:publisher_id] = current_publisher.id
+      else 
+        require_admin
+      end
+    end      
 
     case params[:interval]
       when "day" 
         @model = FillsDay
-        @time_name = "Day"
       when "hour" 
         @model = FillsHour
-        @time_name = "Hour"
       else 
         @model = FillsMinute
-        @time_name = "Minute"
     end
 
-    params[:start_date1] = params[:start_date]
     # Sanity checking on dates
     if !params[:date_select].blank? 
         dates = DateRangeHelper.get_date_range(params[:date_select])
         params[:start_date] = dates[0]
-        params[:end_date] = dates[1]
+        params[:end_date]   = dates[1]
     end
-    params[:start_date2] = params[:start_date]
 
+    # radio buttons are annoying :(
+    if !params[:only_enabled].blank? 
+        params[:enabled] = 1 if params[:only_enabled].to_i > 0
+    end        
+
+    ### tables will be rotated, so we have a maximum amount of data in
+    ### the tables at any given time. Make sure the dates requested 
+    ### are held in the tables -Jos
+    ### XXX FIXME This logic should probably be in the model.
     if !params[:start_date].blank?
-      s = params[:start_date].to_time
-      if params[:interval] != "day" && s + (31*86400) < Time.now 
+      t = params[:start_date].to_time
+      if params[:interval] != "day" && t + (31*86400) < Time.now 
         flash.now[:error] = "Please select 'Day' for interval for dates older than 30 days"
         render :index and return
-      elsif params[:interval] == "minute" && s + (8*86400) < Time.now 
-	flash.now[:error] = "Please select 'Hour' or 'Day' for interval for dates older than 7 days"
+      elsif params[:interval] == "minute" && t + (8*86400) < Time.now 
+        flash.now[:error] = "Please select 'Hour' or 'Day' for interval for dates older than 7 days"
         render :index and return
-      elsif !params[:end_date].blank? && s > params[:end_date].to_time
-	flash.now[:error] = "Start Date must be before end date"
+      elsif !params[:end_date].blank? && t > params[:end_date].to_time
+        flash.now[:error] = "Start Date must be before end date"
         render :index and return
       elsif !params[:end_date].blank? && params[:end_date].to_time > Time.now
-	flash.now[:warning] = "Warning: End Date is in the future"
+        flash.now[:warning] = "Warning: End Date is in the future"
       end
     end
 
-    if params[:format] != "csv"
-      params[:limit] = @limit
-    end
+    ### we check for 'cvs' all over the place, make it a var
+    is_csv = params[:format] == "csv" ? true : false
+
+    ### maximum results in web view
+    params[:limit] = @limit unless is_csv
 
     if params[:debug]
-      flash[:notice] = "<span style='font-size:smaller'>SQL: " + @model.new.search_sql(@model, params).inspect + "</span>"
+      flash[:notice] = "<span style='font-size:smaller'>SQL: " + @model.new.search(@model, params).inspect + "</span>"
     end
 
     @fill_stats = @model.new.search(@model, params)
 
     if @fill_stats.empty?
       if params[:format] == "csv"
-	# I shouldn't have to do this. render :index should work
+        # FIXME: I shouldn't have to do this. render :index should work
         render :text => "No stats for CSV, please try again"
       else
         flash.now[:warning] = "No matching stats"
