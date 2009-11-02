@@ -34,7 +34,17 @@ module ActiveRecord
 
         def changelog_entry(operation)
           Changelog.create(:record_id => self.id, :record_type => self.class.to_s, :user_id => get_user_id, :operation => operation,
-                           :diff => self.changes.to_json, :description => "#{self.class} #{operation}d at #{self.updated_at}")
+                           :diff => self.changes.to_json, :description => "#{self.class} #{operation}d at #{operated_at}")
+        end
+
+        def operated_at
+          if respond_to?(:updated_at)
+            self.updated_at
+          elsif respond_to?(:updated_at)
+            self.created_at
+          else
+            Time.now
+          end
         end
 
         def get_user_id

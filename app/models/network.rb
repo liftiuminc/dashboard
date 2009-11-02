@@ -1,4 +1,6 @@
 class Network < ActiveRecord::Base
+  acts_as_changelogable
+  
   require 'uri'
 
   ALL_PAY_TYPES = ["Per Click", "Per Impression", "Affliate" ]
@@ -15,7 +17,7 @@ class Network < ActiveRecord::Base
   validates_inclusion_of :supports_threshold, :in => [true, false]
   validates_inclusion_of :pay_type, :in => ALL_PAY_TYPES, :message => "must be one of: " + ALL_PAY_TYPES.join(', ')
 
-   def enabled_s 
+   def enabled_s
       enabled ? "Yes" : "No"
    end
 
@@ -23,11 +25,11 @@ class Network < ActiveRecord::Base
       supports_threshold ? "Yes" : "No"
    end
 
-   def default_always_fill_s 
+   def default_always_fill_s
       default_always_fill ? "Yes" : "No"
    end
-  
-   def us_only_s 
+
+   def us_only_s
       us_only ? "Yes" : "No"
    end
 
@@ -41,8 +43,8 @@ class Network < ActiveRecord::Base
       ### this will catch any malformed uris
       if url.length > 0
          url = URI.parse( url =~ /^https?/i ? url : 'http://' + url ).to_s
-      end  
-      
+      end
+
       write_attribute( :website, url )
    end
 

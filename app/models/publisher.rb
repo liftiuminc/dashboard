@@ -1,4 +1,6 @@
 class Publisher < ActiveRecord::Base
+  acts_as_changelogable
+
   require 'uri'
 
   CATEGORIES = ["Auto","Creative","Education","Entertainment","Finance",
@@ -7,8 +9,8 @@ class Publisher < ActiveRecord::Base
 
   has_many :users
   has_many :tags, :dependent => :destroy
-  has_many :publisher_network_logins, :dependent => :destroy  
-  
+  has_many :publisher_network_logins, :dependent => :destroy
+
   validates_uniqueness_of :site_name
   validates_presence_of :site_name
   validates_presence_of :site_url
@@ -24,8 +26,8 @@ class Publisher < ActiveRecord::Base
       ### this will catch any malformed uris
       if url.length > 0
          url = URI.parse( url =~ /^https?/i ? url : 'http://' + url ).to_s
-      end  
-      
+      end
+
       write_attribute( :site_url, url )
    end
 

@@ -3,7 +3,7 @@ class Changelog < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :record, :polymorphic => true
-  
+
   before_save :set_user
 
   class << self
@@ -15,6 +15,6 @@ class Changelog < ActiveRecord::Base
   private
 
   def set_user
-    self.user = @@current_user
+    self.user = @@current_user if Changelog.class_variable_defined?(:@@current_user) 
   end
 end
