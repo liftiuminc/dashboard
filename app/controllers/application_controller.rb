@@ -74,9 +74,14 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    ### according to: http://api.rubyonrails.org/classes/ActionController/Base.html#M000658
+    ### render( :file => ... ) only takes an absolute path. This was breaking
+    ### the tests in user_controller to verify 403s. Oddly enough, it did NOT
+    ### break the tests in homes_controller verifying 403s. Mystery! Adding
+    ### the #{RAILS_ROOT} here works for both tests. --Jos
     def permission_denied (msg)
-	flash[:notice] = msg
-        render(:file => 'public/403.html', :status => :forbidden)
+      flash[:notice] = msg
+      render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
     end
     
     ### XXX FIXME -- these should probably live Elsewhere(tm) -jos
