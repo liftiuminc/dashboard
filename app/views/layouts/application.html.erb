@@ -1,15 +1,25 @@
 <html>
   <head>
     <title><%= h(yield(:title) || "") %> - Liftium.com</title>
+    <%= stylesheet_link_tag 'http://newhome.dev.liftium.com/css/reset-min.css' %>
+    <%= stylesheet_link_tag 'http://newhome.dev.liftium.com/css/liftium.css' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
     <%= yield(:head) %>
   </head>
   <body<%= Rails.configuration.environment == "development" && ' background="/images/dev_background.png"'%>>
-    <div id="header">
 
-	<div id="logo"><a href="/" title="Ad Network Optimization and Monetization by Liftium"><img src="/images/logo.black.gradient.gif" alt="Ad Network Optimization and Monetization by Liftium"></a></div>		
-    </div>
+<div id="header">
+	<div class="fixedwidth">
+		<ul class="nav">
+			<li><a href="/">Home</a></li>
+			<li><a href="/publishers">Publishers</a></li>
+			<li><a href="/about-us">About Us</a></li>
+			<li><a href="/contact-us">Contact Us</a></li>
+		</ul>
+	</div>
+</div>
+
 
     <!-- Left Nav -->
     <div id="leftnav">
@@ -60,7 +70,7 @@
    
    
     <!-- Main content -->
-    <div id="container">
+    <div class="fixedwidth">
       <%- if show_title_bar? -%>
         <div id="titlebar">
 		<%- if @title_bar_right_text -%>
@@ -79,7 +89,19 @@
       <%= yield %>
 	<br clear="all"><!-- I hate CSS float -->
       </div><!-- content -->
-    </div><!-- container -->
+    </div><!-- fixedwidth -->
+
+<div id="footer">
+	<div class="fixedwidth">
+		<div id="copyright">&copy; 2009 Copyright - Liftium</div>
+		<ul class="nav">
+			<li><a href="/">Home</a></li>
+			<li><a href="publishers">Publishers</a></li>
+			<li><a href="about-us">About Us</a></li>
+			<li class="noborder"><a href="contact-us">Contact Us</a></li>
+		</ul>
+	</div>
+</div>
   </body>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

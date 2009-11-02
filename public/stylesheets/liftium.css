@@ -1,11 +1,6 @@
 /* Items are organized by section, then alphabetical. Please keep it that way. */
-
 body {
-	background-color: #CCC;
-	color: #333;
-	font-family: Verdana,Arial,sans-serif;
 	font-size: 12px;
-	margin: 0;
 }
 
 /*** Page elements ***/
@@ -37,21 +32,12 @@ input:focus, textarea:focus, {
 	border-right: 1px solid #D0D0D0;
 	border-left: 1px solid #D0D0D0;
 	border-bottom: 1px solid #D0D0D0;
-	padding-left: 20px;
+	padding-left: 15px;
 	padding-top: 5px;
-	padding-right: 20px;
-	padding-bottom: 20px;
+	padding-right: 15px;
+	padding-bottom: 15px;
+	margin-bottom: 20px;
 }
-
-#header {
-	background:transparent url(/images/head.gif) repeat-x scroll 0 0;	
-	height: 71px;
-}
-
-#logo {
-	margin-left: 32px;
-}
-
 
 /*** Left Nav bar ***/
 	
@@ -60,6 +46,7 @@ input:focus, textarea:focus, {
 	float:left;
 	padding-top: 20px;
 	padding-left: 5px;
+	text-align: left;
 }
 
 #leftnav ul {
@@ -80,6 +67,7 @@ input:focus, textarea:focus, {
 	border-right: 1px solid #D0D0D0;
 	border-left: 1px solid #D0D0D0;
 	height: 51px;
+	margin-top: 10px;
 }
 
 #titlebar h1 {
