@@ -11,6 +11,8 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :publisher_network_logins
   map.resources :password_resets
   map.resources :changelogs
+  map.resources :tag_targets
+  map.resources :comments
 
   # FIXME: Is there way to not have to list all these?
   map.select_network 'tags/select_network', :controller => 'tags', :action => 'select_network'

@@ -8,5 +8,4 @@ class PublisherNetworkLoginTest < ActiveSupport::TestCase
     PublisherNetworkLogin.create!(:network_id => network.id, :publisher_id => publisher.id, :username => "username",
                                   :password => "password")
   end
-
 end

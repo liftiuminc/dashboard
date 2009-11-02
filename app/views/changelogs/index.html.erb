@@ -1,8 +1,10 @@
-<table>
-  <th>Change</th>
-  <th>Operation</th>
-  <th>Fields</th>
-  <th>User</th>
-  <th>Date</th>
+<table class="record_listing">
+  <tr class="record_listing_header">
+    <th>Change</th>
+    <th>Operation</th>
+    <th width="40%">Field Changes</th>
+    <th>User</th>
+    <th>Date</th>
+  </tr>
   <%= render :partial => "changelog", :collection => @changelogs %>
 </table>
