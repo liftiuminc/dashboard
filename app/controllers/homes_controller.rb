@@ -18,35 +18,35 @@ class HomesController < ApplicationController
 
   def publisher
     if !current_user.publisher
-	permission_denied
-	return
+        permission_denied
+        return
     end
-	
+        
     params[:date_select] ||= "Yesterday"
 
     @dates = DateRangeHelper.get_date_range(params[:date_select])
     @dates[1] ||= DateTime.now
 
     if @dates[0].to_time < (DateTime.now - 7.days)
-	model = FillsDay
+        model = FillsDay
     else
-	model = FillsMinute
+        model = FillsMinute
     end
     
     # FIXME move to model once Jos' is done refactoring
     sql = "SELECT SUM(loads) AS loads FROM " + model.table_name +
-	" WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
-	" AND " + model.new.time_column + " >= ? " +
-	" AND " + model.new.time_column + " <= ? "
-	
+        " WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
+        " AND " + model.new.time_column + " >= ? " +
+        " AND " + model.new.time_column + " <= ? "
+        
     stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
     @impressions = stats[0].loads.to_i
     @previous_impressions = previous_stats[0].loads.to_i
 
     sql = "SELECT SUM(revenue) AS revenue FROM revenues " +
-	" WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
-	" AND day >= ? AND day <= ? "
+        " WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
+        " AND day >= ? AND day <= ? "
 
     revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
