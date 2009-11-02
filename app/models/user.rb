@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
 
   validate :must_associate_publisher_if_not_admin
 
+  ### no login without email/password
+  validates_presence_of :email, :password
+
+
   def must_associate_publisher_if_not_admin
     if !admin and publisher_id.blank? 
       errors.add_to_base("If the user is not an administrator, a publisher must be selected")
