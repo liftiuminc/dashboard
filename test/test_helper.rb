@@ -49,4 +49,17 @@ class ActiveSupport::TestCase
   def login_as_publisher
     login_as(User.first(:conditions => ["email = ?", "unit_test_publisher@liftium.com"]))
   end
+  
+  @@unique_id = 0
+  def login_as_new_user 
+    ### @@x++ is a syntax error? odd... -Jos
+    @@unique_id += 1
+    
+    user = User.create( :email          => "liftium#{@@unique_id}@example.com", 
+                        :password       => 'password',
+                        :publisher_id   => 1 )
+    login_as( user )
+    return user
+  end
+  
 end
