@@ -23,11 +23,7 @@
 
     <!-- Left Nav -->
     <div id="leftnav">
-     <% if !current_user %>
-       <ul>
-         <li><%= link_to "Login", new_user_session_path %></li>
-       </ul>
-     <% else %>
+     <% if current_user %>
 
       <div class="navsection">
 	    <div class="navsection_header">Publishers</div>
@@ -70,7 +66,7 @@
    
    
     <!-- Main content -->
-    <div class="fixedwidth">
+    <div id="container">
       <%- if show_title_bar? -%>
         <div id="titlebar">
 		<%- if @title_bar_right_text -%>
@@ -90,9 +86,8 @@
 	<br clear="all"><!-- I hate CSS float -->
       </div><!-- content -->
     </div><!-- fixedwidth -->
-
-<div id="footer">
-	<div class="fixedwidth">
+<!-- Someone who knows CSS better than me
+    <div id="footer">
 		<div id="copyright">&copy; 2009 Copyright - Liftium</div>
 		<ul class="nav">
 			<li><a href="/">Home</a></li>
@@ -100,8 +95,8 @@
 			<li><a href="about-us">About Us</a></li>
 			<li class="noborder"><a href="contact-us">Contact Us</a></li>
 		</ul>
-	</div>
-</div>
+     </div>
+-->
   </body>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
