@@ -36,7 +36,7 @@ class ChangelogsHelperTest < ActionView::TestCase
   end
 
   def test_changelogs_title_no_filter
-    assert_equal "Changelogs - Showing All", changelogs_title({})
+    assert_equal "Changelogs - Showing all entries", changelogs_title({})
   end
 
   def test_changelogs_title_filter_by_record_id_and_record_type
@@ -51,6 +51,6 @@ class ChangelogsHelperTest < ActionView::TestCase
   end
 
   def test_changelogs_title_filter_by_user_id_not_found_shows_all
-    assert_equal "Changelogs - Showing All", changelogs_title({:user_id => nil})
+    assert_equal "Changelogs - Showing all entries", changelogs_title({:user_id => nil})
   end
 end

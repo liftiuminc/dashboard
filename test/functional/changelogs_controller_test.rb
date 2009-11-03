@@ -45,5 +45,21 @@ class ChangelogsControllerTest < ActionController::TestCase
       assert_template :index
       assert_equal [changelog], assigns(:changelogs)
     end
+
+    should "limit the number of entries if entries is passed" do
+      login_as_admin
+      Changelog.expects(:find).with(:all, :limit => 25)
+      get :index, :entries => "25"
+      assert_template :index
+      assert_equal 25, assigns(:entries)
+    end
+
+    should "not limit the number of entries if entries is passed with 'all'" do
+      login_as_admin
+      Changelog.expects(:find).with(:all, nil)
+      get :index, :entries => "all"
+      assert_template :index
+      assert_equal "all", assigns(:entries)
+    end
   end
 end

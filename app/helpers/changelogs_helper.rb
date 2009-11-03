@@ -26,7 +26,7 @@ module ChangelogsHelper
     elsif params[:user_id] && user = User.find_by_id(params[:user_id])
       "Changelogs - Filtered by #{user.email}'s changes (#{link_to("Show All", changelogs_path)})"
     else
-      "Changelogs - Showing All"
+      "Changelogs - Showing #{@entries || "all"} entries"
     end
   end
 
