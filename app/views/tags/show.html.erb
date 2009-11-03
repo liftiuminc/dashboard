@@ -72,6 +72,12 @@
   <%=h @tag.rejection_time ? "#{@tag.rejection_time} minutes" : "-"%>
 </p>
 <p>
+  <strong>Targeting Critera:</strong>
+  <%- for target_criteria in @tag.tag_targets do %>
+    <li style="margin-left:30px; list-style-type: square;"><%= target_criteria.key_name + ' = ' + target_criteria.key_value  %></li>
+  <%- end %>
+</p>
+<p>
   <strong>Note:</strong>
   <%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "-"%> 
 </p>
