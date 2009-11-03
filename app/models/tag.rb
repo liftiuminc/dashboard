@@ -136,6 +136,8 @@ class Tag < ActiveRecord::Base
 #         # Same order as the chain (without the randomization)
 #         query[0] += " ORDER BY tier ASC, value DESC"
 #     end
+#
+    query[0] += " ORDER BY tier ASC, value DESC"
 
     if (! params[:limit].to_s.empty? && params[:limit].to_i < 100)
        query[0] += " LIMIT ?"
