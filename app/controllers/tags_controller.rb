@@ -2,8 +2,8 @@ class TagsController < ApplicationController
   before_filter :require_user
   before_filter :save_filter_fields, :only => [:index]
   before_filter :debug_sql, :only => [:index]
-  before_filter :find_enabled_networks, :only => [:select_network, :new, :edit, :copy]
-  before_filter :find_all_publishers, :only => [:new, :edit, :copy]
+  before_filter :find_enabled_networks, :only => [:select_network, :new, :edit, :copy, :index]
+  before_filter :find_all_publishers, :only => [:new, :edit, :copy, :index]
 
   def index
     @tags = Tag.new.search(session[:tag_params] || "")

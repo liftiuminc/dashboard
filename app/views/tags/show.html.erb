@@ -36,6 +36,10 @@
   <%= link_to(@tag.network.network_name, {:action => "show", :controller=>"networks", :id => @tag.network_id})%>
 </p>
 <p>
+  <strong>Publisher:</strong>
+  <%= link_to(@tag.publisher.site_name, {:action => "show", :controller=>"publisher", :id => @tag.publisher_id})%>
+</p>
+<p>
   <strong>Size:</strong>
   <%=h @tag.size %>
 </p>
