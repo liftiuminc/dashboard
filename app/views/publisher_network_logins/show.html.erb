@@ -2,11 +2,11 @@
 
 <p>
   <strong>Network:</strong>
-  <%=h @publisher_network_login.network.network_name_and_id %>
+  <a href="<%= network_url @publisher_network_login.network %>"><%=h @publisher_network_login.network.network_name_and_id %></a>
 </p>
 <p>
   <strong>Publisher:</strong>
-  <%=h @publisher_network_login.publisher.site_name  %>
+  <a href="<%= publisher_url @publisher_network_login.publisher %>"><%=h @publisher_network_login.publisher.site_name  %></a>
 </p>
 <p>
   <strong>Username:</strong>
