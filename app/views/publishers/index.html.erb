@@ -20,7 +20,7 @@
 	<% if publisher.site_url %>
 	  <a href="<%=h publisher.site_url %>" target="_blank"><img src="/images/icons/house_link.png"/></a>
 	<% end %>
-	<%=h publisher.site_name %>
+	<a href="<%= publisher_url publisher%>"><%=h publisher.site_name %></a>
       </td>
       <td class="record_column"><%=h publisher.brand_safety_level ? publisher.brand_safety_level : "-" %></td>
       <td class="record_column"><%=h publisher.hoptime ? number_with_delimiter(publisher.hoptime) : "-"%></td>

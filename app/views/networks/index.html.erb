@@ -21,7 +21,7 @@
       <% if network.website %>
         <a href="<%=h network.website %>" target="_blank"><img src="/images/icons/house_link.png"/></a>
       <% end %>      
-	<%=h network.network_name %>
+	<%=link_to network.network_name, network %>
       </td>
       <td class="record_column"><%=h network.pay_type %></td>
       <td class="record_column"><%= network.enabled ? image_tag("/images/icons/tick.png") : image_tag("/images/icons/cross.png") %></td>

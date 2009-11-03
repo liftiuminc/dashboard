@@ -28,7 +28,7 @@
       <div class="navsection">
 	    <div class="navsection_header">Publishers</div>
 	    <ul>
-		<li><% link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
+		<li><%= link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
 	        <li><%= link_to "Data Export", data_export_url %>	
 		<li><%= link_to "Ad Networks", publisher_network_logins_url %>	
 		<li><%= link_to "Tag Generator", tag_generator_url %>	
@@ -38,7 +38,7 @@
        <div class="navsection">
 	    <div class="navsection_header">Admin</div>
 	    <ul>
-		<li><% link_to "Admin Home", :controller => "homes", :action => "admin" %>
+		<li><%= link_to "Admin Home", :controller => "homes", :action => "admin" %>
 		<li><%= link_to "Tags", tags_url %>
 		<li><%= link_to "Tag Generator", tag_generator_url %>	
 		<li><%= link_to "Networks", networks_url %>	
