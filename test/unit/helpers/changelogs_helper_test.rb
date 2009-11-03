@@ -24,4 +24,18 @@ class ChangelogsHelperTest < ActionView::TestCase
     changelog = Changelog.new(:user_id => user.id)
     assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a>", render_user(changelog)
   end
+
+  def test_render_changelog_links
+    changelog = Changelog.new(:record_id => 1, :record_type => "Network")
+    assert_equal "<a href=\"/networks/1\">Show Original</a> | <a href=\"/changelogs?record_id=1&amp;record_type=Network\">Show changelogs for this object</a>", render_changelog_links(changelog)
+  end
+
+  def test_changelogs_title_no_filter
+    assert_equal "Changelogs - Showing All", changelogs_title({})
+  end
+
+  def test_changelogs_title_filter_by_record_id_and_record_type
+    assert_equal "Changelogs - Filtered by Network with id 1 (<a href=\"/changelogs\">Show All</a>)", 
+                 changelogs_title({:record_id => 1, :record_type => "Network"})
+  end
 end

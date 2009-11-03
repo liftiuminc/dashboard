@@ -15,8 +15,16 @@ module ChangelogsHelper
     end
   end
 
-  def render_show_link(changelog)
-    link_to "Show", changelog.record
+  def render_changelog_links(changelog)
+    [link_to("Show Original", changelog.record), link_to("Show changelogs for this object", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
+  end
+
+  def changelogs_title(params)
+    if params[:record_id] && params[:record_type]
+      "Changelogs - Filtered by #{params[:record_type]} with id #{params[:record_id]} (#{link_to("Show All", changelogs_path)})"
+    else
+      "Changelogs - Showing All"
+    end
   end
 
   private
