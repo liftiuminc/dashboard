@@ -5,17 +5,27 @@ class RevenuesController < ApplicationController
 
 
   def index
-
-    ### find all the tags that are by this publisher and created at or before
-    ### this day
-    if !params[:network_id].blank? and !params[:day].blank?
-        @day  = params[:day].to_date.to_s
-        @tags = Tag.new.search( 
-                        :network_id     => params[:network_id],
-                        :created_before => params[:day] )
+    conditions = {}
     
+    ### find all the tags that are by this publisher or network and created at 
+    ### or before this day
+    if !params[:day].blank?
+        conditions[ :created_before ] = params[ :day ]
+
+        if !params[:network_id].blank?
+            conditions[ :network_id ] = params[:network_id]
+        elsif !params[:publisher_id].blank?
+            conditions[ :publisher_id ] = params[:publisher_id]      
+        end
+
+        @tags = Tag.new.search( conditions )
+        
+        unless @tags.length > 0 
+            flash.now[:warning] = "No tags found for these criteria -- were the tags enabled at this date?"
+        end            
+
     else 
-        flash[:notice] = "Select publisher & date"
+        flash[:notice] = "Select either a publisher or network, and a date"
     end    
   end
   
