@@ -10,6 +10,14 @@
               <%= options_from_collection_for_select @networks, :id, :network_name, params[:network_id].to_i %>
             </select>
         </li>
+        <li><b>-OR-</b></li>
+        <li><%= label_tag :publisher %>
+            <select name="publisher_id" id="publisherDD">
+              <option value="">
+              <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
+            </select>
+        </li>
+        <li><b>-AND-</b></li>
         <li>
           <%= label_tag :date %>
           <% s = !params[:day].blank? ? params[:day].to_s : "" %>
