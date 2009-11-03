@@ -37,7 +37,7 @@ ul {
 #container { 
 	position:absolute;
 	min-width: 500px;
-	margin-left: 150px;
+	margin-left: 165px;
 	padding-top:20px;
 	padding-bottom:20px;
 }
@@ -60,7 +60,7 @@ ul {
 	position:absolute;
 	float:left;
 	margin-top: 30px;
-	margin-left: 20px;
+	margin-left: 15px;
 }
 
 #leftnav a {
