@@ -21,6 +21,16 @@ input[type=checkbox], input[type=radio] {
 	margin-right: 3px;
 }
 
+/* Reset.css sets this to 0, but I don't like that. */
+p {
+	padding: 3px;
+	margin: 3px;
+}
+ul {
+	margin-top: 3px;
+	margin-left: 10px;
+}
+
 
 /*** Wrappers, page/structure ***/
 
