@@ -14,7 +14,7 @@ class ChangelogsHelperTest < ActionView::TestCase
                   render_diffs(changelog)
   end
 
-  def test_render_nothing_when_set_to_empty_string
+  def test_render_diffs_shows_nothing_when_set_to_empty_string
     changelog = Changelog.new(:diff => '{"comments":[null,""],"tag_template":[null,""]}')
     assert_equal '', render_diffs(changelog)
   end
@@ -22,7 +22,12 @@ class ChangelogsHelperTest < ActionView::TestCase
   def test_render_user
     user = User.find(:first)
     changelog = Changelog.new(:user_id => user.id)
-    assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a>", render_user(changelog)
+    assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a><br/><a href=\"/changelogs?user_id=#{user.id}\">Filter</a>", render_user(changelog)
+  end
+
+  def test_render_user_renders_na_when_no_user
+    changelog = Changelog.new
+    assert_equal "N/A", render_user(changelog)
   end
 
   def test_render_changelog_links
@@ -35,7 +40,17 @@ class ChangelogsHelperTest < ActionView::TestCase
   end
 
   def test_changelogs_title_filter_by_record_id_and_record_type
-    assert_equal "Changelogs - Filtered by Network with id 1 (<a href=\"/changelogs\">Show All</a>)", 
+    assert_equal "Changelogs - Filtered by Network with id 1 (<a href=\"/changelogs\">Show All</a>)",
                  changelogs_title({:record_id => 1, :record_type => "Network"})
+  end
+
+  def test_changelogs_title_filter_by_user_id
+    user = User.find(:first)
+    assert_equal "Changelogs - Filtered by nick@liftium.com's changes (<a href=\"/changelogs\">Show All</a>)",
+                 changelogs_title({:user_id => user.id})
+  end
+
+  def test_changelogs_title_filter_by_user_id_not_found_shows_all
+    assert_equal "Changelogs - Showing All", changelogs_title({:user_id => nil})
   end
 end
