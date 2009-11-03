@@ -1,0 +1,7 @@
+<tr class="<%= cycle("record_row_odd", "record_row_even") %>">
+  <td><%= changelog.description %><br/> <%= render_changelog_links(changelog) %></td>
+  <td><%= changelog.operation %></td>
+  <td><%= render_diffs(changelog) %></td>
+  <td><%= render_user(changelog) %></td>
+  <td><%= changelog.created_at %></td>
+</tr>

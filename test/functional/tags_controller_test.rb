@@ -87,17 +87,36 @@ class TagsControllerTest < ActionController::TestCase
   end
 
   context "create action" do
-    # FIXME remember the network id from select_network
-    should "render new template when model is invalid" do
-  #    Tag.any_instance.stubs(:valid?).returns(false)
-  #    post :create
-  #    assert_template 'new'
+    context "NOT logged in" do
+      should_redirect_to "login url" do
+        post :create
+        new_user_session_url
+      end
     end
 
-    should "redirect when model is valid" do
-  #    Tag.any_instance.stubs(:valid?).returns(true)
-  #    post :create
-  #    assert_redirected_to tag_url(assigns(:tag))
+    context "successful create" do
+      setup do
+        @admin_user = login_as_admin
+
+        post :create, {"tag"=>{"sample_rate"=>"", "size"=>"728x90", "network_id"=>"2", "tag"=>"", "frequency_cap"=>"",
+                               "tier"=>"10", "tag_targets_attributes"=>{"0"=>{"key_name"=>"country", "id"=>"", "key_value"=>""}},
+                               "rejection_time"=>"", "enabled"=>"true", "value"=>"1.00", "tag_name"=>"Scotts Tag",
+                               "tag_options_attributes"=>{"0"=>{"option_name"=>"", "option_value"=>""}}, "always_fill"=>"false",
+                               "publisher_id"=>"1045"}, "note"=>{"tag"=>""}, "tag_toggle"=>"template"}
+
+        @new_tag = Tag.find_by_tag_name("Scotts Tag")
+      end
+
+      should "create a new tag and redirect to it's show page" do
+        assert_redirected_to tag_path(@new_tag)
+      end
+
+      should "add an entry into the changelogs with the currently logged in user and a polymorphic association back to original" do
+        changelog = Changelog.find_by_user_id(@admin_user.id)
+        assert changelog
+        assert_equal Tag, changelog.record.class
+        assert_equal @new_tag, changelog.record
+      end
     end
   end
 

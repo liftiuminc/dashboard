@@ -1,4 +1,6 @@
 class Tag < ActiveRecord::Base
+  acts_as_changelogable
+
   require "date_range_helper"
 
   belongs_to :network
@@ -26,33 +28,33 @@ class Tag < ActiveRecord::Base
   validates_numericality_of :sample_rate, :greater_than_or_equal_to => 0, :less_than => 100, :allow_nil => true
   validates_numericality_of :frequency_cap, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000, :allow_nil => true
   validates_numericality_of :rejection_time, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1440, :allow_nil => true
-  validates_numericality_of :value, :greater_than_or_equal_to => 0, :less_than => 100 
+  validates_numericality_of :value, :greater_than_or_equal_to => 0, :less_than => 100
 
-  ### From FB 16: Tags page should not allow "Always fill" with a rejection 
+  ### From FB 16: Tags page should not allow "Always fill" with a rejection
   ### time limit set
   #validates_each :always_fill do|record, attr, value|
   #  if value == true and record.rejection_time > 0
   #    record.errors.add attr, "can not be true if rejection time is set"
-  #  end  
+  #  end
   #end
 
-   def enabled_s 
+   def enabled_s
       enabled ? "Yes" : "No"
    end
 
-   def always_fill_s 
+   def always_fill_s
       always_fill ? "Yes" : "No"
    end
 
    # db returns 0.1. we want this to be 0.10
-   def value_s 
+   def value_s
       sprintf( "%.2f", value)
    end
 
-   def html 
-      if tag 
+   def html
+      if tag
 	"#{tag}"
-      else 
+      else
         # TODO: Network tag options expansion
 	"#{tag.network.tag_template}"
       end
@@ -68,18 +70,18 @@ class Tag < ActiveRecord::Base
      @d[1] || 0
    end
 
-   def css_size 
+   def css_size
      "width:#{width}px;height:#{height}px;"
    end
 
-   def preview_url 
+   def preview_url
      env = Rails.configuration.environment
      if env == "development" || env == "dev_mysql"
 	"http://delivery.dev.liftium.com/tag?tag_id=#{id}"
-     else 
+     else
 	"http://delivery.liftium.com/tag?tag_id=#{id}"
      end
-   end 
+   end
 
   def search_sql (params)
     query = []
@@ -104,22 +106,22 @@ class Tag < ActiveRecord::Base
        query[0] += " AND size = ?"
        query.push(params[:size])
     end
-    
+
     ### created before a certain date?
     ### mysql will not truncate a date to the same amount of significance,
     ### so a tag created DURING '2009-10-10' is not returned for a query
     ### with 'created_at <= 2009-10-10'. The solution is to do <= the
     ## NEXT date -jos
-    if (! params[:created_before].blank? ) 
+    if (! params[:created_before].blank? )
        query[0] += " AND created_at <= ?"
        query.push( params[:created_before].to_date.next )
-    end       
+    end
 
     ### search for both name & ids
     if (! params[:name_search].blank?)
        query[0] += " AND (tag_name like ? OR id = ?) "
        query.push('%' + params[:name_search] + '%')
-       query.push( params[:name_search] )       
+       query.push( params[:name_search] )
     end
 
     ### we're not currently using ':order' anywhere, so the code is
@@ -130,7 +132,7 @@ class Tag < ActiveRecord::Base
 #     case (params[:order])
 #       when "tag_name"
 #         query[0] += " ORDER BY tag_name ASC"
-#       else 
+#       else
 #         # Same order as the chain (without the randomization)
 #         query[0] += " ORDER BY tier ASC, value DESC"
 #     end
@@ -150,12 +152,12 @@ class Tag < ActiveRecord::Base
     end
 
     return query
-      
+
   end
 
   def search (params)
     Tag.find_by_sql self.search_sql(params)
-  end 
+  end
 
 
   def get_fill_stats (range)
@@ -176,6 +178,6 @@ class Tag < ActiveRecord::Base
 
     fill_rate = FillsMinute.new.fill_rate_raw(loads, attempts)
     return {:loads => loads, :attempts => attempts, :rejects => rejects, :fill_rate => fill_rate}
-  end 
+  end
 
 end

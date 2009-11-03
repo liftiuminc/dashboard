@@ -15,120 +15,127 @@ class ApplicationController < ActionController::Base
   # Auth logic http://github.com/binarylogic/authlogic_example
   helper_method :current_user_session, :current_user
 
+  before_filter :set_acts_as_changelogable_current_user
+
   private
-    def current_user_session
-      return @current_user_session if defined?(@current_user_session)
-      @current_user_session = UserSession.find
-    end
 
-    def current_user
-      return @current_user if defined?(@current_user)
-      @current_user = current_user_session && current_user_session.user
-    end
+  def current_user_session
+    return @current_user_session if defined?(@current_user_session)
+    @current_user_session = UserSession.find
+  end
 
-    def current_publisher
-        return @current_publisher if defined?(@current_publisher)
-        
-        if @current_user and @current_user.publisher
-            @current_publisher = @current_user.publisher
-        end
-    end        
+  def current_user
+    return @current_user if defined?(@current_user)
+    @current_user = current_user_session && current_user_session.user
+  end
 
-    def require_user
-      unless current_user
-        store_location
-        flash[:notice] = "You must be logged in to access this page"
-        redirect_to new_user_session_url
-        return false
-      end
-    end
- 
-    def require_no_user
-      if current_user
-        store_location
-        flash[:notice] = "You must be logged out to access this page"
-        redirect_to account_url
-        return false
-      end
-    end
-    
-    def store_location
-      session[:return_to] = request.request_uri
-    end
-    
-    def redirect_back_or_default(default)
-      redirect_to(session[:return_to] || default)
-      session[:return_to] = nil
-    end
+  def current_publisher
+    return @current_publisher if defined?(@current_publisher)
 
-    def require_admin
-      unless current_user
-        store_location
-        flash[:notice] = "You must be logged in to access this page"
-        redirect_to new_user_session_url
-        return false
-      end
-      if !current_user.admin?
-        permission_denied ("You must be an administrator to access this page")
-        return false
-      end
+    if @current_user and @current_user.publisher
+      @current_publisher = @current_user.publisher
     end
+  end
 
-    ### according to: http://api.rubyonrails.org/classes/ActionController/Base.html#M000658
-    ### render( :file => ... ) only takes an absolute path. This was breaking
-    ### the tests in user_controller to verify 403s. Oddly enough, it did NOT
-    ### break the tests in homes_controller verifying 403s. Mystery! Adding
-    ### the #{RAILS_ROOT} here works for both tests. --Jos
-    def permission_denied (msg)
-      flash[:notice] = msg
-      render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
+  def require_user
+    unless current_user
+      store_location
+      flash[:notice] = "You must be logged in to access this page"
+      redirect_to new_user_session_url
+      return false
     end
-    
-    ### XXX FIXME -- these should probably live Elsewhere(tm) -jos
-    def find_enabled_networks
-      @networks = Network.find  :all, 
-                                :conditions => {:enabled => true},
-                                :order => "network_name ASC"
+  end
+
+  def require_no_user
+    if current_user
+      store_location
+      flash[:notice] = "You must be logged out to access this page"
+      redirect_to account_url
+      return false
     end
-    
-    def find_user_networks
-      if !current_user.admin? 
-        if current_publisher
-          ### XXX FIXME there is probably a more ActiveRecordy way to handle this 
-          @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ? ORDER BY network_name ASC)", current_publisher.id, 1])
-        else 
-          require_admin
-        end
+  end
+
+  def store_location
+    session[:return_to] = request.request_uri
+  end
+
+  def redirect_back_or_default(default)
+    redirect_to(session[:return_to] || default)
+    session[:return_to] = nil
+  end
+
+  def require_admin
+    unless current_user
+      store_location
+      flash[:notice] = "You must be logged in to access this page"
+      redirect_to new_user_session_url
+      return false
+    end
+    if !current_user.admin?
+      permission_denied ("You must be an administrator to access this page")
+      return false
+    end
+  end
+
+  ### according to: http://api.rubyonrails.org/classes/ActionController/Base.html#M000658
+  ### render( :file => ... ) only takes an absolute path. This was breaking
+  ### the tests in user_controller to verify 403s. Oddly enough, it did NOT
+  ### break the tests in homes_controller verifying 403s. Mystery! Adding
+  ### the #{RAILS_ROOT} here works for both tests. --Jos
+  def permission_denied (msg)
+    flash[:notice] = msg
+    render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
+  end
+
+  ### XXX FIXME -- these should probably live Elsewhere(tm) -jos
+  def find_enabled_networks
+    @networks = Network.find :all,
+                             :conditions => {:enabled => true},
+                             :order => "network_name ASC"
+  end
+
+  def find_user_networks
+    if !current_user.admin?
+      if current_publisher
+        ### XXX FIXME there is probably a more ActiveRecordy way to handle this
+        @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ? ORDER BY network_name ASC)", current_publisher.id, 1])
       else
-        find_enabled_networks
+        require_admin
       end
+    else
+      find_enabled_networks
     end
+  end
 
-    def find_user_adformats
-      if !current_user.admin? 
-        if current_publisher
-          ### XXX FIXME there is probably a more ActiveRecordy way to handle this 
-          @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])        
-        else 
-          require_admin
-        end
+  def find_user_adformats
+    if !current_user.admin?
+      if current_publisher
+        ### XXX FIXME there is probably a more ActiveRecordy way to handle this
+        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])
       else
-        @adformats = AdFormat.all :order => "ad_format_name ASC"
+        require_admin
       end
-    
+    else
+      @adformats = AdFormat.all :order => "ad_format_name ASC"
     end
 
-    def find_all_publishers
-      @publishers = Publisher.find :all, :order => 'site_name ASC';
-    end
+  end
 
-    ### the list of publishers accessible to this user
-    def allowed_publishers
-        if !current_user.admin? 
-            @publishers = [ current_publisher ]
-        else 
-            # Get the list of publishers for admin users
-            find_all_publishers
-        end
-    end  
+  def find_all_publishers
+    @publishers = Publisher.find :all, :order => 'site_name ASC';
+  end
+
+  def set_acts_as_changelogable_current_user
+    Changelog.current_user = current_user
+  end
+
+### the list of publishers accessible to this user
+  def allowed_publishers
+    if !current_user.admin?
+      @publishers = [ current_publisher ]
+    else
+      # Get the list of publishers for admin users
+      find_all_publishers
+    end
+  end
 end
