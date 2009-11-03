@@ -31,7 +31,7 @@
   </form>
 </div>
 
-
+<br />
 <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
   <tr class="record_listing_header">
     <th>Network</th>
@@ -39,12 +39,13 @@
     <th>Username</th>
     <th>Password</th>
     <th colspan="4">Actions</th>
+    <th nowrap="true">Scraping instructions</th>
   </tr>
   <% for publisher_network_login in @publisher_network_logins %>
 
     <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column"><%=h publisher_network_login.network.network_name_and_id %></td>
-      <td class="record_column"><%=h publisher_network_login.publisher.site_name %></td>      
+      <td class="record_column"><a href="<%= url_for(:controller => "networks", :action => "show", :id => publisher_network_login.network_id )%>"><%= publisher_network_login.network.network_name_and_id %></a></td>
+      <td class="record_column"><a href="<%=  url_for(:controller => "publishers", :action => "show", :id => publisher_network_login.publisher_id ) %>"><%=h publisher_network_login.publisher.site_name %></a></td>      
       <td class="record_column"><%=h publisher_network_login.username %></td>
       <td class="record_column">
         <%=h current_user.admin? ? publisher_network_login.password : '*****' %>
@@ -54,7 +55,8 @@
       </td>
       <td class="record_action"><%= link_to "View", publisher_network_login, :action=> :show %></td>
       <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(publisher_network_login) %></td>
-      <td class="record_action"><%= link_to "Delete", publisher_network_login, :confirm => 'Are you sure?', :method => "delete" %></td>
+      <td class="record_column"><%= link_to "Delete", publisher_network_login, :confirm => 'Are you sure?', :method => "delete" %></td>
+      <td class="record_action"><span class="comments" style="font-size:smaller"><%=h publisher_network_login.network.scraping_instructions %></span></td>
     </tr>
   <% end %>
 </table>

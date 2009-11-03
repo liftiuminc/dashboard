@@ -6,7 +6,11 @@
 </p>
 <p>
   <strong>Publisher:</strong>
-  <%=h @user.publisher ? @user.publisher.site_name : "-" %>
+  <% if @user.publisher %>
+    <%= link_to @user.publisher.site_name, @user.publisher %>
+  <% else %>
+     -
+  <% end %>
 </p>
 
 <% if current_user.admin? %>
