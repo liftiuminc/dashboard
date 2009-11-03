@@ -40,14 +40,15 @@
 	    <ul>
 		<li><%= link_to "Admin Home", :controller => "homes", :action => "admin" %>
 		<li><%= link_to "Tags", tags_url %>
-		<li><%= link_to "Tag Generator", tag_generator_url %>	
-		<li><%= link_to "Networks", networks_url %>	
-		<li><%= link_to "Users", users_url %>	
-		<li><%= link_to "Ad Formats", ad_formats_url %>	
-		<li><%= link_to "Publishers", publishers_url %>	
-		<li><%= link_to "Data Export", data_export_url %>	
-		<li><%= link_to "Data Entry", revenues_url %>	
-		<li><%= link_to "Network Logins", publisher_network_logins_url %>	
+		<li><%= link_to "Tag Generator", tag_generator_url %>
+		<li><%= link_to "Networks", networks_url %>
+		<li><%= link_to "Users", users_url %>
+		<li><%= link_to "Ad Formats", ad_formats_url %>
+		<li><%= link_to "Publishers", publishers_url %>
+		<li><%= link_to "Data Export", data_export_url %>
+		<li><%= link_to "Data Entry", revenues_url %>
+		<li><%= link_to "Network Logins", publisher_network_logins_url %>
+    <li><%= link_to "Changelogs", changelogs_url %>
 	    </ul>
        </div>
        <%- end %>
@@ -63,8 +64,8 @@
      <%- end %><!-- if current_user -->
 
     </div><!-- /left nav -->
-   
-   
+
+
     <!-- Main content -->
     <div id="container">
       <%- if show_title_bar? -%>
@@ -75,13 +76,13 @@
 		<h1><%=h yield(:title) %></h1>
 	</div>
       <%- end -%>
-      <div id="content"> 
+      <div id="content">
 	<br clear="all"><!-- I hate CSS float -->
 
        <%- flash.each do |name, msg| -%>
         <%= content_tag :div, msg, :id => "flash_#{name}", :class => "rails_flash" %>
       <%- end -%>
-      
+
       <%= yield %>
 	<br clear="all"><!-- I hate CSS float -->
       </div><!-- content -->

@@ -29,7 +29,7 @@ class ActiveSupport::TestCase
   # test cases which use the @david style and don't mind the speed hit (each
   # instantiated fixtures translates to a database query per test method),
   # then set this back to true.
-  self.use_instantiated_fixtures  = false
+  self.use_instantiated_fixtures = false
 
   # Setup all fixtures in test/fixtures/*.(yml|csv) for all tests in alphabetical order.
   #
@@ -43,23 +43,44 @@ class ActiveSupport::TestCase
   end
 
   def login_as_admin
-    login_as(User.first(:conditions => ["email = ?", "unit_test_admin@liftium.com"]))
+    login_as(user = User.first(:conditions => ["email = ?", "unit_test_admin@liftium.com"]))
+    user
   end
 
   def login_as_publisher
     login_as(User.first(:conditions => ["email = ?", "unit_test_publisher@liftium.com"]))
   end
-  
+
+  def assert_changes(klass, amount = 1)
+    before_count = klass.count
+    yield
+    assert_equal before_count + amount, klass.count, "Expected #{klass} to be incremented by #{amount} but wasn't"
+  end
+
+  def self.should_acts_as_changelogable
+    target_klass_string = self.to_s.split("Test").first
+
+    context "acts_as_changelogable" do
+      should "add an entry into the acts_as_changelogs table each time a tag is created" do
+        assert_changes(Changelog) do
+          yield
+        end
+        changelog = Changelog.find(:first, :order => "created_at DESC")
+        assert_equal target_klass_string, changelog.record_type
+      end
+    end
+  end
+
   @@unique_id = 0
-  def login_as_new_user 
+  def login_as_new_user
     ### @@x++ is a syntax error? odd... -Jos
+    ### That's because there isn't a ++ operator in Ruby. += is correct. SJT
     @@unique_id += 1
-    
-    user = User.create( :email          => "liftium#{@@unique_id}@example.com", 
+
+    user = User.create( :email          => "liftium#{@@unique_id}@example.com",
                         :password       => 'password',
                         :publisher_id   => 1 )
     login_as( user )
     return user
   end
-  
 end

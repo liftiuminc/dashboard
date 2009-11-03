@@ -1,4 +1,6 @@
 class PublisherNetworkLogin < ActiveRecord::Base
+  acts_as_changelogable
+
   belongs_to :network,      :class_name => "Network"
   belongs_to :publisher,    :class_name => "Publisher"
 

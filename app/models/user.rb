@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
+  acts_as_changelogable
   acts_as_authentic
+
   belongs_to :publisher
   has_many   :revenues
 
@@ -10,7 +12,7 @@ class User < ActiveRecord::Base
 
 
   def must_associate_publisher_if_not_admin
-    if !admin and publisher_id.blank? 
+    if !admin and publisher_id.blank?
       errors.add_to_base("If the user is not an administrator, a publisher must be selected")
     end
   end

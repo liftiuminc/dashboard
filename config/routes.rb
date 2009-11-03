@@ -10,6 +10,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :publishers, :has_many => :tags
   map.resources :publisher_network_logins
   map.resources :password_resets
+  map.resources :changelogs
+  map.resources :tag_targets
+  map.resources :comments
 
   # FIXME: Is there way to not have to list all these?
   map.select_network 'tags/select_network', :controller => 'tags', :action => 'select_network'
@@ -18,7 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.tag_copy  'tags/copy/:id', :controller => 'tags', :action => 'copy'
   map.resources :tags, :has_many => [ :ad_formats, :tag_options, :tag_targets ]
   map.resource :user_session
-  map.resources :users 
+  map.resources :users
 
   # Charts
   map.chart_misc 'charts/misc/:stat', :controller => 'charts', :action => "misc_stat"
