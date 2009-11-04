@@ -1,12 +1,21 @@
 class TagsController < ApplicationController
   before_filter :require_user
+  before_filter :require_admin,      :except => [:index, :generator, :html_preview]
   before_filter :save_filter_fields, :only => [:index]
-  before_filter :debug_sql, :only => [:index]
-  before_filter :find_enabled_networks, :only => [:select_network, :new, :edit, :copy, :index]
-  before_filter :find_all_publishers, :only => [:new, :edit, :copy, :index]
+  before_filter :debug_sql,          :only => [:index]
+  before_filter :find_user_networks, :only => [:select_network, :new, :edit, :copy, :index]
+  before_filter :allowed_publishers, :only => [:new, :edit, :copy, :index]
+  before_filter :find_user_adformats,:only => [:new, :edit, :copy, :index, :generator]
 
   def index
-    @tags = Tag.new.search(session[:tag_params] || "")
+    conditions = session[:tag_params] || {}
+  
+    ### you can only find things for YOUR publisher
+    if !current_user.admin?
+        conditions[:publisher_id] = current_publisher.id
+    end
+    
+    @tags = Tag.new.search( conditions )
     flash[:warning] = "No matching tags found" if @tags.empty?
   end
 
@@ -138,19 +147,18 @@ class TagsController < ApplicationController
 
   def generator
     @tag = Tag.new
-
-    if ! current_user.publisher_id
-        @publishers = Publisher.all(:order => "site_name")
-        @adformats = AdFormat.all
-    else
-        # FIXME, there is probably a more ActiveRecordy way to handle this
-        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_user.publisher_id, 1])
-    end
   end
 
   def html_preview
     if params[:id]
-      @tag = Tag.find(params[:id])
+
+      ### you can only view your own tags
+      conditions = {}
+      if !current_user.admin? 
+        conditions[:publisher_id] = current_publisher.id
+      end  
+    
+      @tag = Tag.find( params[:id], :conditions => conditions )
       render :action => :html_preview, :layout => "bare"
     elsif params[:html]
       @tag = Tag.new
