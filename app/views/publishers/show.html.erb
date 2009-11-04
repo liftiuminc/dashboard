@@ -40,8 +40,8 @@
 </p>
 
 <p>
-  <%= link_to "Edit", edit_publisher_path(@publisher) %> |
   <%- if !current_user.publisher_id and current_user.admin %>
+    <%= link_to "Edit", edit_publisher_path(@publisher) %> |
     <%= link_to "View All", publishers_path %> |
     <%= link_to "Delete", @publisher, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
   <%- end %>
