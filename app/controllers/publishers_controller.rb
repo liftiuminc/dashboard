@@ -1,12 +1,14 @@
 class PublishersController < ApplicationController
-  before_filter :require_admin
+  before_filter :require_user
+  before_filter :require_admin, :except => [:show, :ad_preview]
 
   def index
     @publishers = Publisher.all
   end
   
   def show
-    @publisher = Publisher.find(params[:id])
+    id = !current_user.admin? ? current_publisher.id : params[:id]
+    @publisher = Publisher.find( id )
   end
   
   def new
@@ -45,7 +47,8 @@ class PublishersController < ApplicationController
   end
   
   def ad_preview
-    @publisher  = Publisher.find(params[:id])
+    id          = !current_user.admin? ? current_publisher.id : params[:id]
+    @publisher  = Publisher.find( id )
     @title      = "Publisher - " + @publisher.site_name
     
     @tags       = Tag.find( :all, :conditions => { 
