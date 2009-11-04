@@ -1,3 +1,4 @@
+require 'json'
 module ChangelogsHelper
 
   def render_diffs(changelog)

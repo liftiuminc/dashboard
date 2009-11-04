@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-  acts_as_changelogable
   acts_as_authentic
 
   belongs_to :publisher

@@ -61,7 +61,7 @@ class ActiveSupport::TestCase
     target_klass_string = self.to_s.split("Test").first
 
     context "acts_as_changelogable" do
-      should "add an entry into the acts_as_changelogs table each time a tag is created" do
+      should "add an entry into the acts_as_changelogs table each time a record is created" do
         assert_changes(Changelog) do
           yield
         end
