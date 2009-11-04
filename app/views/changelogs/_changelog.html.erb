@@ -3,5 +3,5 @@
   <td><%= changelog.operation %></td>
   <td><%= render_diffs(changelog) %></td>
   <td><%= render_user(changelog) %></td>
-  <td><%= changelog.created_at %></td>
+  <td><%= changelog.created_at %><br><%= distance_of_time_in_words_to_now(changelog.created_at) %> ago</td>
 </tr>

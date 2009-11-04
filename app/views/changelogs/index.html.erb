@@ -1,7 +1,10 @@
 <h1 align="center"><%= changelogs_title(params) %></h1>
 
 <% form_tag changelogs_path, :method => :get do -%>
-  Limit Number of Entries: <%= select_tag "entries", options_for_select([2, 10, 25, 50, 100, "all"], @entries), :onchange => "form.submit();" %>
+  Limit Number of Entries: <%= select_tag "entries", options_for_select([10, 25, 50, 100, "all"], @entries) %>
+  Exclude User: <%= select_tag "excluded_user_id",
+                               options_for_select(distinct_changelog_users_for_select, @excluded_user_id.to_i) %>
+  <%= submit_tag "Filter" %>
 <% end %>
 <table class="record_listing">
   <tr class="record_listing_header">

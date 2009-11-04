@@ -34,7 +34,7 @@ class ChangelogsControllerTest < ActionController::TestCase
       assert_no_match Regexp.new(@new_tag_name), @response.body
     end
 
-    should "filter by user if user_id passed" do
+    should "filter by user and only show results from that user if user_id passed" do
       nick = User.find_by_id(42)
       login_as(nick)
       Changelog.current_user = nick
@@ -48,7 +48,7 @@ class ChangelogsControllerTest < ActionController::TestCase
 
     should "limit the number of entries if entries is passed" do
       login_as_admin
-      Changelog.expects(:find).with(:all, :limit => 25)
+      Changelog.expects(:find).with(:all, {:limit => 25, :order => 'created_at DESC'})
       get :index, :entries => "25"
       assert_template :index
       assert_equal 25, assigns(:entries)
@@ -56,10 +56,18 @@ class ChangelogsControllerTest < ActionController::TestCase
 
     should "not limit the number of entries if entries is passed with 'all'" do
       login_as_admin
-      Changelog.expects(:find).with(:all, nil)
+      Changelog.expects(:find).with(:all, {:order => 'created_at DESC'})
       get :index, :entries => "all"
       assert_template :index
       assert_equal "all", assigns(:entries)
+    end
+
+    should "exclude user from results if excluded_user_id is passed" do
+      login_as_admin
+      nick = User.find_by_id(42)
+      Changelog.expects(:find).with(:all, {:order => 'created_at DESC', :conditions => ['user_id <> ?', '42']})
+      get :index, :excluded_user_id => nick.id
+      assert_template :index
     end
   end
 end
