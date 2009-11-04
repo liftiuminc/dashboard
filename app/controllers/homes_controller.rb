@@ -35,7 +35,7 @@ class HomesController < ApplicationController
     
     # FIXME move to model once Jos' is done refactoring
     sql = "SELECT SUM(loads) AS loads FROM " + model.table_name +
-        " WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
+        " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND " + model.new.time_column + " >= ? " +
         " AND " + model.new.time_column + " <= ? "
         
@@ -45,9 +45,10 @@ class HomesController < ApplicationController
     @previous_impressions = previous_stats[0].loads.to_i
 
     sql = "SELECT SUM(revenue) AS revenue FROM revenues " +
-        " WHERE tag_id IN (SELECT tag_id FROM tags where publisher_id = ?)" +
+        " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND day >= ? AND day <= ? "
 
+    model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
     @revenue = revenues[0].revenue.to_f
