@@ -79,7 +79,7 @@ total_ecpm = total_revenue = 0.00
       <td class="record_column"><%= number_with_delimiter(total_clicks)%></td>
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(total_slip)%></td>
-      <td class="record_column"><%= @fill_stats.length > 0 ? @fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%": "-" %></td>
+      <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%": "-" %></td>
     <%- if params[:interval] == "day" %>
       <td class="record_column">$<%= total_revenue.round(2)%></td>
       <td class="record_column">$<%= @fill_stats.length > 0 ? (total_revenue/total_loads).round(2) * 1000 : "-"%></td>

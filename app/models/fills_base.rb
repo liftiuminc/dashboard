@@ -4,14 +4,14 @@ class FillsBase < ActiveRecord::Base
   belongs_to :tag
 
   def fill_rate 
-    self.fill_rate_raw(loads, attempts)
+    FillsBase.calculate_fill_rate(loads, attempts)
   end
 
   def slip
     attempts - (loads + rejects)
   end
 
-  def fill_rate_raw (loads, attempts)
+  def self.calculate_fill_rate (loads, attempts)
     if (attempts.to_i.zero?)
 	return 0.0
     end
@@ -155,7 +155,7 @@ class FillsBase < ActiveRecord::Base
 	total_loads,
 	total_rejects,
 	total_slip,
-        fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%"
+        FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%"
       ] 
 
     end
@@ -242,7 +242,7 @@ class FillsBase < ActiveRecord::Base
 	total_rejects,
 	total_clicks,
 	total_slip,
-        fill_stats[0].fill_rate_raw(total_loads, total_attempts).to_s + "%",
+        FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%",
 	'$' + total_revenue.to_f.round(2).to_s,
 	total_avg_ecpm
       ] 

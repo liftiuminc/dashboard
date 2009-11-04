@@ -178,7 +178,7 @@ class Tag < ActiveRecord::Base
     attempts = FillsMinute.sum("attempts", :conditions => conditions)
     rejects = FillsMinute.sum("rejects", :conditions => conditions)
 
-    fill_rate = FillsMinute.new.fill_rate_raw(loads, attempts)
+    fill_rate = FillsBase.calculate_fill_rate(loads, attempts)
     return {:loads => loads, :attempts => attempts, :rejects => rejects, :fill_rate => fill_rate}
   end
 

@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validate :must_associate_publisher_if_not_admin
 
   ### no login without email/password
-  validates_presence_of :email, :password
+  validates_presence_of :email 
 
 
   def must_associate_publisher_if_not_admin
