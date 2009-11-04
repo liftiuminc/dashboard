@@ -57,7 +57,7 @@ total_clicks = 0
     <%- if rev
 	total_revenue += rev.revenue.to_f
 	total_ecpm += rev.ecpm.to_f
-	total_clicks += rev.clicks
+	total_clicks += rev.clicks.to_i
     %>
       <td class="record_column">$<%= rev.revenue.to_f.round(2) %></td>
       <td class="record_column">$<%= rev.ecpm.to_f.round(2) %></td>
