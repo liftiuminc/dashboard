@@ -32,8 +32,9 @@
 	    <div class="navsection_header">Publishers</div>
 	    <ul>
 		<li><%= link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
-	        <li><%= link_to "Data Export", data_export_url %>	
+	    <li><%= link_to "Data Export", data_export_url %>	
 		<li><%= link_to "Tag Generator", tag_generator_url %>	
+		<li><%= link_to "Tags", tags_url %>	
 	    </ul>
        </div>
        <%- if current_user.admin? %>

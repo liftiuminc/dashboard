@@ -26,7 +26,7 @@
 	<li><%= label_tag :size %>
 	    <select name="size" id="sizeDD">
 	      <option value="">
-	      <%= options_from_collection_for_select AdFormat.all.collect, :size, :name_with_size, @size %>
+	      <%= options_from_collection_for_select @adformats, :size, :name_with_size, @size %>
 	    </select>
 	</li>
 
@@ -99,12 +99,20 @@
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
 
+    <% if current_user.admin? %>
       <td class="record_action"><%= link_to "View", tag, :action=> :show %></td>
       <td class="record_action"><%= link_to "Edit", edit_tag_path(tag) %></td>
       <td class="record_action"><%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %></td>
 	<!-- FIXME: Use correct rails link helper -->
       <td class="record_action"><%= link_to "Copy", "/tags/copy/#{tag.id}" %></td>
       <td class="record_action"><%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %></td>
+    <% else %>
+      <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
+      <td class="record_action"> </td>
+      <td class="record_action"> </td>
+      <td class="record_action"> </td>
+      <td class="record_action"> </td>
+    <% end %>      
       <td class="record_action">
       <% if tag.enabled %>
 	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
