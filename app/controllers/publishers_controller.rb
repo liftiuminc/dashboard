@@ -1,6 +1,6 @@
 class PublishersController < ApplicationController
   before_filter :require_user
-  before_filter :require_admin, :except => [:show, :ad_preview]
+  before_filter :require_admin, :except => [:show]
 
   def index
     @publishers = Publisher.all

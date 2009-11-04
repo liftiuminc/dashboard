@@ -7,18 +7,18 @@
     <%= javascript_include_tag "prototype" %>
     <%= yield(:head) %>
   </head>
-  <body<%= Rails.configuration.environment == "development" && ' background="/images/dev_background.png"'%>>
+  <body<%= Rails.configuration.environment =~ /^dev/ && ' background="/images/dev_background.png"'%>>
 
 <div id="header">
 	<div class="fixedwidth">
 		<ul class="nav">
-			<li><a href="http://www.dashboard.com/contact-us">Contact Us</a></li>
-     			<% if current_user %>
-				<li><%= link_to "My Account", account_path %>
-				<li><%= link_to "Logout", user_session_path, :method => :delete %>
-			<% else %>
-				<li><%= link_to "Login", new_user_session_path %>
-			<% end %>
+			<li><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
+            <% if current_user %>
+              <li><%= link_to "My Account", account_path %>
+              <li><%= link_to "Logout", user_session_path, :method => :delete %>
+            <% else %>
+              <li><%= link_to "Login", new_user_session_path %>
+            <% end %>
 		</ul>
 	</div>
 </div>
@@ -29,30 +29,27 @@
      <% if current_user %>
 
       <div class="navsection">
-	    <div class="navsection_header">Publishers</div>
+	    <div class="navsection_header"><%= current_user.admin? ? :Admin : :Publishers %></div>
 	    <ul>
-		<li><%= link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
-	    <li><%= link_to "Data Export", data_export_url %>	
-		<li><%= link_to "Tag Generator", tag_generator_url %>	
-		<li><%= link_to "Tags", tags_url %>	
+        <% if !current_user.admin? %>
+          <!-- publisher only section -->
+          <li><%= link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
+        <% else %>
+          <!-- admin only section -->
+          <li><%= link_to "Admin Home", :controller => "homes", :action => "admin" %>
+          <li><%= link_to "User Accounts", users_url %>
+          <li><%= link_to "Ad Networks", networks_url %>
+          <li><%= link_to "Publishers", publishers_url %>
+          <li><%= link_to "Change Logs", changelogs_url %>
+          <li><%= link_to "Data Entry", revenues_url %>
+        <% end %>
+          <!-- common -->
+          <li><%= link_to "Data Export", data_export_url %>	
+          <li><%= link_to "Tag Generator", tag_generator_url %>	
+          <li><%= link_to "Chain Management", tags_url %>	
+          <li><%= link_to "Network Logins", publisher_network_logins_url %>
 	    </ul>
        </div>
-       <%- if current_user.admin? %>
-       <div class="navsection">
-	    <div class="navsection_header">Admin</div>
-	    <ul>
-		<li><%= link_to "Admin Home", :controller => "homes", :action => "admin" %>
-		<li><%= link_to "Chain Management", tags_url %>
-		<li><%= link_to "Ad Networks", networks_url %>
-		<li><%= link_to "User Accounts", users_url %>
-		<li><%= link_to "Ad Formats", ad_formats_url %>
-		<li><%= link_to "Publishers", publishers_url %>
-		<li><%= link_to "Data Entry", revenues_url %>
-		<li><%= link_to "Network Logins", publisher_network_logins_url %>
-		<li><%= link_to "Change Logs", changelogs_url %>
-	    </ul>
-       </div>
-       <%- end %>
 
        <div class="navsection">
 	    <div class="navsection_header">Account</div>

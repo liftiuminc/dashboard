@@ -79,7 +79,7 @@
     <tr class="disabled" background="/images/disabled_bg.png">
    <%-end%>
       <td nowrap="true" class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
-      <td nowrap="true" class="record_column"><%= link_to tag.network.network_name, tag.network %></td>
+      <td nowrap="true" class="record_column"><%= current_user.admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
       <td nowrap="true" class="record_column">
  	    <%= tag.tag_name %><br />
         <span style="font-size: smaller">

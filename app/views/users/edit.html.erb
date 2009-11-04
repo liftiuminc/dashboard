@@ -3,6 +3,8 @@
 <%= render :partial => 'form' %>
 
 <p>
-  <%= link_to "Show", @user %> |
-  <%= link_to "View All Users", users_path %>
+  <%= link_to "Show", @user %>
+  <%- if !current_user.publisher_id and current_user.admin %>
+    | <%= link_to "View All Users", users_path %>
+  <% end %>  
 </p>
