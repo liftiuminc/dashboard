@@ -1,0 +1,17 @@
+
+<% title "Movers" %>
+
+<br clear="all"/>
+
+<table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Name</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% for movers in @movers %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column"><%=h movers.name %></td>
+    </tr>
+  <% end %>
+</table>
+
