@@ -16,7 +16,7 @@
 	    <!-- FIXME. Use built in rails helper instead? -->
 	    <select name="publisher_id" id="publisherDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Publisher.all.collect, :id, :site_name, params[:publisher_id].to_i %>
+	      <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
 	    </select>
 	</li>
     <% end %>
@@ -24,7 +24,7 @@
 	<li><%= label_tag :network %>
 	    <select name="network_id" id="networkDD">
 	      <option value="">
-	      <%= options_from_collection_for_select Network.all.collect, :id, :network_name_and_id, params[:network_id].to_i %>
+	      <%= options_from_collection_for_select @networks, :id, :network_name_and_id, params[:network_id].to_i %>
 	    </select>
 	</li>
 	<li><%= liftium_submit "Filter Credentials"%></li>

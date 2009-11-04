@@ -3,7 +3,7 @@ class PublisherNetworkLoginsController < ApplicationController
   before_filter :allowed_publishers
   before_filter :allowed_publisher_network_login, 
                 :only => [:edit, :show, :update, :destroy]
-  before_filter :find_enabled_networks
+  before_filter :find_user_networks
 
   def index
     # any conditions to filter by?
