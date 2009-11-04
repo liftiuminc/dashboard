@@ -39,8 +39,8 @@ class HomesController < ApplicationController
         " AND " + model.new.time_column + " >= ? " +
         " AND " + model.new.time_column + " <= ? "
         
-    stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
-    previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
+    stats = model.find_by_sql ["/*#1*/" + sql, current_user.publisher_id, @dates[0], @dates[1]]
+    previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
     @impressions = stats[0].loads.to_i
     @previous_impressions = previous_stats[0].loads.to_i
 
@@ -48,9 +48,8 @@ class HomesController < ApplicationController
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND day >= ? AND day <= ? "
 
-    model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
-    previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[1]]
+    previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
     @revenue = revenues[0].revenue.to_f
     @previous_revenue = previous_revenues[0].revenue.to_f
 
