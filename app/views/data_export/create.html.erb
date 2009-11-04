@@ -77,7 +77,7 @@ total_clicks = 0
       <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(@fill_stats.sum(&:loads), @fill_stats.sum(&:attempts)).to_s + "%": "-" %></td>
     <%- if params[:interval] == "day" %>
       <td class="record_column">$<%= total_revenue.round(2)%></td>
-      <td class="record_column">$<%= Revenue.calculate_ecpm(@fill_stats.sum(&:loads), total_revenue)%></td>
+      <td class="record_column">$<%= Revenue.calculate_ecpm(@fill_stats.sum(&:loads), total_revenue).round(3)%></td>
     <%- end %>
     </tr>
   
