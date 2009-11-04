@@ -154,22 +154,4 @@ class TagsControllerTest < ActionController::TestCase
     end
   end
 
-
-  # Admin vs publisher for tag generator
-  context "generator action with a admin login" do
-    setup do
-      login_as_admin
-      get :generator
-    end
-    should_assign_to :publishers
-  end
-
-  context "generator action with a publisher login" do
-    setup do
-      login_as_publisher
-      get :generator
-    end
-    should_not_assign_to :publishers
-  end
-
 end
