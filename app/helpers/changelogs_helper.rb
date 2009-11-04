@@ -27,8 +27,15 @@ module ChangelogsHelper
     elsif params[:user_id] && user = User.find_by_id(params[:user_id])
       "Changelogs - Filtered by #{user.email}'s changes (#{link_to("Show All", changelogs_path)})"
     else
-      "Changelogs - Showing #{@entries || "all"} entries"
+      title = "Changelogs - Showing #{@entries || "all"} entries"
+      title += " excluding #{User.find_by_id(params[:excluded_user_id]).email} (#{link_to("Show All", changelogs_path)})" if params[:excluded_user_id] && params[:excluded_user_id] != "none"
+      title
     end
+  end
+
+  def distinct_changelog_users_for_select
+    results = User.find_by_sql("SELECT id, email FROM users WHERE id IN (SELECT distinct(user_id) FROM acts_as_changelogs)")
+    results.collect{|u|[u.email, u.id]}.unshift(["none"])
   end
 
   private
