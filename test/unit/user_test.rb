@@ -25,7 +25,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     should "not check the password and password_confirmation fields if the user has a crypted_password and both fields are empty" do
-      user = User.find(49)
+      user = users(:unit_test_publisher)
       crypted_password = user.crypted_password
       assert user.update_attributes(:admin => 0)
       assert user.update_attributes(:admin => 0, :password => "", :password_confirmation => "")

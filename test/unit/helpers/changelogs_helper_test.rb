@@ -20,7 +20,7 @@ class ChangelogsHelperTest < ActionView::TestCase
   end
 
   def test_render_user
-    user = User.find(:first)
+    user = users(:nick)
     changelog = Changelog.new(:user_id => user.id)
     assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a><br/><a href=\"/changelogs?user_id=#{user.id}\">Filter</a>", render_user(changelog)
   end
@@ -45,9 +45,8 @@ class ChangelogsHelperTest < ActionView::TestCase
   end
 
   def test_changelogs_title_filter_by_user_id
-    user = User.find(:first)
     assert_equal "Changelogs - Filtered by nick@liftium.com's changes (<a href=\"/changelogs\">Show All</a>)",
-                 changelogs_title({:user_id => user.id})
+                 changelogs_title({:user_id => users(:nick).id})
   end
 
   def test_changelogs_title_filter_by_user_id_not_found_shows_all
@@ -56,7 +55,7 @@ class ChangelogsHelperTest < ActionView::TestCase
 
   def test_changelogs_title_excluded_users
     assert_equal "Changelogs - Showing all entries excluding nick@liftium.com (<a href=\"/changelogs\">Show All</a>)",
-                 changelogs_title({:excluded_user_id => 42})    
+                 changelogs_title({:excluded_user_id => 42})
   end
 
   def test_distinct_changelog_users_for_select

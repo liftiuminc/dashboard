@@ -119,8 +119,7 @@ class UsersControllerTest < ActionController::TestCase
     end
 
     should "render the new_change_password template" do
-      nick = User.find(42)
-      login_as(nick)
+      login_as(users(:nick))
 
       get :new_change_password
       assert_response :success
@@ -138,7 +137,7 @@ class UsersControllerTest < ActionController::TestCase
 
     context "with publisher login" do
       setup do
-        @publisher = User.find(49)
+        @publisher = users(:unit_test_publisher)
         login_as(@publisher)
       end
 

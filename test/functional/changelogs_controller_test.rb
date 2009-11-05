@@ -5,8 +5,8 @@ class ChangelogsControllerTest < ActionController::TestCase
 
   context "index action NOT logged in" do
     setup do
-      @network = Network.find(:first)
-      @tag = Tag.find(:first)
+      @network = networks(:Adsense)
+      @tag = tags(:lb_reject)
       @network.update_attribute(:network_name, @new_network_name = "NewNetworkName")
       @tag.update_attribute(:tag_name, @new_tag_name = "NewTagName")
     end
