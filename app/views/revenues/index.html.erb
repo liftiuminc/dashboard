@@ -41,8 +41,8 @@
           <td class="record_column"><%=h rev ? rev.ecpm     : "?"  %></td>          
  
           <% if rev %>
-              <td class="record_action"><%= link_to "View", rev, :action=> :show %></td>
-              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev) %></td>
+              <td class="record_action"><%= link_to "View", rev, :action => :show, :popup => true %></td>
+              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev), :popup => true %></td>
               <td class="record_action"><%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %></td>
           <% else %>
             <td class="record_action">
