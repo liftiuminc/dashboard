@@ -32,8 +32,15 @@
   </div>
   <div class="fieldset">
     <%= f.label :enabled, nil, :class => "left_label"%>
-    <%= radio_button "tag", "enabled", "true"%>Yes
-    <%= radio_button "tag", "enabled", "false"%>No
+    <%- if @tag.network.enabled %>
+	<%= radio_button "tag", "enabled", "true"%>Yes
+	<%= radio_button "tag", "enabled", "false"%>No
+    <%- else -%>
+	<font color="red"><%= @tag.enabled_s%></font>
+	<%- if current_user.admin %>
+	  <%= link_to (@tag.network.network_name, @tag.network) %>
+	<%- end -%>
+    <%- end %>
   </div>
   <div class="fieldset">
     <%= f.label :always_fill, nil, :class => "left_label" %>

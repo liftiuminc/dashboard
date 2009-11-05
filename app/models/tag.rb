@@ -39,7 +39,11 @@ class Tag < ActiveRecord::Base
   #end
 
    def enabled_s
-      enabled ? "Yes" : "No"
+      if network.enabled 
+        enabled ? "Yes" : "No"
+      else
+        "Network Disabled"
+      end
    end
 
    def always_fill_s
@@ -85,11 +89,40 @@ class Tag < ActiveRecord::Base
 
   def search_sql (params)
     query = []
-    query.push("SELECT * FROM tags WHERE 1=1");
+    query.push("SELECT tags.* FROM tags 
+	INNER JOIN networks ON networks.id = tags.network_id
+	WHERE 1=1");
 
     if (params[:include_disabled].blank?)
-       query[0] += " AND enabled = ?"
+       query[0] += " AND tags.enabled = ?"
        query.push(true)
+       query[0] += " AND networks.enabled = ?"
+       query.push(true)
+    end
+
+    if (! params[:publisher_id].blank?)
+       query[0] += " AND publisher_id = ?"
+       query.push(params[:publisher_id].to_i)
+    end
+
+    if (! params[:network_id].blank?)
+       query[0] += " AND network_id = ?"
+       query.push(params[:network_id].to_i)
+    end
+
+    if (! params[:size].blank?)
+       query[0] += " AND size = ?"
+       query.push(params[:size])
+    end
+
+    ### created before a certain date?
+    ### mysql will not truncate a date to the same amount of significance,
+    ### so a tag created DURING '2009-10-10' is not returned for a query
+    ### with 'created_at <= 2009-10-10'. The solution is to do <= the
+    ## NEXT date -jos
+    if (! params[:created_before].blank? )
+       query[0] += " AND created_at <= ?"
+       query.push( params[:created_before].to_date.next )
     end
 
     if (! params[:publisher_id].blank?)
@@ -119,7 +152,8 @@ class Tag < ActiveRecord::Base
 
     ### search for both name & ids
     if (! params[:name_search].blank?)
-       query[0] += " AND (tag_name like ? OR id = ?) "
+       query[0] += " AND (tag_name like ? OR network_name like ? OR tags.id = ?) "
+       query.push('%' + params[:name_search] + '%')
        query.push('%' + params[:name_search] + '%')
        query.push( params[:name_search] )
     end
