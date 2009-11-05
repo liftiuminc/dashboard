@@ -18,7 +18,9 @@ total_clicks = 0
    <%- if params[:interval] == "day" %>
     <th>Clicks</th>
    <%- end %>
+   <% if current_user.admin? %>
     <th>Slip</th>
+   <% end %> 
     <th>Fill Rate</th>
    <%- if params[:interval] == "day" %>
     <th>Revenue</th>
@@ -42,8 +44,21 @@ total_clicks = 0
     -%>
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column"><a href="<%= publisher_url fill_stat.tag.publisher %>"><%= fill_stat.tag.publisher.site_name%></a></td>
-      <td class="record_column"><a href="<%= network_url fill_stat.tag.network %>"><%= fill_stat.tag.network.network_name%></a></td>
-      <td class="record_column">#<%= fill_stat.tag_id%> - <a href="<%=tag_url fill_stat.tag %>"><%= fill_stat.tag.tag_name%></a></td>
+      <td class="record_column">
+        <% if current_user.admin? %>
+          <a href="<%= network_url fill_stat.tag.network %>"><%= fill_stat.tag.network.network_name%></a>
+        <% else %>
+          <%= fill_stat.tag.network.network_name %>
+        <% end %>  
+      </td>
+      <td class="record_column">
+        #<%= fill_stat.tag_id%> - 
+        <% if current_user.admin? %>
+          <a href="<%=tag_url fill_stat.tag %>"><%= fill_stat.tag.tag_name%></a>
+        <% else %>   
+          <%= fill_stat.tag.tag_name %>
+        <% end %>  
+        </td>
       <td class="record_column"><%= fill_stat.tag.size%></a></td>
       <td class="record_column"><%=fill_stat.time%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
@@ -53,7 +68,13 @@ total_clicks = 0
       <td class="record_column"><%= number_with_delimiter( rev.clicks )%></td>
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
-      <td class="record_column"><a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a></td>
+      <td class="record_column">
+        <% if current_user.admin? %>
+          <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a>
+        <% else %>
+          <%= fill_stat.fill_rate %>%
+        <% end %>
+      </td>
     <%- if rev
 	total_revenue += rev.revenue.to_f
 	total_ecpm += rev.ecpm.to_f

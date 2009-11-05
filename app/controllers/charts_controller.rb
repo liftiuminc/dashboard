@@ -1,6 +1,7 @@
 class ChartsController < ApplicationController
 
-  before_filter :require_user
+  ### charts are only for admins according to Nick. See FB 123
+  before_filter :require_admin
 
   def tag
     @tag = Tag.find(params[:id])
