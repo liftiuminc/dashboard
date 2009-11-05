@@ -1,10 +1,10 @@
 <% title "Data Export"
-total_attempts = total_loads = total_rejects = total_clicks = total_slip = 0 
 total_ecpm = total_revenue = 0.00
-%>
+total_clicks = 0
+ %>
 <%= render :partial => 'filter_form' %>
 
-<% if !@fill_stats.empty? %>
+<% if !@fill_stats.empty? && @fill_stats.length > 0 %>
 <table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
   <tr class="record_listing_header">
     <th>Publisher</th>
@@ -50,39 +50,34 @@ total_ecpm = total_revenue = 0.00
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
     <%- if rev  %>
-      <% total_clicks += rev.clicks.to_i %>
       <td class="record_column"><%= number_with_delimiter( rev.clicks )%></td>
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column"><a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a></td>
     <%- if rev
-      total_revenue += rev.revenue.to_f
-      total_ecpm += rev.ecpm.to_f
-      %>
+	total_revenue += rev.revenue.to_f
+	total_ecpm += rev.ecpm.to_f
+	total_clicks += rev.clicks.to_i
+    %>
       <td class="record_column">$<%= rev.revenue.to_f.round(2) %></td>
       <td class="record_column">$<%= rev.ecpm.to_f.round(2) %></td>
     <%- end %>
     </tr>
-  <%
-  # Add up the totals
-  total_attempts += fill_stat.attempts
-  total_loads += fill_stat.loads
-  total_rejects += fill_stat.rejects
-  total_slip += fill_stat.slip
-  end %>
+  <%- end %>
+
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
       <td class="record_column" colspan="5">Totals</td>
-      <td class="record_column"><%= number_with_delimiter(total_attempts)%></td>
-      <td class="record_column"><%= number_with_delimiter(total_loads)%></td>
-      <td class="record_column"><%= number_with_delimiter(total_rejects)%></td>
+      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:attempts))%></td>
+      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:loads))%></td>
+      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:rejects))%></td>
     <%- if params[:interval] == "day" %>
       <td class="record_column"><%= number_with_delimiter(total_clicks)%></td>
     <%- end %>
-      <td class="record_column"><%= number_with_delimiter(total_slip)%></td>
-      <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%": "-" %></td>
+      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:attempts) - (@fill_stats.sum(&:loads) + @fill_stats.sum(&:rejects)))%></td>
+      <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(@fill_stats.sum(&:loads), @fill_stats.sum(&:attempts)).to_s + "%": "-" %></td>
     <%- if params[:interval] == "day" %>
       <td class="record_column">$<%= total_revenue.round(2)%></td>
-      <td class="record_column">$<%= @fill_stats.length > 0 ? (total_revenue/total_loads).round(2) * 1000 : "-"%></td>
+      <td class="record_column">$<%= Revenue.calculate_ecpm(@fill_stats.sum(&:loads), total_revenue).round(3)%></td>
     <%- end %>
     </tr>
   

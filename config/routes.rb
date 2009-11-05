@@ -1,17 +1,19 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :revenues
 
   # The priority is based upon order of creation: first created -> highest priority.
   #
   map.resource :account, :controller => "users"
   map.resources :ad_formats
+  map.resources :changelogs
+  map.resources :comments
+  map.resources :movers
   map.resources :networks, :has_many => :network_tag_options
   map.resources :publishers, :has_many => :tags
   map.resources :publisher_network_logins
+  map.resources :publisher_tags
   map.resources :password_resets
-  map.resources :changelogs
+  map.resources :revenues
   map.resources :tag_targets
-  map.resources :comments
 
   # FIXME: I've tried to add these two as :member => {:new_change_password => :get, :change_password => :put} on the
   # map.resources :users with no luck. - SJT

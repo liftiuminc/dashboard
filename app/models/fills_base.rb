@@ -33,17 +33,28 @@ class FillsBase < ActiveRecord::Base
     con = []
     var = []
 
+    ### XXX FIXME this should probably be using sanitize_sql_hash_for_conditions
+
     ### dispatch table
-    {   :enabled        => "enabled         = ?",
-        :publisher_id   => "publisher_id    = ?",
-        :network_id     => "network_id      = ?",
-        :size           => "size            = ?",
+    {   :enabled        => "enabled",
+        :publisher_id   => "publisher_id",
+        :network_id     => "network_id",
+        :size           => "size",
         ### not used currently
         #:name_search    => "tag_name     like ?",
     }.each do |param, condition|
       if !params[param].blank?
-        con.push( condition )
-        var.push( params[param] )
+        ### use 'in' so we can support groups as well
+        args = params[param].class == 'Array' ? params[param] : [ params[param] ]
+        
+        ### XXX FIXME this feels way too cumbersome to be correct
+        list = []
+        args.each do |i|
+          list.push( '?' )
+        end
+        
+        con.push( condition + " IN(" + list.join( "," ) + ")" )
+        var.push( *args )
       end
     end
 
@@ -84,9 +95,9 @@ class FillsBase < ActiveRecord::Base
       options[:limit] = params[:limit].to_i
 
       if (! params[:offset].blank?)
-        options[:offset] = params[:offset].to_i;
+        options[:offset] = params[:offset].to_i
       end
-    end      
+    end    
     
     return options
   end
@@ -95,7 +106,7 @@ class FillsBase < ActiveRecord::Base
     options = self.search_options( model, params )    
     model.find( :all, options )
   end 
-
+  
   def export_to_csv(fill_stats)
 
     if fill_stats[0].respond_to?("day")

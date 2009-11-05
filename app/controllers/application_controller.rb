@@ -41,6 +41,13 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+  
+  def require_publisher
+    unless defined current_publisher  
+      permission_denied( "You must be a publisher to access this page" )
+      return false
+    end      
+  end
 
   def require_no_user
     if current_user

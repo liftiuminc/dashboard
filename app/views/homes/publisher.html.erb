@@ -1,10 +1,7 @@
-<% @title_bar_right_text = date_range_dropdown("Select Timeframe...") %>
 <% title "Publisher Home" %>
-<script>
-function dateSelect(dd){
-	window.location.href = window.location.pathname + '?date_select=' + escape(dd.options[dd.selectedIndex].value);	
-}
-</script>
+
+<%= render :partial => 'shared/select_timeframe' %>
+
 <style type="text/css">
 .chart_block {
 	width: 33.3%;

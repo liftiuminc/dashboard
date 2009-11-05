@@ -1,12 +1,6 @@
-<% @title_bar_right_text = date_range_dropdown("Select Timeframe...")%>
 <% title "Admin Home" %>
-<% params[:date_select] ||= "This Hour" %>
-<% @range = date_range_to_graph_range(params[:date_select]) %>
-<script>
-function dateSelect(dd){
-        window.location.href = window.location.pathname + '?date_select=' + escape(dd.options[dd.selectedIndex].value);
-}
-</script>
+
+<%= render :partial => 'shared/select_timeframe' %>
 
 <div style="width:825px">
 

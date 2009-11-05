@@ -1,0 +1,90 @@
+<% title "Movers - #{@timeframe}" %>
+
+<%= render :partial => 'shared/select_timeframe' %>
+
+<br clear="all"/>
+
+<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Fill Rate Up</th>
+    <th>Fill Rate Down</th>
+    <th>Attempts Up</th>
+    <th>Attempts Down</th>
+  </tr>
+  <% for i in ( 0 .. @limit - 1 ) %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+
+        <!-- attempts UP -->
+        <td class="record_column">
+        <% if h = @top_bottom[:fill_top][i] and !h.blank? %>
+          <% tag = Tag.find( h[1]["tag_id"] ) %>
+          
+          <%= link_to tag.tag_name, tag, :action=> :show %>  
+          <br>
+          
+          <span style="color:green"><%= h[1][:fill_delta] %>%</span> 
+          
+          <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => tag.id ) %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
+        <% else %>
+          ?
+        <% end %>
+        </td> 
+        
+        <!-- attempts DOWN -->
+        <td class="record_column">
+        <% if h = @top_bottom[:fill_bottom][i] and !h.blank? %>
+          <% tag = Tag.find( h[1]["tag_id"] ) %>
+          
+          <%= link_to tag.tag_name, tag, :action=> :show %>  
+          <br>          
+          
+          <span style="color:red"><%= h[1][:fill_delta] %>%</span> 
+          
+          <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => tag.id ) %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
+        <% else %>
+          ?
+        <% end %>
+        </td> 
+        
+
+  
+        <!-- attempts UP -->
+        <td class="record_column">
+        <% if h = @top_bottom[:attempts_top][i] and !h.blank? %>
+          <% tag = Tag.find( h[1]["tag_id"] ) %>
+          
+          <%= link_to tag.tag_name, tag, :action=> :show %>  
+          <br>
+
+          <span style="color:green"><%= h[1][:attempts_delta] %>%</span> 
+          
+          <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => tag.id ) %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
+        <% else %>
+          ?
+        <% end %>
+        </td> 
+        
+        <!-- attempts DOWN -->
+        <td class="record_column">
+        <% if h = @top_bottom[:attempts_bottom][i] and !h.blank? %>
+          <% tag = Tag.find( h[1]["tag_id"] ) %>
+          
+          <%= link_to tag.tag_name, tag, :action=> :show %>  
+          <br>
+          
+          <span style="color:red"><%= h[1][:attempts_delta] %>%</span> 
+          
+          <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => tag.id ) %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
+        <% else %>
+          ?
+        <% end %>
+        </td> 
+        
+        
+  
+  
+  
+  
+    </tr>      
+  <% end %>          
+</table>

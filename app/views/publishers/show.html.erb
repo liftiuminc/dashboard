@@ -40,12 +40,12 @@
 </p>
 
 <p>
-  <%- if !current_user.publisher_id and current_user.admin %>
+  <%- if current_user.admin %>
     <%= link_to "Edit", edit_publisher_path(@publisher) %> |
     <%= link_to "View All", publishers_path %> |
     <%= link_to "Delete", @publisher, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
     <%= link_to "Preview " + @publisher.tags.length.to_s + " ads", :controller => "publishers", :action => :ad_preview, :id => @publisher %> |
     <%= link_to "Network Logins", :controller => "publisher_network_logins", :publisher_id => @publisher.id %> |
-    <%= link_to "Tags", tags_path %> 
+    <%= link_to "Tags", :controller=> "tags", :publisher_id => @publisher.id %> 
   <%- end %>
 </p>

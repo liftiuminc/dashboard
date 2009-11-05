@@ -73,7 +73,7 @@
 %>
 
   <% for tag in @tags %>
-   <%- if tag.enabled %>
+   <%- if tag.enabled && tag.network.enabled %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
    <%-else%>
     <tr class="disabled" background="/images/disabled_bg.png">
@@ -105,7 +105,13 @@
       <td class="record_action"><%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %></td>
 	<!-- FIXME: Use correct rails link helper -->
       <td class="record_action"><%= link_to "Copy", "/tags/copy/#{tag.id}" %></td>
-      <td class="record_action"><%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %></td>
+      <td class="record_action">
+	<%- if tag.network.enabled %>
+	  <%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %>
+	<%- else %>
+	   Network Disabled
+	<%-end %>
+      </td>
     <% else %>
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
       <td class="record_action"> </td>

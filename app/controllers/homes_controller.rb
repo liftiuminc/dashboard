@@ -25,8 +25,8 @@ class HomesController < ApplicationController
     params[:date_select] ||= "Yesterday"
 
     @dates = DateRangeHelper.get_date_range(params[:date_select])
-    @dates[1] ||= DateTime.now
-
+    
+    
     if @dates[0].to_time < (DateTime.now - 7.days)
         model = FillsDay
     else
