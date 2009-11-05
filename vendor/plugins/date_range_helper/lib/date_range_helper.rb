@@ -1,7 +1,7 @@
 class DateRangeHelper
 
   def self.timeframes 
-    ["This Hour", "Last Hour", "Last 3 Hours", "Last 12 Hours",
+    ["Last Hour", "Last 3 Hours", "Last 12 Hours",
      "Today", "Yesterday", "Last 7 Days", "This Month", "Last 30 days",
      "This Quarter", "Last Quarter", "This Year"] 
   end
@@ -43,6 +43,7 @@ class DateRangeHelper
         dates[2] = (now - 24.hours).strftime('%Y-%m-%d %H:00:00')
       when "today"
         dates[0] = now.strftime('%Y-%m-%d 00:00:00')
+        dates[1] = now.strftime('%Y-%m-%d %H:%M:00')
         dates[2] = (now - 1.day).strftime('%Y-%m-%d 00:00:00')
       when "yesterday"
         dates[0] = (now - 1.day).strftime('%Y-%m-%d 00:00:00')
