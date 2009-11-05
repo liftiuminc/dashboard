@@ -33,6 +33,8 @@ class FillsBase < ActiveRecord::Base
     con = []
     var = []
 
+    ### XXX FIXME this should probably be using sanitize_sql_hash_for_conditions
+
     ### dispatch table
     {   :enabled        => "enabled",
         :publisher_id   => "publisher_id",
@@ -97,10 +99,6 @@ class FillsBase < ActiveRecord::Base
       end
     end    
     
-    if !params[:group].blank?
-      options[:group] = params[:group].to_s
-    end
-    
     return options
   end
 
@@ -108,7 +106,7 @@ class FillsBase < ActiveRecord::Base
     options = self.search_options( model, params )    
     model.find( :all, options )
   end 
-
+  
   def export_to_csv(fill_stats)
 
     if fill_stats[0].respond_to?("day")
