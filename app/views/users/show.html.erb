@@ -51,11 +51,12 @@
 <% end %>
 
 <p>
-  <%= link_to "Edit", edit_user_path(@user) %> 
-  
+  <%= link_to "Edit", edit_user_path(@user) %> |
+  <%= link_to "Change Password", new_change_password_user_path(@user) %> 
+
   <% if current_user.admin? %>
-  |
-  <%= link_to "Delete", @user, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
-  <%= link_to "View All", users_path %>
+    |
+    <%= link_to "Delete", @user, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+    <%= link_to "View All", users_path %>
   <% end %>
 </p>

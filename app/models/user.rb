@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
 
   validate :must_associate_publisher_if_not_admin
 
-  ### no login without email/password
-  validates_presence_of :email 
-
+  validates_presence_of :email
+  validates_presence_of :password,              :if => :password_required?
+  validates_presence_of :password_confirmation, :if => :password_required?
 
   def must_associate_publisher_if_not_admin
     if !admin and publisher_id.blank?
@@ -25,4 +25,9 @@ class User < ActiveRecord::Base
     admin ? "Yes" : "No"
   end
 
+  private
+
+  def password_required?
+    new_record? || !password.blank?
+  end
 end

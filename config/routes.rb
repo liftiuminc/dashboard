@@ -1,7 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :revenues
 
-
   # The priority is based upon order of creation: first created -> highest priority.
   #
   map.resource :account, :controller => "users"
@@ -13,6 +12,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :changelogs
   map.resources :tag_targets
   map.resources :comments
+
+  # FIXME: I've tried to add these two as :member => {:new_change_password => :get, :change_password => :put} on the
+  # map.resources :users with no luck. - SJT
+  map.new_change_password_user '/users/:id/new_change_password', :controller => 'users', :action => 'new_change_password'
+  map.change_password_user '/users/:id/change_password', :controller => 'users', :action => 'change_password', :method => 'put'
 
   # FIXME: Is there way to not have to list all these?
   map.select_network 'tags/select_network', :controller => 'tags', :action => 'select_network'

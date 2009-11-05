@@ -73,7 +73,7 @@ veronica:
     perishable_token: FqEK8cPTwFQQ_jXhJNpa
     created_at: 2009-10-16 15:55:49
 
-unit_test_publisher:
+unit_test_publisher: #password
   id: 49
   email: unit_test_publisher@liftium.com
   publisher_id: 1045
@@ -84,7 +84,7 @@ unit_test_publisher:
   single_access_token: bu3EWhHOb-ywITI1PBPA
   perishable_token: eLfQ1ZFtuZQwvcWK-oqd
 
-unit_test_admin:
+unit_test_admin: #liftium1nc
   id: 50
   email: unit_test_admin@liftium.com
   publisher_id: NULL
