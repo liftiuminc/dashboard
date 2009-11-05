@@ -4,9 +4,9 @@ class MoversController < ApplicationController
 #require 'pp'
 
   def index
-    @limit    = 10
-    timeframe = !params[:date_select].blank? ? params[:date_select] : "Last Hour"  
-    dates     = DateRangeHelper.get_date_range( timeframe )
+    @limit     = 10
+    @timeframe = !params[:date_select].blank? ? params[:date_select] : "Last Hour"  
+    dates      = DateRangeHelper.get_date_range( @timeframe )
   
     ### FIXME duplicates from homes controller -- can't we have a 'give me the
     ### right model' function in fillsbase? I've tried adding it but rails gets
