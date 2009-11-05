@@ -4,7 +4,7 @@ class TagsController < ApplicationController
   before_filter :save_filter_fields, :only => [:index]
   before_filter :debug_sql,          :only => [:index]
   before_filter :find_user_networks, :only => [:select_network, :new, :edit, :copy, :index]
-  before_filter :allowed_publishers, :only => [:new, :edit, :copy, :index]
+  before_filter :allowed_publishers
   before_filter :find_user_adformats,:only => [:new, :edit, :copy, :index, :generator]
 
   def index
