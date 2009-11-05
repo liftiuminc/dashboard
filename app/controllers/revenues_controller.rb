@@ -18,6 +18,8 @@ class RevenuesController < ApplicationController
             conditions[ :publisher_id ] = params[:publisher_id]      
         end
 
+        ### @day is used in the template to load the associated revenue
+        @day  = params[:day].to_date.to_s
         @tags = Tag.new.search( conditions )
         
         unless @tags.length > 0 
