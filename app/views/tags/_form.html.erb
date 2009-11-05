@@ -1,10 +1,3 @@
-<% # FIXME: How do I put this in the model?
-
-    # Get the list of publishers for admin users
-    @publishers = Publisher.find :all;
-%>
-
-
 <% form_for @tag do |f| %>
   <%= f.error_messages %>
   <% if @tag.network_id %>
@@ -38,7 +31,7 @@
     <%- else -%>
 	<font color="red"><%= @tag.enabled_s%></font>
 	<%- if current_user.admin %>
-	  <%= link_to (@tag.network.network_name, @tag.network) %>
+	  <%= link_to(@tag.network.network_name, @tag.network) %>
 	<%- end -%>
     <%- end %>
   </div>
