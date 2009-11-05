@@ -53,8 +53,7 @@ class MoversController < ApplicationController
         h[:fill]                = ( e.loads.to_f * 100.to_f / e.attempts.to_f )
 
         ### limit it to active tags
-        @stats[key][ e.tag_id ] = h 
-        #if e.attempts > 100
+        @stats[key][ e.tag_id ] = h if e.attempts > 50
       end
       
     end
