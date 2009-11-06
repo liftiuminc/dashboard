@@ -60,7 +60,7 @@ class HomesController < ApplicationController
 	" COALESCE(SUM(attempts), 0) AS attempts," +
 	" COALESCE(SUM(rejects), 0) AS rejects," + 
 	" COALESCE(SUM(clicks), 0) AS clicks," +
-	" COALESCE(SUM(revenue), 0) AS revenue, day from revenues" +
+	" COALESCE(SUM(revenue), 0) AS revenue, day, MAX(day) AS max_day FROM revenues" +
 	" INNER JOIN tags on revenues.tag_id = tags.id" + 
 	" AND tags.publisher_id = ?" + 
 	" WHERE day >= ? AND day <= ?" + 

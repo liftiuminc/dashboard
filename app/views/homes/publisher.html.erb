@@ -40,6 +40,7 @@
 <table class="record_listing" width="100%">
   <tr class="record_listing_header">
     <th>Ad Network</th>
+    <th>Last Updated</th>
     <th>Impressions</th>
     <th>CTR</th> 
     <th>Revenue</th>
@@ -48,6 +49,7 @@
   <%- for ar in @ad_network_revenues %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column" style="width:200px"><%=h ar.tag.network.network_name%></td>
+      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
       <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
       <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
       <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
@@ -57,7 +59,7 @@
 
 
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column" style="text-align:right">Totals</td>
+      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
       <td class="record_column"><%= number_with_delimiter(@ad_network_revenues.sum(&:attempts))%></td>
       <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_network_revenues.sum(&:clicks), @ad_network_revenues.sum(&:attempts)) %>%</td> 
       <td class="record_column">$<%= number_with_delimiter(@ad_network_revenues.sum(&:revenue))%></td>
@@ -77,6 +79,7 @@
 <table class="record_listing" width="100%">
   <tr class="record_listing_header">
     <th>Size</th>
+    <th>Last Updated</th>
     <th>Impressions</th>
     <th>CTR</th> 
     <th>Revenue</th>
@@ -85,6 +88,7 @@
   <%- for ar in @ad_size_revenues %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column" style="width:200px"><%=h ar.tag.size%></td>
+      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
       <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
       <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
       <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
@@ -94,7 +98,7 @@
 
 
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column" style="text-align:right">Totals</td>
+      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
       <td class="record_column"><%= number_with_delimiter(@ad_size_revenues.sum(&:attempts))%></td>
       <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_size_revenues.sum(&:clicks), @ad_size_revenues.sum(&:attempts)) %>%</td> 
       <td class="record_column">$<%= number_with_delimiter(@ad_size_revenues.sum(&:revenue))%></td>

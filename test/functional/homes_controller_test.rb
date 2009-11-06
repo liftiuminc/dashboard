@@ -36,7 +36,7 @@ class HomesControllerTest < ActionController::TestCase
   context "publisher action logged in as publisher" do
     should "render publisher template" do
       login_as_publisher
-      get :publisher
+      get :publisher, :date_select => "Last 30 days"
       assert_template 'publisher'
     end
   end
