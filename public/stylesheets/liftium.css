@@ -13,6 +13,11 @@ a {
 	color: #06F;
 }
 
+a:hover {
+        text-decoration: underline;
+}
+
+
 input:focus, textarea:focus {
 	background-color: #FFFFE0;
 }
@@ -66,6 +71,10 @@ ul {
 #leftnav a {
 	color: #62419A;
 	text-decoration: none;
+}
+
+#leftnav a:hover {
+        text-decoration: underline;
 }
 
 #leftnav ul {
