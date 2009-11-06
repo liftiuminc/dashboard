@@ -15,6 +15,7 @@
 		<ul class="nav">
 			<li><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
             <% if current_user %>
+              <li><a href="mailto:nick@liftium.com" title="Something not what you would expect?">E-mail Liftium CEO</a>
               <li><%= link_to "My Account", account_path %>
               <li><%= link_to "Logout", user_session_path, :method => :delete %>
             <% else %>
