@@ -44,7 +44,7 @@
   <% end %>
 </div>
 
-<table class="record_listing" width="800" cellpadding="0" cellspacing="0">
+<table class="record_listing" width="100%" cellpadding="0" cellspacing="0">
 
   <tr class="record_listing_header">
     <th>Publisher</th>
@@ -54,8 +54,8 @@
     <th>Value</th>
     <th>Always Fill</th>
     <th>Criteria</th>
-    <th colspan="5">Actions</th>
-    <th colspan="2">Fill Rate (last hour)</th>
+    <th>Actions</th>
+    <th colspan="2">Fill Rate</th>
   </tr>
 
 <%  @tier_to_color = {
@@ -80,8 +80,8 @@
    <%-end%>
       <td nowrap="true" class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
       <td nowrap="true" class="record_column"><%= current_user.admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
-      <td nowrap="true" class="record_column">
- 	    <%= tag.tag_name %><br />
+      <td class="record_column" style="width:200px">
+	    <%= link_to truncate(tag.tag_name, 40), tag, :action=> :show %><br />
         <span style="font-size: smaller">
         #<%= tag.id %>
         <%= tag.size %>
@@ -91,7 +91,7 @@
       <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><%=h tag.tier ? tag.tier : "-"%></td>
       <td class="record_column_number">$<%=h tag.value ? tag.value_s : "-"%></td>      
       <td class="record_column_number" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>"><%= tag.always_fill ? "Yes" : "No" %></td>
-      <td class="record_column" style="font-size:smaller">
+      <td class="record_column" style="font-size:smaller; width:150px">
 	<%= tag.frequency_cap ? "Freq. cap - #{tag.frequency_cap}<br />" : ""%>
 	<%= tag.rejection_time ? "Rej. time  - #{tag.rejection_time}<br />" : ""%>
         <% for criteria in tag.tag_targets do -%>
@@ -100,12 +100,13 @@
         &#160; <!-- So the border shows up when there is no criteria -->
 
     <% if current_user.admin? %>
-      <td class="record_action"><%= link_to "View", tag, :action=> :show %></td>
-      <td class="record_action"><%= link_to "Edit", edit_tag_path(tag) %></td>
-      <td class="record_action"><%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %></td>
-	<!-- FIXME: Use correct rails link helper -->
-      <td class="record_action"><%= link_to "Copy", "/tags/copy/#{tag.id}" %></td>
-      <td class="record_action">
+      <td class="record_column" style="text-align:center">
+	<nobr>
+	<%= link_to "View", tag, :action=> :show %>
+	<%= link_to "Edit", edit_tag_path(tag) %>
+	<%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %>
+	</nobr>
+         <%= link_to "Copy", "/tags/copy/#{tag.id}" %>
 	<%- if tag.network.enabled %>
 	  <%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %>
 	<%- else %>
@@ -114,17 +115,11 @@
       </td>
     <% else %>
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
-      <td class="record_action"> </td>
-      <td class="record_action"> </td>
-      <td class="record_action"> </td>
-      <td class="record_action"> </td>
     <% end %>      
-      <td class="record_action">
+      <td class="record_action" style="font-size:smaller">
       <% if tag.enabled %>
-	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
+	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img alt="Fill rate for last 60 minutes, click for more detail" src="<%= tag_sparkline_url tag, "1h"%>" width="50" height="25"/></a>
       <% end %>
-      </td>
-      <td class="record_action" style="font-size:smaller" nowrap="true">
 	<% fill_stats = tag.get_fill_stats("last 60 minutes")%>
 	<%- if fill_stats[:attempts] > 0 %>
 	  <%= number_with_delimiter(fill_stats[:attempts]).to_s + " attempts "%><br />
