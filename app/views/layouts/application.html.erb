@@ -2,16 +2,16 @@
   <head>
     <title><%= h(yield(:title) || "") %> - Liftium.com</title>
     <%= stylesheet_link_tag 'http://www.liftium.com/css/reset-min.css' %>
-    <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css' %>
+    <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css?1' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
     <%= yield(:head) %>
   </head>
   <body<%= Rails.configuration.environment =~ /^dev/ && ' background="/images/dev_background.png"'%>>
 
-<div id="header">
+<div id="container">
+  <div id="header">
 	<div class="fixedwidth">
-               <a href="http://www.liftium.com"><img alt="Ad Network Optimization by Liftium.com" title="Ad Network Optimization by Liftium.com" src="http://www.liftium.com/images/logo_white_purple.png" border="0"></a>
 		<ul class="nav">
 			<li><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
             <% if current_user %>
@@ -21,12 +21,12 @@
               <li><%= link_to "Login", new_user_session_path %>
             <% end %>
 		</ul>
+               <a href="http://www.liftium.com"><img alt="Ad Network Optimization by Liftium.com" title="Ad Network Optimization by Liftium.com" src="http://www.liftium.com/images/logo_white_purple.png" border="0"></a>
 	</div>
-</div>
+  </div>
 
-
-    <!-- Left Nav -->
-    <div id="leftnav">
+  <!-- Left Nav -->
+  <div id="leftnav">
      <%- if current_user %>
 
       <div class="navsection">
@@ -63,42 +63,52 @@
 
      <%- end %><!-- if current_user -->
 
-    </div><!-- /left nav -->
-
+  </div><!-- /left nav -->
 
     <!-- Main content -->
-    <div id="container">
-      <%- if show_title_bar? -%>
-        <div id="titlebar">
-		<%- if @title_bar_right_text -%>
-		<div id="title_bar_right_text"><%= @title_bar_right_text %></div>
-      		<%- end -%>
-		<h1><%=h yield(:title) %></h1>
+  <div id="content">
+       <%- if show_title_bar? -%>
+	<div id="titlebar">
+	      <%- if @title_bar_right_text -%>
+		<div id="titlebar_right_text"><%= @title_bar_right_text %></div>
+	      <%- end -%>
+	      <h1><%=h yield(:title) %></h1>
 	</div>
-      <%- end -%>
-      <div id="content">
-	<br clear="all"><!-- I hate CSS float -->
+       <%- end -%>
 
        <%- flash.each do |name, msg| -%>
         <%= content_tag :div, msg, :id => "flash_#{name}", :class => "rails_flash" %>
-      <%- end -%>
+       <%- end -%>
 
       <%= yield %>
-	<br clear="all"><!-- CSS float -->
-      </div><!-- content -->
-    </div><!-- fixedwidth -->
-<!-- Someone who knows CSS better than me
-    <div id="footer">
-		<div id="copyright">&copy; 2009 Copyright - Liftium</div>
+
+  </div><!-- content -->
+
+
+  <div id="footer">
+     <div class="fixedwidth">
+
+      <div id="copyright">&copy; 2009 Copyright - Liftium</div>
 		<ul class="nav">
-			<li><a href="/">Home</a></li>
-			<li><a href="publishers">Publishers</a></li>
-			<li><a href="about-us">About Us</a></li>
-			<li class="noborder"><a href="contact-us">Contact Us</a></li>
+			<li><a href="http://www.liftium.com/">Home</a></li>
+			<li><a href="http://www.liftium.com/publishers">Publishers</a></li>
+			<li><a href="http://www.liftium.com/publishers/technology">Technology</a></li>
+			<li><a href="http://www.liftium.com/publishers/success-stories">Success Stories</a></li>
+
+			<li><a href="http://www.liftium.com/about-us">About Us</a></li>
+                        <!-- <li><a href="http://www.liftium.com/about-us/our-team">Our Team</a></li> -->
+                        <!-- <li><a href="http://www.liftium.com/about-us/press">Press</a></li> -->
+                        <li><a href="http://www.liftium.com/about-us/careers">Careers</a></li>
+			<li class="noborder"><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
 		</ul>
-     </div>
--->
-  </body>
+      </ul>
+
+    </div><!-- fixedwidth -->
+ </div><!-- footer -->
+
+</div><!-- /container -->
+
+</body>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

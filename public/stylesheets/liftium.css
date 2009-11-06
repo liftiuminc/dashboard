@@ -1,7 +1,6 @@
 /* Items are organized by section, then alphabetical. Please keep it that way. */
 body {
 	font-size: 12px;
-	text-align:left;
 }
 
 /*** Page elements ***/
@@ -33,38 +32,35 @@ p {
 }
 ul {
 	margin-top: 3px;
-	margin-left: 10px;
+	margin-left: 15px;
 }
 
 
 /*** Wrappers, page/structure ***/
 
 #container { 
-	position:absolute;
-	min-width: 500px;
-	margin-left: 165px;
-	padding-top:20px;
-	padding-bottom:20px;
 }
 
 #content {
 	background: #FFF;
-	border-right: 1px solid #D0D0D0;
-	border-left: 1px solid #D0D0D0;
-	border-bottom: 1px solid #D0D0D0;
-	padding-left: 15px;
-	padding-top: 5px;
-	padding-right: 15px;
-	padding-bottom: 15px;
-	margin-bottom: 20px;
+	border: 1px solid #D0D0D0;
+	padding: 15px;
+	margin-bottom: 15px;
+	margin-left: 175px;
+	margin-right: 15px;
+	margin-top: 15px;
+	max-width: 850px;
+}
+
+#footer {
+	clear: both;
 }
 
 /*** Left Nav bar ***/
 	
 #leftnav {
-	position:absolute;
-	float:left;
-	margin-top: 30px;
+	float: left;
+	margin-top: 15px;
 	margin-left: 15px;
 }
 
@@ -98,22 +94,20 @@ ul {
 	border-right: 1px solid #D0D0D0;
 	border-left: 1px solid #D0D0D0;
 	height: 51px;
-	margin-top: 10px;
+	margin-bottom: 15px;
 }
 
 #titlebar h1 {
-	float:left;
 	font-size: 150%;
 	font-weight:bold;
-	height:51px;
-	line-height:50px;
-	padding:0 21px;
+	padding: 14px;
+	margin-bottom: 0px; /* Clear out the default one */
 }
 
-#title_bar_right_text {
+#titlebar_right_text {
 	float: right;
 	margin-right: 21px;
-	margin-top: 30px;
+	margin-top: 15px;
 	font-size: larger;
 }
 
@@ -142,7 +136,6 @@ ul {
 }
 
 .fieldset .left_label {
-	clear:both;
 	display:block;
 	float:left;
 	width:150px;
@@ -285,14 +278,14 @@ ul {
 	border: 2px solid #CF0000;
 	padding: 0;
 	padding-bottom: 12px;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	width: 450px;
 }
 
 #errorExplanation h2 {
 	background-color: #ffdfdf;
 	background-image:url(/images/error1.gif);
-	background-position:20px center;
+	background-position:15px center;
 	background-repeat:no-repeat;
 	border: solid 1px #df3e4e;
 	font-size: larger;
@@ -315,7 +308,7 @@ ul {
 }
 
 #errorExplanation ul li {
-	line-height: 20px;
+	line-height: 15px;
 	list-style: circle;
 }
 

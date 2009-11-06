@@ -82,7 +82,6 @@
   <%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "-"%> 
 </p>
 </div>
-<br clear="all"/>
 <strong>Tag:</strong><br />
 <%if @tag.tag.blank? -%>
   <i>Using <%= @tag.network.network_name %>  template</i>. <%= link_to("Edit Network Template", {:action => "edit", :controller=>"networks", :id => @tag.network_id, :anchor => "tag_template"})%>
