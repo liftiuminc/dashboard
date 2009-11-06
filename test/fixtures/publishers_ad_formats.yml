@@ -1,0 +1,75 @@
+one:
+   publisher_id: 1042
+   # 728x90
+   ad_format_id: 1
+
+two:
+   publisher_id: 1042
+   # 160x600
+   ad_format_id: 2
+
+three:
+   publisher_id: 1042
+   # 300x250
+   ad_format_id: 3
+
+four:
+   publisher_id: 1046
+   # 160x600
+   ad_format_id: 2
+
+five:
+   publisher_id: 1046
+   # 728x90
+   ad_format_id: 1
+
+five2: # and three quarters
+   publisher_id: 1046
+   # 728x90
+   ad_format_id: 3
+
+six:
+   publisher_id: 1046
+   # 125x125
+   ad_format_id: 8
+
+seven:
+   publisher_id: 1046
+   # 336x280
+   ad_format_id: 4
+
+seven7:
+   publisher_id: 1047
+   # 336x280
+   ad_format_id: 4
+
+seven8:
+   publisher_id: 1048
+   # 336x280
+   ad_format_id: 4
+
+asaph:
+   publisher_id: 1
+   # 728x90
+   ad_format_id: 1
+
+nick:
+   publisher_id: 1045
+   # 728x90
+   ad_format_id: 1
+
+eight:
+   publisher_id: 1046
+   # "200x200"
+   ad_format_id: 11
+
+nine: 
+   publisher_id: 1042
+   # 468x60
+   ad_format_id: 6
+
+ten:
+   publisher_id: 1042
+   # 234x60
+   ad_format_id: 7
+  
