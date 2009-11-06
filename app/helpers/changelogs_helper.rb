@@ -43,6 +43,7 @@ module ChangelogsHelper
   def changed_txt(attribute, original_value, new_value)
     return if original_value.blank? && new_value.blank?
     retval = "<b>#{attribute}</b> "
-    retval += original_value.blank? ? "initialized to <i>#{new_value}</i>" : "changed from <i>#{original_value}</i> to <i>#{new_value}</i>"
+    retval += original_value.blank? ? "initialized to <i>#{truncate(new_value, :length => 30)}</i>" :
+        "changed from <i>#{truncate(original_value, :length => 30)}</i> to <i>#{truncate(new_value, :length => 30)}</i>"
   end
 end
