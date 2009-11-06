@@ -56,6 +56,11 @@ ul {
 	clear: both;
 }
 
+.section_break {
+	margin-bottom: 5px;
+	margin-top: 15px;
+}
+
 /*** Left Nav bar ***/
 	
 #leftnav {

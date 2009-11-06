@@ -22,7 +22,7 @@ class HomesController < ApplicationController
         return
     end
         
-    params[:date_select] ||= "Yesterday"
+    params[:date_select] ||= "Last 7 Days"
 
     @dates = DateRangeHelper.get_date_range(params[:date_select])
     
@@ -56,7 +56,7 @@ class HomesController < ApplicationController
     @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)
     @previous_ecpm = Revenue.calculate_ecpm(@previous_impressions, @previous_revenue)
 
-   sql = "SELECT revenues.id, revenues.tag_id, " + 
+    sql = "SELECT revenues.id, revenues.tag_id, tags.size, " + 
 	" COALESCE(SUM(attempts), 0) AS attempts," +
 	" COALESCE(SUM(rejects), 0) AS rejects," + 
 	" COALESCE(SUM(clicks), 0) AS clicks," +
@@ -64,10 +64,11 @@ class HomesController < ApplicationController
 	" INNER JOIN tags on revenues.tag_id = tags.id" + 
 	" AND tags.publisher_id = ?" + 
 	" WHERE day >= ? AND day <= ?" + 
-	" GROUP BY tags.network_id"
+	" GROUP BY ?"
 	" ORDER BY revenue DESC"
+    @ad_network_revenues = Revenue.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1], "tags.network_id"]
 
-    @ad_network_revenues = Revenue.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
+    @ad_size_revenues = Revenue.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1], "tags.size"]
 
   end
 

@@ -3,34 +3,35 @@
 <%= render :partial => 'shared/select_timeframe' %>
 
 <style type="text/css">
-.chart_block {
+.publisher_chart_block {
 	width: 33.3%;
 	float: left;
 	font-weight: bold;
+	margin-bottom: 15px;
 }
 #publisher_home_charts {
-	width:800px;
+	width:100%;
 }
 </style>
 <div id="publisher_home_charts">
-  <div class="chart_block">
+  <div class="publisher_chart_block">
 	<h2>Impressions</h2>
 	<%= params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
   </div>
-  <div class="chart_block">
+  <div class="publisher_chart_block">
 	<h2>Revenue</h2>
 	<%= params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
 	<%= percentage_difference(@previous_revenue, @revenue) %>
   </div>
-  <div class="chart_block">
+  <div class="publisher_chart_block">
 	<h2>eCPM</h2>
 	<%= params[:date_select] %> : $<%= @ecpm.round(2) %>
 	<%= percentage_difference(@previous_ecpm, @ecpm) %>
   </div>
 </div>
 
-<h2>Top Performing Ad Networks</h2>
+<h2 class="section_break">Top Performing Ad Networks</h2>
 
 <%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
   No Ad Network data available for the selected date range
@@ -44,19 +45,19 @@
     <th>Revenue</th>
     <th>eCPM</th>
   </tr>
-  <%- for anr in @ad_network_revenues %>
+  <%- for ar in @ad_network_revenues %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column"><%=h anr.tag.network.network_name%></td>
-      <td class="record_column"><%= number_with_delimiter(anr.attempts)%></td>
-      <td class="record_column"><%=FillsBase.calculate_fill_rate(anr.clicks, anr.attempts) %>%</td> 
-      <td class="record_column">$<%=h number_with_delimiter(anr.revenue)%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(anr.attempts, anr.revenue).round(2) %></td>
+      <td class="record_column" style="width:200px"><%=h ar.tag.network.network_name%></td>
+      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
+      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
+      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
+      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
     </tr>
   <%- end %>
 
 
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column">Totals</td>
+      <td class="record_column" style="text-align:right">Totals</td>
       <td class="record_column"><%= number_with_delimiter(@ad_network_revenues.sum(&:attempts))%></td>
       <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_network_revenues.sum(&:clicks), @ad_network_revenues.sum(&:attempts)) %>%</td> 
       <td class="record_column">$<%= number_with_delimiter(@ad_network_revenues.sum(&:revenue))%></td>
@@ -66,4 +67,40 @@
 
 <%-end  %>
 
+
+<h2 class="section_break">Top Performing Ad Sizes</h2>
+
+<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
+  No Ad Size data available for the selected date range
+<%- else %>
+
+<table class="record_listing" width="100%">
+  <tr class="record_listing_header">
+    <th>Size</th>
+    <th>Impressions</th>
+    <th>CTR</th> 
+    <th>Revenue</th>
+    <th>eCPM</th>
+  </tr>
+  <%- for ar in @ad_size_revenues %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column" style="width:200px"><%=h ar.tag.size%></td>
+      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
+      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
+      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
+      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
+    </tr>
+  <%- end %>
+
+
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+      <td class="record_column" style="text-align:right">Totals</td>
+      <td class="record_column"><%= number_with_delimiter(@ad_size_revenues.sum(&:attempts))%></td>
+      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_size_revenues.sum(&:clicks), @ad_size_revenues.sum(&:attempts)) %>%</td> 
+      <td class="record_column">$<%= number_with_delimiter(@ad_size_revenues.sum(&:revenue))%></td>
+      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_size_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
+    </tr>
+</table>
+
+<%-end  %>
 
