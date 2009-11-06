@@ -75,7 +75,7 @@ veronica:
 unit_test_publisher:
   id: 49
   email: unit_test_publisher@liftium.com
-  publisher_id: 1045
+  publisher_id: 1
   admin: 0
   crypted_password: 6628f62aa35ede056653adffbae5c55a4489408dac987e6ff5e83fd843d98be8beacab7486985576001a1656ef513135ac868438fb334d7d9ac29727923eb842
   password_salt: nFo-gPcedo8xdrMG0AvQ
