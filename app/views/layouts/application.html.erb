@@ -35,28 +35,34 @@
      <%- if current_user %>
 
       <div class="navsection">
-	    <div class="navsection_header"><%= current_user.admin? ? :Admin : :Publishers %></div>
-	    <ul>
-        <% if !current_user.admin? %>
           <!-- publisher only section -->
-          <li><%= link_to "Publisher Home", :controller => "homes", :action => "publisher" %>
-        <% else %>
+	  <div class="navsection_header">Publishers</div>
+	  <ul>
+          <li><%= link_to "Home", :controller => "homes", :action => "publisher" %>
+          <!-- common -->
+          <li><%= link_to "My Ad Networks", publisher_network_logins_url %>
+          <li><%= link_to "Reporting", data_export_url %>	
+          <li><%= link_to "Tag Generator", tag_generator_url %>	
+	  </ul>
+       </div>
+
+     <% if current_user.admin? %>
+      <div class="navsection">
           <!-- admin only section -->
-          <li><%= link_to "Admin Home", :controller => "homes", :action => "admin" %>
+	  <div class="navsection_header">Admin</div>
+	  <ul>
+          <li><%= link_to "Home", :controller => "homes", :action => "admin" %>
+          <li><%= link_to "Chain/Tag Mgmt", tags_url %>	
+          <li><%= link_to "Ad Network Mgmt", networks_url %>
           <li><%= link_to "User Accounts", users_url %>
-          <li><%= link_to "Ad Networks", networks_url %>
+
           <li><%= link_to "Publishers", publishers_url %>
           <li><%= link_to "Change Logs", changelogs_url %>
           <li><%= link_to "Big Movers", movers_url %>
           <li><%= link_to "Data Entry", revenues_url %>
-        <% end %>
-          <!-- common -->
-          <li><%= link_to "Reporting", data_export_url %>	
-          <li><%= link_to "Tag Generator", tag_generator_url %>	
-          <li><%= link_to "Chain Management", tags_url %>	
-          <li><%= link_to "Network Logins", publisher_network_logins_url %>
-	    </ul>
+	  </ul>
        </div>
+     <% end %>
 
        <div class="navsection">
 	    <div class="navsection_header">Account</div>
