@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.feedback 'feedbacks', :controller => 'feedbacks', :action => 'create'
+  map.new_feedback 'feedbacks/new', :controller => 'feedbacks', :action => 'new'
 
   # The priority is based upon order of creation: first created -> highest priority.
   #

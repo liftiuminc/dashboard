@@ -5,9 +5,14 @@
     <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css?1' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
+    <%= feedback_includes %>
     <%= yield(:head) %>
   </head>
   <body<%= Rails.configuration.environment =~ /^dev/ && ' background="/images/dev_background.png"'%>>
+
+<%- if current_user %>
+  <%= feedback_tab(:position => 'bottom') %>
+<%- end %>
 
 <div id="container">
   <div id="header">
@@ -15,7 +20,6 @@
 		<ul class="nav">
 			<li><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
             <% if current_user %>
-              <li><a href="mailto:nick@liftium.com" title="Something not what you would expect?">E-mail Liftium CEO</a>
               <li><%= link_to "My Account", account_path %>
               <li><%= link_to "Logout", user_session_path, :method => :delete %>
             <% else %>
