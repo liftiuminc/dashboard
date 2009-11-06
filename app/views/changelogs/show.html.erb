@@ -1,0 +1,22 @@
+<% title "Changelog " + @changelog.description %>
+
+<p>
+  <strong>Original Record Id:</strong>
+  <%= @changelog.record_id %>
+</p>
+<p>
+  <strong>Original Record Type:</strong>
+  <%= @changelog.record_type %>
+</p>
+<p>
+  <strong>Diffs:</strong>
+  <%= render_diffs(@changelog) %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <%= @changelog.description %>
+</p>
+
+<p>
+  <%= link_to "View All", changelogs_path %>
+</p>
