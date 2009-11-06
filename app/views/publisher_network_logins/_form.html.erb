@@ -7,16 +7,16 @@
   </div>
   
   <div class="fieldset">
-    <%= f.label :publisher, nil, :class => "left_label" %>
+    <%= f.label :publisher, nil, :class => "left_label" %>*
     <%= collection_select(:publisher_network_login, :publisher_id, @publishers, :id, :site_name ) %>
   </div>  
   
   <div class="fieldset">
-    <%= f.label :username %><br />
+    <%= f.label :username %>*<br />
     <%= f.text_field :username %>
   </div>
   <div class="fieldset">
-    <%= f.label :password %><br />
+    <%= f.label :password %>*<br />
     <%= f.password_field :password %>
   </div>
   <p><%= liftium_submit "Save Changes" %></p>
