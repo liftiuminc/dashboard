@@ -27,6 +27,14 @@ module LayoutHelper
               '</select>'
   end
 
+  def publisher_dropdown (firstOption = "")
+	@publishers ||= Publisher.all(:enabled=> true)
+	out = '<select name="publisher_id" id="publisher_selectDD" onChange="window.publisherSelect && publisherSelect(this)">
+		<option value="">' + firstOption +
+		options_from_collection_for_select(@publishers, "id", "site_name", params[:publisher_id]) +
+              '</select>'
+  end
+
   def date_range_to_graph_range (date_range)
      case date_range.to_s.downcase
 	when "this hour" then "1h"

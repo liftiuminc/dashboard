@@ -1,6 +1,13 @@
-<% @title_bar_right_text = "" %>
+<% if current_user.admin %>
+  <% @title_bar_right_text = publisher_dropdown "Select a Publisher..."%>
+  <script>
+  function publisherSelect(dd){
+	  window.location.href = window.location.pathname + '?publisher_id=' + escape(dd.options[dd.selectedIndex].value);
+  }
+  </script>
+<% end %>
 
-<% title "My Ad Formats" %>
+<% title "Ad Formats for " + @publisher.site_name %>
 
 <h2>Sizes of ads that you have</h2>
 
