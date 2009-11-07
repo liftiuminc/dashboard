@@ -1,0 +1,31 @@
+<% if current_user.admin %>
+  <% @title_bar_right_text = publisher_dropdown "Select a Publisher..."%>
+  <script>
+  function publisherSelect(dd){
+	  window.location.href = window.location.pathname + '?publisher_id=' + escape(dd.options[dd.selectedIndex].value);
+  }
+  </script>
+<% end %>
+
+<% title "Ad Quality Control Settings for " + @publisher.site_name %>
+
+<h2>How aggressive are you about revenue?</h2>
+<% form_for @publisher, :url => { :action => "save_quality_control" } do |f| %>
+  <%= hidden_field_tag "publisher_id", @publisher.id %>
+  <%= f.error_messages %>
+<br />
+<br />
+<b>Ad Quality</b>: Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium let's you choose.
+<br />
+<br />
+<input type="text" name="publisher[brand_safety_level]" value="<%=h @publisher.brand_safety_level %>"/>
+<br />
+<br />
+<b>Ad Speed</b>. More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue. 
+<br />
+<br />
+<input type="text" name="publisher[hoptime]" value="<%=h @publisher.hoptime %>"/>
+<br />
+<br />
+<%= liftium_submit "Save Settings" %>
+<% end %>

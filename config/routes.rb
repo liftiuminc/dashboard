@@ -11,7 +11,9 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :movers
   map.resources :networks, :has_many => :network_tag_options
   map.publisher_ad_formats 'publishers/ad_formats', :controller => 'publishers', :action => 'ad_formats'
-  map.publisher_ad_formats 'publishers/save_ad_formats', :controller => 'publishers', :action => 'save_ad_formats'
+  map.publisher_save_ad_formats 'publishers/save_ad_formats', :controller => 'publishers', :action => 'save_ad_formats'
+  map.publisher_quality_control 'publishers/quality_control', :controller => 'publishers', :action => 'quality_control'
+  map.publisher_save_quality_control 'publishers/save_quality_control', :controller => 'publishers', :action => 'save_quality_control'
   map.resources :publishers, :has_many => :tags
   map.resources :publisher_network_logins
   map.resources :publisher_tags

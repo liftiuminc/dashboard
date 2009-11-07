@@ -95,7 +95,7 @@ class PublishersControllerTest < ActionController::TestCase
   context "ad_formats action as publisher" do
     should "render ad_formats template" do
       login_as_publisher
-      get "ad_formats", :publisher_id => "1"
+      get "ad_formats"
       assert_template 'ad_formats'
     end
   end
@@ -103,8 +103,24 @@ class PublishersControllerTest < ActionController::TestCase
   context "ad_formats action as admin" do
     should "render ad_formats template" do
       login_as_admin
-      get "ad_formats", :id => "1"
+      get "ad_formats", :publisher_id => "1"
       assert_template 'ad_formats'
+    end
+  end
+
+  context "quality_control action as publisher" do
+    should "render quality_control template" do
+      login_as_publisher
+      get "quality_control"
+      assert_template 'quality_control'
+    end
+  end
+
+  context "quality_control action as admin" do
+    should "render quality_control template" do
+      login_as_admin
+      get "quality_control", :publisher_id => "1"
+      assert_template 'quality_control'
     end
   end
 end
