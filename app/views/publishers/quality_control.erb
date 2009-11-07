@@ -15,16 +15,25 @@
   <%= f.error_messages %>
 <br />
 <br />
-<b>Ad Quality</b>: Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium let's you choose.
+<b>Ad Quality</b> <span class="hint">Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium let's you choose.</span>
 <br />
 <br />
-<input type="text" name="publisher[brand_safety_level]" value="<%=h @publisher.brand_safety_level %>"/>
+More revenue
+<% for num in (1..10) %>
+<%= radio_button_tag name="publisher[brand_safety_level]", num, @publisher.brand_safety_level == num %>&nbsp;
+<% end %>
+Higher Quality Ads
 <br />
 <br />
-<b>Ad Speed</b>. More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue. 
+
+<b>Ad Speed</b> <span class="hint">More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue.</span>
 <br />
 <br />
-<input type="text" name="publisher[hoptime]" value="<%=h @publisher.hoptime %>"/>
+More revenue
+<% for num in (0..9) %>
+<%= radio_button_tag name="publisher[hoptime]", num*300, @publisher.hoptime == num*300 %>&nbsp;
+<% end %>
+Faster Ads
 <br />
 <br />
 <%= liftium_submit "Save Settings" %>
