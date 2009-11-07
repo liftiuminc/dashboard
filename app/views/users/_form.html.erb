@@ -1,7 +1,7 @@
 <% form_for @user do |f| %>
   <%= f.error_messages %>
   <div class="fieldset">
-    <%= f.label :email %><br />
+    <%= f.label :email %>*<br />
     <%= f.text_field :email, {:style=> "width: 200px"} %>
   </div>
 
@@ -19,11 +19,11 @@
   <% end %>
   
   <div class="fieldset">
-    <%= f.label :password %><br />
+    <%= f.label :password %><% if !current_user.admin? %>*<% end %><br />
     <%= f.password_field :password,  {:style=> "width: 200px"}%>
   </div>
   <div class="fieldset">
-    <%= f.label :password_confirmation %><br />
+    <%= f.label :password_confirmation %><% if !current_user.admin? %>*<% end %><br />
     <%= f.password_field :password_confirmation,  {:style=> "width: 200px"}%>
   </div>
   <p><%= liftium_submit "Save Changes" %></p>

@@ -14,6 +14,11 @@ class ChangelogsHelperTest < ActionView::TestCase
                   render_diffs(changelog)
   end
 
+  def test_render_diffs_truncates_long_diffs_to_30
+    changelog = Changelog.new(:diff => "{\"something\":[null, \"#{"T" * 80}\"]}")
+    assert_equal "<b>something</b> initialized to <i>#{"T" * 27}...</i>", render_diffs(changelog, truncate = true)
+  end
+
   def test_render_diffs_shows_nothing_when_set_to_empty_string
     changelog = Changelog.new(:diff => '{"comments":[null,""],"tag_template":[null,""]}')
     assert_equal '', render_diffs(changelog)
@@ -32,7 +37,7 @@ class ChangelogsHelperTest < ActionView::TestCase
 
   def test_render_changelog_links
     changelog = Changelog.new(:record_id => 1, :record_type => "Network")
-    assert_equal "<a href=\"/networks/1\">Show Original</a> | <a href=\"/changelogs?record_id=1&amp;record_type=Network\">Show changelogs for this object</a>", render_changelog_links(changelog)
+    assert_equal "<a href=\"/changelogs\">View</a> | <a href=\"/networks/1\">Original</a> | <a href=\"/changelogs?record_id=1&amp;record_type=Network\">All changelogs</a>", render_changelog_links(changelog)
   end
 
   def test_changelogs_title_no_filter

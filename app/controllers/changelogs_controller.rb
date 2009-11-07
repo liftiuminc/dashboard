@@ -7,6 +7,10 @@ class ChangelogsController < ApplicationController
     @changelogs = Changelog.find(:all, build_find_args(params))
   end
 
+  def show
+    @changelog = Changelog.find(params[:id])
+  end
+
   private
 
   def build_find_args(params)

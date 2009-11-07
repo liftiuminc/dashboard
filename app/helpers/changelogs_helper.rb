@@ -1,9 +1,9 @@
 require 'json'
 module ChangelogsHelper
 
-  def render_diffs(changelog)
+  def render_diffs(changelog, truncate = false)
     JSON.parse(changelog.diff).inject([]) do |arr, hsh|
-      arr << changed_txt(hsh[0], hsh[1][0], hsh[1][1])
+      arr << changed_txt(hsh[0], hsh[1][0], hsh[1][1], truncate)
     end.compact.join("<br/>")
   end
 
@@ -18,7 +18,7 @@ module ChangelogsHelper
   end
 
   def render_changelog_links(changelog)
-    [link_to("Show Original", changelog.record), link_to("Show changelogs for this object", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
+    [link_to("View", changelog), link_to("Original", changelog.record), link_to("All changelogs", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
   end
 
   def changelogs_title(params)
@@ -40,9 +40,17 @@ module ChangelogsHelper
 
   private
 
-  def changed_txt(attribute, original_value, new_value)
+  def changed_txt(attribute, original_value, new_value, truncate = false)
     return if original_value.blank? && new_value.blank?
+
+    if truncate
+      original_value = truncate(original_value, :length => 30)
+      new_value = truncate(new_value, :length => 30)
+    end
+
+
     retval = "<b>#{attribute}</b> "
-    retval += original_value.blank? ? "initialized to <i>#{new_value}</i>" : "changed from <i>#{original_value}</i> to <i>#{new_value}</i>"
+    retval += original_value.blank? ? "initialized to <i>#{new_value}</i>" :
+        "changed from <i>#{original_value}</i> to <i>#{new_value}</i>"
   end
 end
