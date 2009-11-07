@@ -34,27 +34,47 @@ class HomesController < ApplicationController
     end
     
     # FIXME move to model once Jos' is done refactoring
-    sql = "SELECT SUM(loads) AS loads FROM " + model.table_name +
+    # REALLYFIXME. What a mess.
+    sql = "SELECT * FROM " + model.table_name +
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND " + model.new.time_column + " >= ? " +
-        " AND " + model.new.time_column + " <= ? "
+        " AND " + model.new.time_column + " <= ? " +
+	" ORDER by " + model.new.time_column 
         
-    stats = model.find_by_sql ["/*#1*/" + sql, current_user.publisher_id, @dates[0], @dates[1]]
-    previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
-    @impressions = stats[0].loads.to_i
-    @previous_impressions = previous_stats[0].loads.to_i
+    @stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
+    @previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
+    @impressions = @stats.sum(&:loads)
+    @previous_impressions = @previous_stats.sum(&:loads)
 
-    sql = "SELECT SUM(revenue) AS revenue FROM revenues " +
+    @impressions_graph_data = []
+    for stat in @stats do
+      @impressions_graph_data.push([stat.time.to_date.strftime("%m.%d").to_f, stat.loads])
+    end
+
+    sql = "SELECT id, day, " +
+	" COALESCE(SUM(attempts), 0) AS attempts," +
+        " COALESCE(SUM(rejects), 0) AS rejects," +
+        " COALESCE(SUM(clicks), 0) AS clicks," +
+        " COALESCE(SUM(revenue), 0) AS revenue  FROM revenues " +
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND day >= ? AND day <= ? "
+        " AND day >= ? AND day <= ? GROUP BY day"
 
-    revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
-    previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
-    @revenue = revenues[0].revenue.to_f
-    @previous_revenue = previous_revenues[0].revenue.to_f
+    @revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
+    @previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
+  
+    @revenue = @revenues.sum(&:revenue).to_f
+    @previous_revenue = @revenues.sum(&:revenue).to_f
+
+    @revenue_graph_data = [] 
+    @ecpm_graph_data = []
+    for rev in @revenues do
+      @revenue_graph_data.push([rev.day.to_date.strftime("%m.%d").to_f, rev.revenue.to_f.round(2)])
+      @ecpm_graph_data.push([rev.day.to_date.strftime("%m.%d").to_f, Revenue.calculate_ecpm(rev.attempts, rev.revenue)])
+    end
 
     @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)
     @previous_ecpm = Revenue.calculate_ecpm(@previous_impressions, @previous_revenue)
+
 
     sql = "SELECT revenues.id, revenues.tag_id, tags.size, " + 
 	" COALESCE(SUM(attempts), 0) AS attempts," +

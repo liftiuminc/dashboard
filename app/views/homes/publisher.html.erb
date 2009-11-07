@@ -1,35 +1,78 @@
 <% title "Publisher Home" %>
+<%= javascript_include_tag "jscharts" %>
 
 <%= render :partial => 'shared/select_timeframe' %>
 
 <style type="text/css">
-.publisher_chart_block {
-	width: 33.3%;
-	float: left;
-	font-weight: bold;
-	margin-bottom: 15px;
-}
-#publisher_home_charts {
-	width:100%;
+.publisher_chart {
+
 }
 </style>
-<div id="publisher_home_charts">
-  <div class="publisher_chart_block">
+
+<script>
+liftiumChart = function (divid){
+	var c = new JSChart(divid, 'line');
+	c.setSize(250, 200);
+	c.setTitleColor('#64439C');
+	c.setTitleFontSize(9);
+	c.setAxisNameX('');
+	c.setAxisNameY('');
+	c.setAxisPaddingBottom(15);
+	c.setAxisPaddingTop(30);
+	c.setGraphLabel("Liftium")
+	c.setGraphLabelColor("#64439C")
+	c.setGraphLabelFontSize(12)
+	c.setGraphLabelOpacity(0.5)
+	c.setGrid(false)
+	return c;
+}
+</script>
+<!-- I know the cool kids use CSS and tableless layout. I'm not cool. -->
+<table id="publisher_home_charts">
+  <tr>
+    <td width="33%">
 	<h2>Impressions</h2>
-	<%= params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
+	<div id="impressions_chart" class="publisher_chart">Loading...</div>
+	<script type="text/javascript">
+	var c = liftiumChart("impressions_chart");
+	var data = <%= @impressions_graph_data.to_json %>
+	c.setTitle("Impressions for <%= escape_javascript(params[:date_select]) %>");
+	c.setDataArray(data);
+	c.draw();
+	</script>
+	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
-  </div>
-  <div class="publisher_chart_block">
-	<h2>Revenue</h2>
-	<%= params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
+    </td>
+    <td width="33%">
+	<h2>Revenue</h2>	
+	<div id="revenue_chart" class="publisher_chart">Loading...</div>
+	<script type="text/javascript">
+	var c = liftiumChart("revenue_chart");
+	var data = <%= @revenue_graph_data.to_json %>
+	c.setTitle("Revenue for <%= escape_javascript(params[:date_select]) %>");
+	c.setDataArray(data);
+	c.draw();
+	</script>
+
+	<%=h params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
 	<%= percentage_difference(@previous_revenue, @revenue) %>
-  </div>
-  <div class="publisher_chart_block">
+    </td>
+    <td width="33%">
 	<h2>eCPM</h2>
-	<%= params[:date_select] %> : $<%= @ecpm.round(2) %>
+	<div id="ecpm_chart" class="publisher_chart">Loading...</div>
+	<script type="text/javascript">
+	var c = liftiumChart("ecpm_chart");
+	var data = <%= @ecpm_graph_data.to_json %>
+	c.setTitle("eCPM for <%= escape_javascript(params[:date_select]) %>");
+	c.setDataArray(data);
+	c.draw();
+	</script>
+
+	<%=h params[:date_select] %> : $<%= @ecpm.round(2) %>
 	<%= percentage_difference(@previous_ecpm, @ecpm) %>
-  </div>
-</div>
+    </td>
+  </tr>
+</table>
 
 <h2 class="section_break">Top Performing Ad Networks</h2>
 
