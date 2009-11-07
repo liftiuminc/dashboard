@@ -83,4 +83,28 @@ class PublishersControllerTest < ActionController::TestCase
       assert !Publisher.exists?(publisher.id)
     end
   end
+
+  context "ad_preview action" do
+    should "render ad_preview template" do
+      login_as_publisher
+      get "ad_preview"
+      assert_template 'ad_preview'
+    end
+  end
+
+  context "ad_formats action as publisher" do
+    should "render ad_formats template" do
+      login_as_publisher
+      get "ad_formats", :publisher_id => "1"
+      assert_template 'ad_formats'
+    end
+  end
+
+  context "ad_formats action as admin" do
+    should "render ad_formats template" do
+      login_as_admin
+      get "ad_formats", :id => "1"
+      assert_template 'ad_formats'
+    end
+  end
 end

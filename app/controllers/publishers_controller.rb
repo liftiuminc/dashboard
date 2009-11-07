@@ -1,6 +1,7 @@
 class PublishersController < ApplicationController
   before_filter :require_user
-  before_filter :require_admin, :except => [:show]
+  before_filter :require_admin, :except => [:show, :ad_preview, :ad_formats]
+  before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats]
 
   def index
     @publishers = Publisher.all
@@ -56,5 +57,15 @@ class PublishersController < ApplicationController
                                 :enabled        => true
                             })
   end
-  
+
+  def ad_formats 
+    if current_user.admin? && params[:id] 
+      @publisher = Publisher.find(params[:id])
+    elsif current_user.publisher
+      @publisher = current_user.publisher
+    else 
+      @publisher = Publisher.first :order => "site_name"
+    end
+  end
+
 end
