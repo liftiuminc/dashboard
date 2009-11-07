@@ -29,8 +29,10 @@ class HomesController < ApplicationController
     
     if @dates[0].to_time < (DateTime.now - 7.days)
         model = FillsDay
+	time_format = "%m/%d"
     else
-        model = FillsMinute
+        model = FillsHour
+	time_format = "%H:%p"
     end
     
     # FIXME move to model once Jos' is done refactoring
@@ -39,7 +41,7 @@ class HomesController < ApplicationController
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND " + model.new.time_column + " >= ? " +
         " AND " + model.new.time_column + " <= ? " +
-	" ORDER by " + model.new.time_column 
+	" ORDER by " + model.new.time_column + " DESC"
         
     @stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     @previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
@@ -48,8 +50,13 @@ class HomesController < ApplicationController
 
     @impressions_graph_data = []
     for stat in @stats do
-      @impressions_graph_data.push([stat.time.to_date.strftime("%m/%d"), stat.loads])
+      @impressions_graph_data.push([stat.time.to_time.strftime(time_format), stat.loads])
+      # TODO smarter sampling
+      if @impressions_graph_data.length > 25
+	break
+      end
     end
+    @impressions_graph_data.reverse!
 
     sql = "SELECT id, day, " +
 	" COALESCE(SUM(attempts), 0) AS attempts," +
@@ -57,7 +64,7 @@ class HomesController < ApplicationController
         " COALESCE(SUM(clicks), 0) AS clicks," +
         " COALESCE(SUM(revenue), 0) AS revenue  FROM revenues " +
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND day >= ? AND day <= ? GROUP BY day"
+        " AND day >= ? AND day <= ? GROUP BY day ORDER BY day"
 
     @revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
     @previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
@@ -70,6 +77,10 @@ class HomesController < ApplicationController
     for rev in @revenues do
       @revenue_graph_data.push([rev.day.to_date.strftime("%m/%d"), rev.revenue.to_f.round(2)])
       @ecpm_graph_data.push([rev.day.to_date.strftime("%m/%d"), Revenue.calculate_ecpm(rev.attempts, rev.revenue)])
+      # TODO smarter sampling
+      if @revenue_graph_data.length > 25
+	break
+      end
     end
 
     @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)

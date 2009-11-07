@@ -1,7 +1,17 @@
+<%= render :partial => 'shared/select_timeframe' %>
+
+<% if current_user.admin %>
+  <% @title_bar_right_text += publisher_dropdown "Select a Publisher..."%>
+  <script>
+  function publisherSelect(dd){
+          window.location.href = window.location.pathname + '?publisher_id=' + escape(dd.options[dd.selectedIndex].value);
+  }
+  </script>
+<% end %>
+
 <% title "Publisher Home" %>
 <%= javascript_include_tag "jscharts" %>
 
-<%= render :partial => 'shared/select_timeframe' %>
 
 <style type="text/css">
 .publisher_chart {
@@ -18,17 +28,28 @@ liftiumChart = function (divid, type){
 	var c = new JSChart(divid, type);
 	c.setSize(250, 200);
 	c.setTitleColor('#64439C');
+	c.setFlagColor('#64439C');
 	c.setTitleFontSize(9);
 	c.setAxisNameX('');
 	c.setAxisNameY('');
 	c.setAxisPaddingBottom(15);
 	c.setAxisPaddingTop(40);
+	c.setBarValues(false);
+	c.setShowXValues(false);
+	/*
 	c.setGraphLabel("Liftium")
 	c.setGraphLabelColor("#64439C")
 	c.setGraphLabelFontSize(12)
 	c.setGraphLabelOpacity(0.5)
+	*/
 	c.setGrid(false)
 	return c;
+}
+liftiumChartToolTips = function (chart, data){
+	for(var i = 0; i < data.length; i++){
+		//chart.setTooltip([data[i][0]]);
+		chart.setTooltip([data[i][0]], data.join(" - "));
+	}
 }
 </script>
 <!-- I know the cool kids use CSS and tableless layout. I'm not cool. -->
@@ -40,6 +61,7 @@ liftiumChart = function (divid, type){
 	<script type="text/javascript">
 	var ic = liftiumChart("impressions_chart", "bar");
 	var data = <%= @impressions_graph_data.to_json %>
+	liftiumChartToolTips(ic, data);
 	ic.setTitle("Impressions for <%= escape_javascript(params[:date_select]) %>");
 	ic.setDataArray(data);
 	</script>
@@ -52,6 +74,9 @@ liftiumChart = function (divid, type){
 	<script type="text/javascript">
 	var rc = liftiumChart("revenue_chart", "bar");
 	var data = <%= @revenue_graph_data.to_json %>
+	liftiumChartToolTips(rc, data);
+	rc.setAxisValuesPrefixY("$")
+	rc.setBarValuesPrefix("$")
 	rc.setTitle("Revenue for <%= escape_javascript(params[:date_select]) %>");
 	rc.setDataArray(data);
 	</script>
@@ -65,7 +90,10 @@ liftiumChart = function (divid, type){
 	<script type="text/javascript">
 	var ec = liftiumChart("ecpm_chart", "bar");
 	var data = <%= @ecpm_graph_data.to_json %>
-	ec.setTitle("eCPM for <%= escape_javascript(params[:date_select]) %>");
+	liftiumChartToolTips(ec, data);
+	ec.setAxisValuesPrefixY("$")
+	ec.setBarValuesPrefix("$")
+	ec.setTitle("eCPM for " + <%= params[:date_select].to_json %>);
 	ec.setDataArray(data);
 	</script>
 
