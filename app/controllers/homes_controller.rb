@@ -34,6 +34,12 @@ class HomesController < ApplicationController
         model = FillsHour
 	time_format = "%H:%p"
     end
+
+    if current_user.admin? and params[:publisher_id]
+	pubid = params[:publisher_id]
+    else 
+	pubid = current_user.publisher_id
+    end
     
     # FIXME move to model once Jos' is done refactoring
     # REALLYFIXME. What a mess.
@@ -43,8 +49,8 @@ class HomesController < ApplicationController
         " AND " + model.new.time_column + " <= ? " +
 	" ORDER by " + model.new.time_column + " DESC"
         
-    @stats = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
-    @previous_stats = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
+    @stats = model.find_by_sql [sql, pubid, @dates[0], @dates[1]]
+    @previous_stats = model.find_by_sql [sql, pubid, @dates[2], @dates[0]]
     @impressions = @stats.sum(&:loads)
     @previous_impressions = @previous_stats.sum(&:loads)
 
@@ -66,8 +72,8 @@ class HomesController < ApplicationController
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND day >= ? AND day <= ? GROUP BY day ORDER BY day"
 
-    @revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1]]
-    @previous_revenues = model.find_by_sql [sql, current_user.publisher_id, @dates[2], @dates[0]]
+    @revenues = model.find_by_sql [sql, pubid, @dates[0], @dates[1]]
+    @previous_revenues = model.find_by_sql [sql, pubid, @dates[2], @dates[0]]
   
     @revenue = @revenues.sum(&:revenue).to_f
     @previous_revenue = @revenues.sum(&:revenue).to_f
@@ -97,9 +103,9 @@ class HomesController < ApplicationController
 	" WHERE day >= ? AND day <= ?" + 
 	" GROUP BY ?"
 	" ORDER BY revenue DESC"
-    @ad_network_revenues = Revenue.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1], "tags.network_id"]
+    @ad_network_revenues = Revenue.find_by_sql [sql, pubid, @dates[0], @dates[1], "tags.network_id"]
 
-    @ad_size_revenues = Revenue.find_by_sql [sql, current_user.publisher_id, @dates[0], @dates[1], "tags.size"]
+    @ad_size_revenues = Revenue.find_by_sql [sql, pubid, @dates[0], @dates[1], "tags.size"]
 
   end
 
