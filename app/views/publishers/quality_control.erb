@@ -30,7 +30,8 @@ Higher Quality Ads
 <br />
 <br />
 More revenue
-<% for num in (0..9) %>
+<% 
+for num in 9.downto(0) %>
 <%= radio_button_tag name="publisher[hoptime]", num*300, @publisher.hoptime == num*300 %>&nbsp;
 <% end %>
 Faster Ads
