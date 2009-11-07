@@ -80,7 +80,7 @@ class PublishersController < ApplicationController
     params[:publisher] ||= {}
     params[:publisher]["ad_format_ids"] ||= []
     if @publisher.update_attributes(params[:publisher])
-      flash[:notice] = "Successfully updated sizes."
+      flash[:notice] = "Successfully updated ad formats."
       redirect_to :action => 'ad_formats'
     else
       render :action => 'ad_formats'
