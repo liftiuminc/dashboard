@@ -5,20 +5,24 @@
 
 <style type="text/css">
 .publisher_chart {
-
+	width: 250px;
+	height: 200px;
+}
+#publisher_home_charts {
+	font-size: 12px;
 }
 </style>
 
 <script>
-liftiumChart = function (divid){
-	var c = new JSChart(divid, 'line');
+liftiumChart = function (divid, type){
+	var c = new JSChart(divid, type);
 	c.setSize(250, 200);
 	c.setTitleColor('#64439C');
 	c.setTitleFontSize(9);
 	c.setAxisNameX('');
 	c.setAxisNameY('');
 	c.setAxisPaddingBottom(15);
-	c.setAxisPaddingTop(30);
+	c.setAxisPaddingTop(40);
 	c.setGraphLabel("Liftium")
 	c.setGraphLabelColor("#64439C")
 	c.setGraphLabelFontSize(12)
@@ -32,26 +36,24 @@ liftiumChart = function (divid){
   <tr>
     <td width="33%">
 	<h2>Impressions</h2>
-	<div id="impressions_chart" class="publisher_chart">Loading...</div>
+	<div id="impressions_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
-	var c = liftiumChart("impressions_chart");
+	var ic = liftiumChart("impressions_chart", "bar");
 	var data = <%= @impressions_graph_data.to_json %>
-	c.setTitle("Impressions for <%= escape_javascript(params[:date_select]) %>");
-	c.setDataArray(data);
-	c.draw();
+	ic.setTitle("Impressions for <%= escape_javascript(params[:date_select]) %>");
+	ic.setDataArray(data);
 	</script>
 	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
     </td>
     <td width="33%">
 	<h2>Revenue</h2>	
-	<div id="revenue_chart" class="publisher_chart">Loading...</div>
+	<div id="revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
-	var c = liftiumChart("revenue_chart");
+	var rc = liftiumChart("revenue_chart", "bar");
 	var data = <%= @revenue_graph_data.to_json %>
-	c.setTitle("Revenue for <%= escape_javascript(params[:date_select]) %>");
-	c.setDataArray(data);
-	c.draw();
+	rc.setTitle("Revenue for <%= escape_javascript(params[:date_select]) %>");
+	rc.setDataArray(data);
 	</script>
 
 	<%=h params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
@@ -61,11 +63,10 @@ liftiumChart = function (divid){
 	<h2>eCPM</h2>
 	<div id="ecpm_chart" class="publisher_chart">Loading...</div>
 	<script type="text/javascript">
-	var c = liftiumChart("ecpm_chart");
+	var ec = liftiumChart("ecpm_chart", "bar");
 	var data = <%= @ecpm_graph_data.to_json %>
-	c.setTitle("eCPM for <%= escape_javascript(params[:date_select]) %>");
-	c.setDataArray(data);
-	c.draw();
+	ec.setTitle("eCPM for <%= escape_javascript(params[:date_select]) %>");
+	ec.setDataArray(data);
 	</script>
 
 	<%=h params[:date_select] %> : $<%= @ecpm.round(2) %>
@@ -73,7 +74,14 @@ liftiumChart = function (divid){
     </td>
   </tr>
 </table>
-
+<script>
+// Required for IE
+window.onload=function(){
+	ic.draw();
+	ec.draw();
+	rc.draw();
+}
+</script>
 <h2 class="section_break">Top Performing Ad Networks</h2>
 
 <%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>

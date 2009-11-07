@@ -48,7 +48,7 @@ class HomesController < ApplicationController
 
     @impressions_graph_data = []
     for stat in @stats do
-      @impressions_graph_data.push([stat.time.to_date.strftime("%m.%d").to_f, stat.loads])
+      @impressions_graph_data.push([stat.time.to_date.strftime("%m/%d"), stat.loads])
     end
 
     sql = "SELECT id, day, " +
@@ -68,8 +68,8 @@ class HomesController < ApplicationController
     @revenue_graph_data = [] 
     @ecpm_graph_data = []
     for rev in @revenues do
-      @revenue_graph_data.push([rev.day.to_date.strftime("%m.%d").to_f, rev.revenue.to_f.round(2)])
-      @ecpm_graph_data.push([rev.day.to_date.strftime("%m.%d").to_f, Revenue.calculate_ecpm(rev.attempts, rev.revenue)])
+      @revenue_graph_data.push([rev.day.to_date.strftime("%m/%d"), rev.revenue.to_f.round(2)])
+      @ecpm_graph_data.push([rev.day.to_date.strftime("%m/%d"), Revenue.calculate_ecpm(rev.attempts, rev.revenue)])
     end
 
     @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)
