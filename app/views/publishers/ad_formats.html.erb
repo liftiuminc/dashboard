@@ -2,4 +2,12 @@
 
 <% title "My Ad Sizes" %>
 
-<%= debug(@publisher.ad_formats) %>
+<% form_for @publisher, :url => { :action => "save_ad_formats" } do |f| %>
+  <%= f.error_messages %>
+
+<%- for ad_format in @ad_formats %>
+  <%= check_box_tag "publisher[ad_formats][]", ad_format.id, @publisher.ad_formats.include?(ad_format) %>
+  <%= ad_format.ad_format_name %><br />
+<%- end %>
+
+<% end %>

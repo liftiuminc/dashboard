@@ -1,7 +1,7 @@
 class AdFormat < ActiveRecord::Base
   acts_as_changelogable
 
-  has_many :publisher_ad_formats, :dependent => :destroy
+  has_and_belongs_to_many :publishers
 
   validates_presence_of :ad_format_name, :size
   validates_uniqueness_of :ad_format_name

@@ -59,6 +59,7 @@ class PublishersController < ApplicationController
   end
 
   def ad_formats 
+    @ad_formats = AdFormat.all(:order => "id")
     if current_user.admin? && params[:id] 
       @publisher = Publisher.find(params[:id])
     elsif current_user.publisher
@@ -68,4 +69,14 @@ class PublishersController < ApplicationController
     end
   end
 
+  def save_ad_formats
+    params[:publisher][:ad_format_ids] ||= []
+    @publisher = Publisher.find(params[:id])
+    if @publisher.update_attributes(params[:publisher])
+      flash[:notice] = "Successfully updated sizes."
+      redirect_to :action => 'ad_formats'
+    else
+      render :action => 'ad_formats'
+    end
+  end
 end
