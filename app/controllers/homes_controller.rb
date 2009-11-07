@@ -18,7 +18,7 @@ class HomesController < ApplicationController
 
   def publisher
     if !current_user.publisher
-        permission_denied
+        permission_denied("Your account is not associated with a publisher")
         return
     end
         
