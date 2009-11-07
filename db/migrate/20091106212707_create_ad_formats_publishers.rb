@@ -1,6 +1,6 @@
 class CreateAdFormatsPublishers < ActiveRecord::Migration
   def self.up
-        create_table "ad_formats_publishers" do |t|
+        create_table "ad_formats_publishers", :id => false do |t|
           t.references :publisher
           t.references :ad_format
         end

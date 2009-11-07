@@ -1,13 +1,16 @@
 <% @title_bar_right_text = "" %>
 
-<% title "My Ad Sizes" %>
+<% title "My Ad Formats" %>
 
 <% form_for @publisher, :url => { :action => "save_ad_formats" } do |f| %>
+  <%= hidden_field_tag "publisher_id", @publisher.id %>
   <%= f.error_messages %>
 
 <%- for ad_format in @ad_formats %>
-  <%= check_box_tag "publisher[ad_formats][]", ad_format.id, @publisher.ad_formats.include?(ad_format) %>
-  <%= ad_format.ad_format_name %><br />
+  <%= check_box_tag "publisher[ad_format_ids][]", ad_format.id, @publisher.ad_formats.include?(ad_format) %>
+  <%= ad_format.name_with_size %><br />
 <%- end %>
+<p>
+  <%= liftium_submit "Save Sizes" %>
 
 <% end %>
