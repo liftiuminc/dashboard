@@ -21,6 +21,12 @@ class HomesController < ApplicationController
         permission_denied("Your account is not associated with a publisher")
         return
     end
+
+    if current_user.admin? and params[:publisher_id]
+	@publisher = Publisher.find(params[:publisher_id])
+    else 
+	@publisher = current_user.publisher
+    end
         
     params[:date_select] ||= "Last 7 Days"
 
@@ -35,24 +41,20 @@ class HomesController < ApplicationController
 	time_format = "%H:%p"
     end
 
-    if current_user.admin? and params[:publisher_id]
-	pubid = params[:publisher_id]
-    else 
-	pubid = current_user.publisher_id
-    end
     
     # FIXME move to model once Jos' is done refactoring
     # REALLYFIXME. What a mess.
-    sql = "SELECT * FROM " + model.table_name +
+    col = model.new.time_column
+    sql = "SELECT * FROM #{model.table_name}"+
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND " + model.new.time_column + " >= ? " +
-        " AND " + model.new.time_column + " <= ? " +
-	" ORDER by " + model.new.time_column + " DESC"
+        " AND #{col} >= ?  AND #{col} <= ? ORDER by #{col} DESC"
         
-    @stats = model.find_by_sql [sql, pubid, @dates[0], @dates[1]]
-    @previous_stats = model.find_by_sql [sql, pubid, @dates[2], @dates[0]]
+    @stats = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
+    @previous_stats = model.find_by_sql [sql, @publisher.id, @dates[2], @dates[0]]
     @impressions = @stats.sum(&:loads)
     @previous_impressions = @previous_stats.sum(&:loads)
+
+
 
     @impressions_graph_data = []
     for stat in @stats do
@@ -64,6 +66,17 @@ class HomesController < ApplicationController
     end
     @impressions_graph_data.reverse!
 
+    sql = "SELECT tags.network_id, COALESCE(SUM(loads), 0) AS loads, tag_id FROM #{model.table_name}"+
+	" INNER JOIN tags on #{model.table_name}.tag_id = tags.id " +
+        " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
+        " AND #{col} >= ?  AND #{col} <= ? GROUP BY tags.network_id"
+
+    @stats_by_network = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
+    @network_graph_data = [] 
+    for s in @stats_by_network do 
+	@network_graph_data.push([s.tag.network.network_name, s.loads])
+    end
+
     sql = "SELECT id, day, " +
 	" COALESCE(SUM(attempts), 0) AS attempts," +
         " COALESCE(SUM(rejects), 0) AS rejects," +
@@ -72,8 +85,8 @@ class HomesController < ApplicationController
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND day >= ? AND day <= ? GROUP BY day ORDER BY day"
 
-    @revenues = model.find_by_sql [sql, pubid, @dates[0], @dates[1]]
-    @previous_revenues = model.find_by_sql [sql, pubid, @dates[2], @dates[0]]
+    @revenues = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
+    @previous_revenues = model.find_by_sql [sql, @publisher.id, @dates[2], @dates[0]]
   
     @revenue = @revenues.sum(&:revenue).to_f
     @previous_revenue = @revenues.sum(&:revenue).to_f
@@ -103,9 +116,10 @@ class HomesController < ApplicationController
 	" WHERE day >= ? AND day <= ?" + 
 	" GROUP BY ?"
 	" ORDER BY revenue DESC"
-    @ad_network_revenues = Revenue.find_by_sql [sql, pubid, @dates[0], @dates[1], "tags.network_id"]
 
-    @ad_size_revenues = Revenue.find_by_sql [sql, pubid, @dates[0], @dates[1], "tags.size"]
+    @ad_network_revenues = Revenue.find_by_sql [sql, @publisher.id, @dates[0], @dates[1], "tags.network_id"]
+
+    @ad_size_revenues = Revenue.find_by_sql [sql, @publisher.id, @dates[0], @dates[1], "tags.size"]
 
   end
 

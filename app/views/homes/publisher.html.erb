@@ -9,7 +9,7 @@
   </script>
 <% end %>
 
-<% title "Publisher Home" %>
+<% title @publisher.site_name %>
 <%= javascript_include_tag "jscharts" %>
 
 
@@ -30,18 +30,11 @@ liftiumChart = function (divid, type){
 	c.setTitleColor('#64439C');
 	c.setFlagColor('#64439C');
 	c.setTitleFontSize(9);
-	c.setAxisNameX('');
-	c.setAxisNameY('');
 	c.setAxisPaddingBottom(15);
 	c.setAxisPaddingTop(40);
 	c.setBarValues(false);
+	c.setAxisNameX("");
 	c.setShowXValues(false);
-	/*
-	c.setGraphLabel("Liftium")
-	c.setGraphLabelColor("#64439C")
-	c.setGraphLabelFontSize(12)
-	c.setGraphLabelOpacity(0.5)
-	*/
 	c.setGrid(false)
 	return c;
 }
@@ -50,6 +43,25 @@ liftiumChartToolTips = function (chart, data){
 		//chart.setTooltip([data[i][0]]);
 		chart.setTooltip([data[i][0]], data.join(" - "));
 	}
+}
+liftiumPieChart = function (divid){
+	var c = new JSChart(divid, "pie");
+	c.setSize(400, 350);
+	c.setTitleColor('#64439C');
+	c.setTitleFontSize(12);
+	c.setTextPaddingTop(5);
+	c.setAxisPaddingTop(5);
+	c.setPieRadius(110);
+	return c;
+}
+
+// Onload Required for IE
+window.onload=function(){
+	window.ic && ic.draw();
+	window.ec && ec.draw();
+	window.rc && rc.draw();
+	window.npc && npc.draw();
+	window.spc && spc.draw();
 }
 </script>
 <!-- I know the cool kids use CSS and tableless layout. I'm not cool. -->
@@ -62,8 +74,12 @@ liftiumChartToolTips = function (chart, data){
 	var ic = liftiumChart("impressions_chart", "bar");
 	var data = <%= @impressions_graph_data.to_json %>
 	liftiumChartToolTips(ic, data);
-	ic.setTitle("Impressions for <%= escape_javascript(params[:date_select]) %>");
+	ic.setTitle("Impressions for " + <%= params[:date_select].to_json %>);
 	ic.setDataArray(data);
+	if (data.length == 0){
+		$("impressions_chart").innerHTML = "No data available for the selected date range";
+		ic = null;
+	}
 	</script>
 	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
@@ -77,8 +93,12 @@ liftiumChartToolTips = function (chart, data){
 	liftiumChartToolTips(rc, data);
 	rc.setAxisValuesPrefixY("$")
 	rc.setBarValuesPrefix("$")
-	rc.setTitle("Revenue for <%= escape_javascript(params[:date_select]) %>");
+	rc.setTitle("Revenue for " + <%= params[:date_select].to_json %>);
 	rc.setDataArray(data);
+	if (data.length == 0){
+		$("revenue_chart").innerHTML = "No data available for the selected date range";
+		rc = null;
+	}
 	</script>
 
 	<%=h params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
@@ -95,6 +115,10 @@ liftiumChartToolTips = function (chart, data){
 	ec.setBarValuesPrefix("$")
 	ec.setTitle("eCPM for " + <%= params[:date_select].to_json %>);
 	ec.setDataArray(data);
+	if (data.length == 0){
+		$("ecpm_chart").innerHTML = "No data available for the selected date range";
+		ec = null;
+	}
 	</script>
 
 	<%=h params[:date_select] %> : $<%= @ecpm.round(2) %>
@@ -102,88 +126,103 @@ liftiumChartToolTips = function (chart, data){
     </td>
   </tr>
 </table>
-<script>
-// Required for IE
-window.onload=function(){
-	ic.draw();
-	ec.draw();
-	rc.draw();
-}
-</script>
-<h2 class="section_break">Top Performing Ad Networks</h2>
 
-<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
-  No Ad Network data available for the selected date range
-<%- else %>
+<table>
+  <tr valign="top">
+    <td width="475">
 
-<table class="record_listing" width="100%">
-  <tr class="record_listing_header">
-    <th>Ad Network</th>
-    <th>Last Updated</th>
-    <th>Impressions</th>
-    <th>CTR</th> 
-    <th>Revenue</th>
-    <th>eCPM</th>
+	<h2 class="section_break">Top Performing Ad Networks</h2>
+
+	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
+	  No Ad Network data available for the selected date range
+	<%- else %>
+
+	<table class="record_listing" width="100%">
+	  <tr class="record_listing_header">
+	    <th>Ad Network</th>
+	    <th>Last Updated</th>
+	    <th>Impressions</th>
+	    <th>CTR</th> 
+	    <th>Revenue</th>
+	    <th>eCPM</th>
+	  </tr>
+	  <%- for ar in @ad_network_revenues %>
+	    <tr class="record_row_<%= cycle("odd", "even")%>">
+	      <td class="record_column" style="width:200px"><%=h ar.tag.network.network_name%></td>
+	      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
+	      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
+	      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
+	      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
+	      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
+	    </tr>
+	  <%- end %>
+
+
+	    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+	      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
+	      <td class="record_column"><%= number_with_delimiter(@ad_network_revenues.sum(&:attempts))%></td>
+	      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_network_revenues.sum(&:clicks), @ad_network_revenues.sum(&:attempts)) %>%</td> 
+	      <td class="record_column">$<%= number_with_delimiter(@ad_network_revenues.sum(&:revenue))%></td>
+	      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_network_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
+	    </tr>
+	</table>
+
+	<%-end  %>
+
+	<h2 class="section_break">Top Performing Ad Sizes</h2>
+
+	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
+	  No Ad Size data available for the selected date range
+	<%- else %>
+
+	<table class="record_listing" width="100%">
+	  <tr class="record_listing_header">
+	    <th>Size</th>
+	    <th>Last Updated</th>
+	    <th>Impressions</th>
+	    <th>CTR</th> 
+	    <th>Revenue</th>
+	    <th>eCPM</th>
+	  </tr>
+	  <%- for ar in @ad_size_revenues %>
+	    <tr class="record_row_<%= cycle("odd", "even")%>">
+	      <td class="record_column" style="width:200px"><%=h ar.tag.size%></td>
+	      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
+	      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
+	      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
+	      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
+	      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
+	    </tr>
+	  <%- end %>
+
+
+	    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+	      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
+	      <td class="record_column"><%= number_with_delimiter(@ad_size_revenues.sum(&:attempts))%></td>
+	      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_size_revenues.sum(&:clicks), @ad_size_revenues.sum(&:attempts)) %>%</td> 
+	      <td class="record_column">$<%= number_with_delimiter(@ad_size_revenues.sum(&:revenue))%></td>
+	      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_size_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
+	    </tr>
+	</table>
+
+	<%-end  %>
+
+     <td height="350">
+	<div id="network_revenue_chart" class="publisher_chart">Loading chart...</div>
+	<script type="text/javascript">
+	var data = <%= @network_graph_data.to_json %>
+	var npc = liftiumPieChart("network_revenue_chart");
+	npc.setTitle("Impressions By Network " + <%= params[:date_select].to_json %>);
+	npc.setDataArray(data);
+	if (data.length == 0){
+		$("network_revenue_chart").innerHTML = "<br />No data available for the selected date range";
+		npc = null;
+	}
+	</script>
+	
+     </td>
   </tr>
-  <%- for ar in @ad_network_revenues %>
-    <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column" style="width:200px"><%=h ar.tag.network.network_name%></td>
-      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
-      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
-      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
-      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
-    </tr>
-  <%- end %>
-
-
-    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
-      <td class="record_column"><%= number_with_delimiter(@ad_network_revenues.sum(&:attempts))%></td>
-      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_network_revenues.sum(&:clicks), @ad_network_revenues.sum(&:attempts)) %>%</td> 
-      <td class="record_column">$<%= number_with_delimiter(@ad_network_revenues.sum(&:revenue))%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_network_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
-    </tr>
 </table>
 
-<%-end  %>
 
-
-<h2 class="section_break">Top Performing Ad Sizes</h2>
-
-<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
-  No Ad Size data available for the selected date range
-<%- else %>
-
-<table class="record_listing" width="100%">
-  <tr class="record_listing_header">
-    <th>Size</th>
-    <th>Last Updated</th>
-    <th>Impressions</th>
-    <th>CTR</th> 
-    <th>Revenue</th>
-    <th>eCPM</th>
-  </tr>
-  <%- for ar in @ad_size_revenues %>
-    <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column" style="width:200px"><%=h ar.tag.size%></td>
-      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
-      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
-      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
-      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
-    </tr>
-  <%- end %>
-
-
-    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
-      <td class="record_column"><%= number_with_delimiter(@ad_size_revenues.sum(&:attempts))%></td>
-      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_size_revenues.sum(&:clicks), @ad_size_revenues.sum(&:attempts)) %>%</td> 
-      <td class="record_column">$<%= number_with_delimiter(@ad_size_revenues.sum(&:revenue))%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_size_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
-    </tr>
-</table>
-
-<%-end  %>
 
