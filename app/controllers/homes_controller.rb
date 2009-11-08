@@ -69,13 +69,23 @@ class HomesController < ApplicationController
     sql = "SELECT tags.network_id, COALESCE(SUM(loads), 0) AS loads, tag_id FROM #{model.table_name}"+
 	" INNER JOIN tags on #{model.table_name}.tag_id = tags.id " +
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND #{col} >= ?  AND #{col} <= ? GROUP BY tags.network_id"
+        " AND #{col} >= ?  AND #{col} <= ? GROUP BY tags.network_id ORDER BY loads"
 
     @stats_by_network = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
+    @total_loads = @stats_by_network.sum(&:loads).to_f
     @network_graph_data = [] 
+    other = 0
     for s in @stats_by_network do 
-	@network_graph_data.push([s.tag.network.network_name, s.loads])
+	if (s.loads.to_f / @total_loads) < 0.02
+	   other += s.loads
+	else 
+           @network_graph_data.push([s.tag.network.network_name, s.loads])
+	end
     end
+    if other > 0
+	@network_graph_data.push(["Other", other])
+    end
+
 
     sql = "SELECT id, day, " +
 	" COALESCE(SUM(attempts), 0) AS attempts," +
