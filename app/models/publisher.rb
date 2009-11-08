@@ -10,8 +10,6 @@ class Publisher < ActiveRecord::Base
   has_many :users
   has_many :tags, :dependent => :destroy
   has_many :publisher_network_logins, :dependent => :destroy
- # has_many :publisher_ad_formats, :dependent => :destroy
- # has_many :ad_formats, :through => :publisher_ad_formats
   has_and_belongs_to_many :ad_formats
 
   validates_uniqueness_of :site_name
