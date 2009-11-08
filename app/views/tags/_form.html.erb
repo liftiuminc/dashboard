@@ -13,7 +13,7 @@
   </div>
   <div class="fieldset">
     <%= f.label :size, nil, :class => "left_label" %>
-    <%= select("tag", "size", AdFormat.all.collect {|af| [ af.name_with_size, af.size ] }) %>
+    <%= select("tag", "size", AdFormat.all.collect {|af| [ af.name_with_size, af.size ] }, :include_blank => true) %>
   </div>
   <div class="fieldset">
     <%= f.label :tier, nil, :class => "left_label" %>
