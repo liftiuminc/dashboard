@@ -224,13 +224,14 @@ window.onload=function(){
 	<div id="network_revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
 	var data = <%= @network_graph_data.to_json %>
-	var npc = liftiumPieChart("network_revenue_chart");
-	npc.setTitle("Impressions By Network " + <%= params[:date_select].to_json %>);
-	npc.setDataArray(data);
-	npc.colorize(liftiumColorArray(data.length));
 	if (data.length == 0){
 		$("network_revenue_chart").innerHTML = "<br />No data available for the selected date range";
 		npc = null;
+	} else {
+		var npc = liftiumPieChart("network_revenue_chart");
+		npc.setTitle("Impressions By Network " + <%= params[:date_select].to_json %>);
+		npc.setDataArray(data);
+		npc.colorize(liftiumColorArray(data.length));
 	}
 	</script>
 	
