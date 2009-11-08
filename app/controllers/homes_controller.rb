@@ -105,7 +105,7 @@ class HomesController < ApplicationController
     @ecpm_graph_data = []
     for rev in @revenues do
       @revenue_graph_data.push([rev.day.to_date.strftime("%m/%d"), rev.revenue.to_f.round(2)])
-      @ecpm_graph_data.push([rev.day.to_date.strftime("%m/%d"), Revenue.calculate_ecpm(rev.attempts, rev.revenue)])
+      @ecpm_graph_data.push([rev.day.to_date.strftime("%m/%d"), Revenue.calculate_ecpm(rev.attempts, rev.revenue).round(3)])
       # TODO smarter sampling
       if @revenue_graph_data.length > 25
 	break

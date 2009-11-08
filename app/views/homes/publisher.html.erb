@@ -26,30 +26,32 @@
 <script>
 liftiumChart = function (divid, type){
 	var c = new JSChart(divid, type);
-	c.setSize(250, 200);
-	c.setTitleColor('#64439C');
+	c.setSize(260, 200);
+	c.setTitleColor('#4D505D');
 	c.setFlagColor('#64439C');
-	c.setTitleFontSize(9);
+	c.setAxisValuesColor('#94968A');
+	c.setAxisValuesFontSize(9);
+	c.setTitleFontSize(12);
 	c.setAxisPaddingBottom(15);
 	c.setAxisPaddingTop(40);
 	c.setBarValues(false);
 	c.setAxisNameX("");
+	c.setAxisNameY("");
 	c.setShowXValues(false);
-	c.setGrid(false)
+	c.setTextPaddingTop(5);
 	return c;
 };
 
 liftiumChartToolTips = function (chart, data){
 	for(var i = 0; i < data.length; i++){
-		//chart.setTooltip([data[i][0]]);
-		chart.setTooltip([data[i][0]], data.join(" - "));
+		chart.setTooltip([data[i][0], data[i].join(" - ")]);
 	}
 };
 
 liftiumPieChart = function (divid){
 	var c = new JSChart(divid, "pie");
 	c.setSize(400, 350);
-	c.setTitleColor('#64439C');
+	c.setTitleColor('#4D505D');
 	c.setPieUnitsColor('#413A7B');
 	c.setPieUnitsFontSize(11);
 	c.setTitleFontSize(12);
@@ -76,14 +78,12 @@ window.onload=function(){
 	window.ec && ec.draw();
 	window.rc && rc.draw();
 	window.npc && npc.draw();
-	window.spc && spc.draw();
 }
 </script>
 <!-- I know the cool kids use CSS and tableless layout. I'm not cool. -->
 <table id="publisher_home_charts">
   <tr>
     <td width="33%">
-	<h2>Impressions</h2>
 	<div id="impressions_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
 	var ic = liftiumChart("impressions_chart", "bar");
@@ -100,7 +100,6 @@ window.onload=function(){
 	<%= percentage_difference(@previous_impressions, @impressions) %>
     </td>
     <td width="33%">
-	<h2>Revenue</h2>	
 	<div id="revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
 	var rc = liftiumChart("revenue_chart", "bar");
@@ -120,7 +119,6 @@ window.onload=function(){
 	<%= percentage_difference(@previous_revenue, @revenue) %>
     </td>
     <td width="33%">
-	<h2>eCPM</h2>
 	<div id="ecpm_chart" class="publisher_chart">Loading...</div>
 	<script type="text/javascript">
 	var ec = liftiumChart("ecpm_chart", "bar");
@@ -146,7 +144,7 @@ window.onload=function(){
   <tr valign="top">
     <td width="475">
 
-	<h2 class="section_break">Top Performing Ad Networks</h2>
+	<div class="section_break">Top Performing Ad Networks</div>
 
 	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
 	  No Ad Network data available for the selected date range
@@ -184,7 +182,7 @@ window.onload=function(){
 
 	<%-end  %>
 
-	<h2 class="section_break">Top Performing Ad Sizes</h2>
+	<div class="section_break">Top Performing Ad Sizes</div>
 
 	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
 	  No Ad Size data available for the selected date range
