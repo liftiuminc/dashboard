@@ -1,4 +1,4 @@
-<% form_for @tag, :url => { :action => "new" } do |f| %>
+<% form_for @tag, :url => { :action => "new" }, :html => { :method=> "get"} do |f| %>
   <div class="fieldset">
     <%= f.label :network %>
     <%= collection_select("", :network_id, @networks, :id, :network_name, :include_blank => true) %>

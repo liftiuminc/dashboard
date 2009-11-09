@@ -1,4 +1,27 @@
-<% form_for @tag do |f| %>
+<script>
+<% # Some sanity checks for common mistakes. Note that these are technically valid, but we just want to confirm. 
+%>
+function confirmForm(f){
+	var msgs = [];
+	if (parseInt($("tag_tier").value, 10) <= 8 && $("tag_always_fill_true").checked){
+		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
+ 	}
+	if (parseFloat($("tag_value").value) > 10) {
+		msgs.push("Value is over $10.00 (usually remnant ads are less than $5)");
+ 	}
+	if (parseInt($("tag_sample_rate").value, 10) > 10){ 
+		msgs.push("Sample rate is over 10% (usually sampling is is less than 2%)");
+ 	}
+
+	if (msgs.length > 0){
+		return confirm("The following looks fishy. Are you sure?\n* " + msgs.join("\n* "));
+	} else {
+		return true;
+	}
+}
+</script>
+
+<% form_for @tag, :html => {"onSubmit" => "return confirmForm(this)"} do |f| %>
   <%= f.error_messages %>
   <% if @tag.network_id %>
      <%= hidden_field_tag "tag[network_id]", @tag.network_id%>

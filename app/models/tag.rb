@@ -1,7 +1,8 @@
 class Tag < ActiveRecord::Base
-  acts_as_changelogable
-
   require "date_range_helper"
+
+  acts_as_changelogable
+  acts_as_commentable
 
   belongs_to :network
   belongs_to :publisher
@@ -10,15 +11,11 @@ class Tag < ActiveRecord::Base
   has_many :revenues,    :dependent => :destroy
   has_many :fills_days
 
-
   ### enable comments on tags. See FB 24
   ### Requires db/migrate/20091013122159_add_tag_comments.rb
-  acts_as_commentable
-
   accepts_nested_attributes_for :tag_options, :allow_destroy => true, :reject_if => proc { |a| a['option_name'].blank? || a['option_value'].blank? }
   accepts_nested_attributes_for :tag_targets, :allow_destroy => true, :reject_if => proc { |a| a['key_name'].blank? || a['key_value'].blank?}
 
-  #TODO: validate publisherid once accounts are set up
   validates_format_of :size, :with => /^[0-9]{1,3}x[0-9]{1,3}$/
   validates_uniqueness_of :tag_name, :scope => :publisher_id
   validates_presence_of :tag_name, :network, :size, :publisher
@@ -32,65 +29,76 @@ class Tag < ActiveRecord::Base
 
   ### From FB 16: Tags page should not allow "Always fill" with a rejection
   ### time limit set
-  #validates_each :always_fill do|record, attr, value|
-  #  if value == true and record.rejection_time > 0
-  #    record.errors.add attr, "can not be true if rejection time is set"
-  #  end
-  #end
+  validate :always_fill_with_rejection_time
+  def always_fill_with_rejection_time
+    if always_fill && rejection_time.to_i > 0
+      errors.add_to_base "Always fill can not be true if rejection time is set"
+    end
+  end
 
-   def enabled_s
-      if network.enabled 
-        enabled ? "Yes" : "No"
-      else
-        "Network Disabled"
-      end
-   end
-
-   def always_fill_s
-      always_fill ? "Yes" : "No"
-   end
+  # Fogbugz 86
+  validate :iframe_with_always_fill_xdm_iframe_path
+  def iframe_with_always_fill_xdm_iframe_path
+    if !network or !publisher 
+      # This will already fail for other reasons
+      return
+    elsif (tag =~ /iframe/i or network.tag_template =~ /iframe/i) and publisher.xdm_iframe_path.blank? and !always_fill
+      errors.add_to_base("Since the publisher's 'cross domain iframe path' is not set, iframe tags cannot be used unless it's an 'always fill'")
+    end 
+  end
 
    def auto_update_ecpm_s
       auto_update_ecpm ? "Yes" : "No"
    end
 
+  def enabled_s
+    if network.enabled 
+      enabled ? "Yes" : "No"
+    else
+      "Network Disabled"
+    end
+  end
 
-   # db returns 0.1. we want this to be 0.10
-   def value_s
-      sprintf( "%.2f", value)
-   end
+  def always_fill_s
+    always_fill ? "Yes" : "No"
+  end
 
-   def html
+  # db returns 0.1. we want this to be 0.10
+  def value_s
+    sprintf( "%.2f", value)
+  end
+
+  def html
       if tag
 	"#{tag}"
       else
         # TODO: Network tag options expansion
 	"#{tag.network.tag_template}"
       end
-   end
+  end
 
-   def width
-     @d = size.to_s.split("x")
-     @d[0] || 0
-   end
+  def width
+    d = size.to_s.split("x")
+    d[0] || 0
+  end
 
-   def height
-     @d = size.to_s.split("x")
-     @d[1] || 0
-   end
+  def height
+     d = size.to_s.split("x")
+     d[1] || 0
+  end
 
-   def css_size
-     "width:#{width}px;height:#{height}px;"
-   end
+  def css_size
+    "width:#{width}px;height:#{height}px;"
+  end
 
-   def preview_url
+  def preview_url
      env = Rails.configuration.environment
      if env == "development" || env == "dev_mysql"
 	"http://delivery.dev.liftium.com/tag?tag_id=#{id}"
      else
 	"http://delivery.liftium.com/tag?tag_id=#{id}"
      end
-   end
+  end
 
   def search_sql (params)
     query = []

@@ -4,7 +4,7 @@ class PublishersController < ApplicationController
   before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats, :quality_control]
 
   def index
-    @publishers = Publisher.all
+    @publishers = Publisher.all(:order => :site_name)
   end
   
   def show
