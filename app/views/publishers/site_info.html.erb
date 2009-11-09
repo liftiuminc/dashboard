@@ -1,0 +1,38 @@
+<% if current_user.admin %>
+  <% @title_bar_right_text = publisher_dropdown "Select a Publisher..."%>
+  <script>
+  function publisherSelect(dd){
+	  window.location.href = window.location.pathname + '?publisher_id=' + escape(dd.options[dd.selectedIndex].value);
+  }
+  </script>
+<% end %>
+
+<% title "Site Inforamtion for " + @publisher.site_name %>
+
+<% form_for @publisher, :url => { :action => "save_quality_control" } do |f| %>
+  <%= hidden_field_tag "publisher_id", @publisher.id %>
+  <%= hidden_field_tag "redirect_back", "1"%>
+  <%= f.error_messages %>
+  <div class="fieldset">
+    <%= f.label :site_url %>*<br />
+    <%= f.text_field :site_url %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :site_description %> <span class="hint">Describe your site for Ad Networks</span><br />
+    <%= f.text_area :site_description, :rows => 5 %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :site_keywords %> <span class="hint">Some Ad Networks ask for keywords to target to your users. 10 words max.</span><br />
+    <%= f.text_field :site_keywords %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :category %> <span class="hint">Some Ad Networks target ads based on the category of your site</span><br />
+    <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :privacy_policy, "Do you have a have a Privacy Policy?"%><br />
+    <%= radio_button "publisher", "privacy_policy", "true"%>Yes
+    <%= radio_button "publisher", "privacy_policy", "false"%>No
+  </div>
+  <%= liftium_submit "Save Settings" %>
+<% end %>

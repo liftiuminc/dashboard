@@ -1,7 +1,7 @@
 class PublishersController < ApplicationController
   before_filter :require_user
-  before_filter :require_admin, :except => [:show, :ad_preview, :ad_formats, :quality_control]
-  before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats, :quality_control]
+  before_filter :require_admin, :except => [:show, :ad_preview, :ad_formats, :quality_control, :site_info]
+  before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats, :quality_control, :site_info]
 
   def index
     @publishers = Publisher.all(:order => :site_name)
@@ -31,10 +31,20 @@ class PublishersController < ApplicationController
   end
   
   def update
-    @publisher = Publisher.find(params[:id])
+    if current_user.admin? && params[:publisher_id] 
+      @publisher = Publisher.find(params[:publisher_id])
+    elsif current_user.admin? && params[:id] 
+      @publisher = Publisher.find(params[:id])
+    else 
+      @publisher = current_user.publisher
+    end
     if @publisher.update_attributes(params[:publisher])
-      flash[:notice] = "Successfully updated publisher."
-      redirect_to publishers_url
+      flash[:notice] = "Successfully updated publisher settings"
+      if params[:redirect_back]
+        redirect_to :back
+      else 
+        redirect_to publishers_url
+      end
     else
       render :action => 'edit'
     end
@@ -96,18 +106,13 @@ class PublishersController < ApplicationController
     end
   end
 
-  def save_quality_control
+  def site_info 
     if current_user.admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
-    else 
+    elsif current_user.publisher
       @publisher = current_user.publisher
-    end
-    
-    if @publisher.update_attributes(params[:publisher])
-      flash[:notice] = "Successfully updated quality controls."
-      redirect_to :action => 'quality_control'
-    else
-      render :action => 'quality_control'
+    else 
+      @publisher = Publisher.first :order => "site_name"
     end
   end
 
