@@ -9,6 +9,13 @@
   <%= link_to "#{@tag.network.network_name} - #{@tag.network.pay_type}", @tag.network %>
 </p>
 
+<% if @tag.auto_update_ecpm %>
+  <p style="color:orange">
+    <strong>NOTE:</strong>
+    <strong>Tag value is set to be updated automatically!!!</strong>
+  </p>    
+<% end %>
+
 <% form_for @revenue do |f| %>
   <%= f.error_messages %>
 

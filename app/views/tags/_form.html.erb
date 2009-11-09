@@ -67,6 +67,7 @@ function confirmForm(f){
     <%= f.label :auto_update_ecpm, nil, :class => "left_label" %>
     <%= radio_button "tag", "auto_update_ecpm", "true"%>Yes
     <%= radio_button "tag", "auto_update_ecpm", "false"%>No
+    <span class="hint">Value will be updated automatically when revenue is entered</span>
   </div>
   <div class="fieldset">
     <%= f.label :sample_rate , nil, :class => "left_label"%>
