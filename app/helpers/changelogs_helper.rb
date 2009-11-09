@@ -44,8 +44,8 @@ module ChangelogsHelper
     return if original_value.blank? && new_value.blank?
 
     if truncate
-      original_value = truncate(original_value, :length => 30)
-      new_value = truncate(new_value, :length => 30)
+      original_value = truncate(original_value.to_s, :length => 30)
+      new_value = truncate(new_value.to_s, :length => 30)
     end
 
 

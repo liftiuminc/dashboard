@@ -18,6 +18,11 @@ class ChangelogsHelperTest < ActionView::TestCase
     changelog = Changelog.new(:diff => "{\"something\":[null, \"#{"T" * 80}\"]}")
     assert_equal "<b>something</b> initialized to <i>#{"T" * 27}...</i>", render_diffs(changelog, truncate = true)
   end
+  
+  def test_render_diffs_truncate_handles_fixnums
+    changelog = Changelog.new(:diff => "{\"something\":[null, 80]}")
+    assert_equal "<b>something</b> initialized to <i>80</i>", render_diffs(changelog, truncate = true)
+  end
 
   def test_render_diffs_shows_nothing_when_set_to_empty_string
     changelog = Changelog.new(:diff => '{"comments":[null,""],"tag_template":[null,""]}')
