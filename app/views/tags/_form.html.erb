@@ -41,6 +41,11 @@
     <%= radio_button "tag", "always_fill", "false"%>No
   </div>
   <div class="fieldset">
+    <%= f.label :auto_update_ecpm, nil, :class => "left_label" %>
+    <%= radio_button "tag", "auto_update_ecpm", "true"%>Yes
+    <%= radio_button "tag", "auto_update_ecpm", "false"%>No
+  </div>
+  <div class="fieldset">
     <%= f.label :sample_rate , nil, :class => "left_label"%>
     <%= f.text_field :sample_rate, :class => "input_for_number" %>
     <span class="hint">% of time that the ad will appear. Ex. 0.5</span>

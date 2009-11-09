@@ -50,6 +50,11 @@ class Tag < ActiveRecord::Base
       always_fill ? "Yes" : "No"
    end
 
+   def auto_update_ecpm_s
+      auto_update_ecpm ? "Yes" : "No"
+   end
+
+
    # db returns 0.1. we want this to be 0.10
    def value_s
       sprintf( "%.2f", value)
