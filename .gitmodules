@@ -1,0 +1,3 @@
+[submodule "vendor/plugins/acts_as_changelogable"]
+	path = vendor/plugins/acts_as_changelogable
+	url = git://github.com/scotttam/acts_as_changelogable.git
