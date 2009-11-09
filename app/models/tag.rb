@@ -188,6 +188,11 @@ class Tag < ActiveRecord::Base
     Tag.find_by_sql self.search_sql(params)
   end
 
+  def most_recent_ecpm ( maxage=7 )  
+    date = (DateTime.now - maxage.days).strftime('%Y-%m-%d 00:00:00')
+
+    self.revenues.find :first, :conditions => [ 'day >= ?', date ]
+  end
 
   def get_fill_stats (range)
     conditions = ["tag_id = ?", id]
