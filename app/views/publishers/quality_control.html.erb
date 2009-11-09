@@ -12,6 +12,7 @@
 <h2>How aggressive are you about revenue?</h2>
 <% form_for @publisher, :url => { :action => "save_quality_control" } do |f| %>
   <%= hidden_field_tag "publisher_id", @publisher.id %>
+  <%= hidden_field_tag "redirect_back", "1"%>
   <%= f.error_messages %>
 <br />
 <br />

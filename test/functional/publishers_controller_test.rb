@@ -123,4 +123,21 @@ class PublishersControllerTest < ActionController::TestCase
       assert_template 'quality_control'
     end
   end
+
+  context "site_info action as publisher" do
+    should "render site_info template" do
+      login_as_publisher
+      get "site_info"
+      assert_template 'site_info'
+    end
+  end
+
+  context "site_info action as admin" do
+    should "render site_info template" do
+      login_as_admin
+      get "site_info", :publisher_id => "1"
+      assert_template 'site_info'
+    end
+  end
+
 end
