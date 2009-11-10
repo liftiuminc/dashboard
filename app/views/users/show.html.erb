@@ -12,8 +12,17 @@
      -
   <% end %>
 </p>
+<p>
+  <strong>Time Zone:</strong>
+  <%=h @user.time_zone %>
+</p>
 
 <% if current_user.admin? %>
+    <p>
+      <strong>Current Time:</strong>
+      <%=h Time.zone.now.to_s %>
+    </p>
+
     <p>
       <strong>Administrator:</strong>
       <%=h @user.admin_s %>

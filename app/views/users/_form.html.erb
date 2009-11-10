@@ -17,6 +17,11 @@
       <%= collection_select(:user, :publisher_id, @publishers, :id, :site_name, :include_blank => true) %>
     </div>
   <% end %>
+
+  <div class="fieldset">
+    <%= f.label :time_zone %><br />
+    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+  </div>
   
   <div class="fieldset">
     <%= f.label :password %><% if !current_user.admin? %>*<% end %><br />
