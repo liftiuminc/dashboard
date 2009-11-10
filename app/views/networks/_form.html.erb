@@ -9,6 +9,10 @@
     <%= f.text_field :website %>
   </div>
   <div class="fieldset">
+    <%= f.label :login_url %><br />
+    <%= f.text_field :login_url %>
+  </div>
+  <div class="fieldset">
     <%= f.label :pay_type %><br />
     <%= select("network", "pay_type", Network::ALL_PAY_TYPES, {:include_blank => true}) %>
   </div>
