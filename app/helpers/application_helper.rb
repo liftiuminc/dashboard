@@ -4,6 +4,19 @@ module ApplicationHelper
   def liftium_submit(text="Submit")
 	submit_tag text
   end
+  
+  def external_form_post( label = "Submit", action = '', params = {} )
+    form = "<form action='#{action}' method='post' target='_blank'>"
+
+    params.each do|k, v|
+      form += "<input type='hidden' name='#{k}' value='#{v}'>"
+    end
+    
+    form += "<input type='submit' value='#{label}'>"
+    form += "</form>"
+    
+    return form
+  end
 
   #http://transfs.com/devblog/2009/06/26/nested-forms-with-rails-2-3-helpers-and-javascript-tricks/
   def generate_html(form_builder, method, options = {})

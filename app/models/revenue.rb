@@ -52,13 +52,24 @@ class Revenue < ActiveRecord::Base
         ### format the date
         r.day = r.day.to_date.to_s
     }
+    
+    ### update ecpm if the tag's setup to do so
+    after_save { |r|
+      tag = r.tag
+      if tag.auto_update_ecpm
+        if rev = tag.most_recent_ecpm
+          tag.value = rev.ecpm
+          tag.save
+        end
+      end
+    }
 
     def self.calculate_ecpm (impressions, revenue)
-	i = impressions.to_i
-	r = revenue.to_f
-	if (i.zero? or r.zero?)
-		return 0.00
-	end
+        i = impressions.to_i
+        r = revenue.to_f
+        if (i.zero? or r.zero?)
+            return 0.00
+        end
 
         return ( r / i ) * 1000
     end
