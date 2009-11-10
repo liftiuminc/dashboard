@@ -17,13 +17,12 @@ class HomesController < ApplicationController
   end
 
   def publisher
-    if !current_user.publisher
-        permission_denied("Your account is not associated with a publisher")
-        return
-    end
-
-    if current_user.admin? and params[:publisher_id]
-	@publisher = Publisher.find(params[:publisher_id])
+    if current_user.admin? 
+        if params[:publisher_id]
+	  @publisher = Publisher.find(params[:publisher_id])
+        else 
+	  @publisher = Publisher.first;
+        end
     else 
 	@publisher = current_user.publisher
     end
