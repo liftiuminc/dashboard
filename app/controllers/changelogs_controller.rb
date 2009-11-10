@@ -4,11 +4,11 @@ class ChangelogsController < ApplicationController
   def index
     @entries = "all"
     @excluded_user_id = "none"
-    @changelogs = Changelog.find(:all, build_find_args(params))
+    @changelogs = ActsAsChangelogable::Changelog.find(:all, build_find_args(params))
   end
 
   def show
-    @changelog = Changelog.find(params[:id])
+    @changelog = ActsAsChangelogable::Changelog.find(params[:id])
   end
 
   private

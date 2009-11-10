@@ -3,6 +3,14 @@ require 'test_helper'
 class RevenueTest < ActiveSupport::TestCase
   @@day = '2004-01-01'
 
+  setup do
+    ActsAsChangelogable::Session.begin
+  end
+
+  teardown do
+    ActsAsChangelogable::Session.end
+  end
+
   should_belong_to :tag
   should_belong_to :user
 
@@ -40,7 +48,7 @@ class RevenueTest < ActiveSupport::TestCase
     ### tag.save just not being written to the db? No idea how to
     ### track this down. Disabling test until then :( -Jos
     #assert rev.tag.value == 1000
-    
+
     assert rev.destroy
   end
 
@@ -54,7 +62,7 @@ class RevenueTest < ActiveSupport::TestCase
     ### XXX FIXME -- I can see on the dev environment this DOES work,
     ### but in the test suite, the assertion is always false. Is a
     ### tag.save just not being written to the db? No idea how to
-    ### track this down. Disabling test until then :( -Jos    
+    ### track this down. Disabling test until then :( -Jos
     #assert rev.tag.value == 1000
 
     assert rev.destroy

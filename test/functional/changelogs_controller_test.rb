@@ -3,6 +3,14 @@ require 'test_helper'
 class ChangelogsControllerTest < ActionController::TestCase
   setup :activate_authlogic
 
+  setup do
+    ActsAsChangelogable::Session.begin
+  end
+
+  teardown do
+    ActsAsChangelogable::Session.end
+  end
+  
   context "index" do
     setup do
       @network = networks(:Adsense)
@@ -40,8 +48,8 @@ class ChangelogsControllerTest < ActionController::TestCase
       should "filter by user and only show results from that user if user_id passed" do
         nick = User.find_by_id(42)
         login_as(nick)
-        Changelog.current_user = nick
-        changelog = Changelog.create!(:record_id => @tag.id, :record_type => "Tag", :user_id => nick.id,
+        ActsAsChangelogable::Changelog.current_user = nick
+        changelog = ActsAsChangelogable::Changelog.create!(:record_id => @tag.id, :record_type => "Tag", :user_id => nick.id,
                                       :diff => '{"size":["120x20","728x90"],"created_at":["2009-10-01T00:20:11Z","2009-11-01T00:20:11Z"]}')
 
         get :index, :user_id => nick.id
@@ -51,7 +59,7 @@ class ChangelogsControllerTest < ActionController::TestCase
 
       should "limit the number of entries if entries is passed" do
         login_as_admin
-        Changelog.expects(:find).with(:all, {:limit => 25, :order => 'created_at DESC'})
+        ActsAsChangelogable::Changelog.expects(:find).with(:all, {:limit => 25, :order => 'created_at DESC'})
         get :index, :entries => "25"
         assert_template :index
         assert_equal 25, assigns(:entries)
@@ -59,7 +67,7 @@ class ChangelogsControllerTest < ActionController::TestCase
 
       should "not limit the number of entries if entries is passed with 'all'" do
         login_as_admin
-        Changelog.expects(:find).with(:all, {:order => 'created_at DESC'})
+        ActsAsChangelogable::Changelog.expects(:find).with(:all, {:order => 'created_at DESC'})
         get :index, :entries => "all"
         assert_template :index
         assert_equal "all", assigns(:entries)
@@ -68,7 +76,7 @@ class ChangelogsControllerTest < ActionController::TestCase
       should "exclude user from results if excluded_user_id is passed" do
         login_as_admin
         nick = User.find_by_id(42)
-        Changelog.expects(:find).with(:all, {:order => 'created_at DESC', :conditions => ['user_id <> ?', '42']})
+        ActsAsChangelogable::Changelog.expects(:find).with(:all, {:order => 'created_at DESC', :conditions => ['user_id <> ?', '42']})
         get :index, :excluded_user_id => nick.id
         assert_template :index
       end
@@ -87,8 +95,8 @@ class ChangelogsControllerTest < ActionController::TestCase
       should "render the changelog show template" do
         nick = users(:nick)
         login_as(nick)
-        Changelog.current_user = nick
-        changelog = Changelog.create!(:record_id => tags(:lb_reject).id, :record_type => "Tag", :user_id => nick.id,
+        ActsAsChangelogable::Changelog.current_user = nick
+        changelog = ActsAsChangelogable::Changelog.create!(:record_id => tags(:lb_reject).id, :record_type => "Tag", :user_id => nick.id,
                                       :description => "Description",
                                       :diff => '{"size":["120x20","728x90"],"created_at":["2009-10-01T00:20:11Z","2009-11-01T00:20:11Z"]}')
 

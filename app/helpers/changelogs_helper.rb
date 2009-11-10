@@ -18,7 +18,9 @@ module ChangelogsHelper
   end
 
   def render_changelog_links(changelog)
-    [link_to("View", changelog), link_to("Original", changelog.record), link_to("All changelogs", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
+    [link_to("View", changelog_path(changelog)), 
+     link_to("Original", changelog.record),
+     link_to("All changelogs", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
   end
 
   def changelogs_title(params)

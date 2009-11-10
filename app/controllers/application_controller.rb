@@ -41,12 +41,12 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
-  
+
   def require_publisher
-    unless defined current_publisher  
+    unless defined current_publisher
       permission_denied( "You must be a publisher to access this page" )
       return false
-    end      
+    end
   end
 
   def require_no_user
@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_acts_as_changelogable_current_user
-    Changelog.current_user = current_user
+    ActsAsChangelogable::Changelog.current_user = current_user
   end
 
 ### the list of publishers accessible to this user

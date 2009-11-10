@@ -5,27 +5,35 @@ class TagTest < ActiveSupport::TestCase
   should_not_allow_values_for   :size, "adsf", "300x250,300x600"
   should_validate_presence_of   :tag_name, :network, :size, :publisher
 
-  should_acts_as_changelogable do
-    Tag.create!(
-        "sample_rate"   => "", 
-        "size"          => "728x90", 
-        "network_id"    => "2", 
-        "tag"           => "", 
-        "frequency_cap" => "",
-        "tier"          => "10", 
-        "rejection_time"=> "", 
-        "enabled"       => "true", 
-        "value"         => "1.00", 
-        "tag_name"      => "Scotts New Tag",
-        "always_fill"   => "false", 
-        "publisher_id"  => "1045")
+  setup do
+    ActsAsChangelogable::Session.begin
+  end
+
+  teardown do
+    ActsAsChangelogable::Session.end
   end
   
+  should_acts_as_changelogable do
+    Tag.create!(
+        "sample_rate"   => "",
+        "size"          => "728x90",
+        "network_id"    => "2",
+        "tag"           => "",
+        "frequency_cap" => "",
+        "tier"          => "10",
+        "rejection_time"=> "",
+        "enabled"       => "true",
+        "value"         => "1.00",
+        "tag_name"      => "Scotts New Tag",
+        "always_fill"   => "false",
+        "publisher_id"  => "1045")
+  end
+
   ### test most recent ecpm
   should "find_most_recent_ecpm" do
     tag = Tag.find( 13 )
-    
+
     assert tag
-    assert tag.most_recent_ecpm    
+    assert tag.most_recent_ecpm
   end
 end
