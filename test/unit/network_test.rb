@@ -15,11 +15,12 @@ class NetworkTest < ActiveSupport::TestCase
         :comments               => "comments"
     )
   end
-  
+
   should "have a network configuration" do
     obj = Network.first( :conditions => { :network_name => "Test" } )
 
     assert obj
     assert obj.network_config
+    assert !obj.network_config.empty?    
   end    
 end
