@@ -95,7 +95,7 @@
 <%end -%>
 <p>
   <%= link_to "Edit", edit_tag_path(@tag) %> |
-  <%= link_to "Copy", :controller => "tags", :action => "copy", :id => @tag.id  %>
+  <%= link_to "Copy", :controller => "tags", :action => "copy", :id => @tag.id  %> |
   <%= link_to "Delete", @tag, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
   <%= link_to "View All", tags_path %>
 </p>
