@@ -27,7 +27,7 @@ function confirmForm(f){
      <%= hidden_field_tag "tag[network_id]", @tag.network_id%>
   <% end %>
   <div class="fieldset">
-    <%= f.label :tag_name %>*<br />
+    <%= f.label :tag_name %>* <span class="hint">Ex. Publisher - NetworkAbbrv - Size<br />
     <%= f.text_field :tag_name %>
   </div>
   <div class="fieldset">
