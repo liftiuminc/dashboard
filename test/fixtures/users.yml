@@ -83,6 +83,18 @@ unit_test_publisher:
   single_access_token: bu3EWhHOb-ywITI1PBPA
   perishable_token: eLfQ1ZFtuZQwvcWK-oqd
 
+unit_test_power_user:
+  id: 51
+  email: unit_test_power_user@liftium.com
+  publisher_id: 1
+  power_user: 1
+  admin: 0
+  crypted_password: 6628f62aa35ede056653adffbae5c55a4489408dac987e6ff5e83fd843d98be8beacab7486985576001a1656ef513135ac868438fb334d7d9ac29727923eb842
+  password_salt: nFo-gPcedo8xdrMG0AvQ
+  persistence_token: 9545a17166b406a8fb3f5b10b508759ce942697f9906346ac19b4498773c0cca0d21c43cb35c5f48e6967e5c40d5a44c35109ecdee9f4e41970fc512f7f5589f
+  single_access_token: bu3EWhHOb-ywITI1PBPA
+  perishable_token: eLfQ1ZFtuZQwvcWK-oqd
+
 unit_test_admin:
   id: 50
   email: unit_test_admin@liftium.com
