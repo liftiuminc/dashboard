@@ -6,7 +6,7 @@ class HomesController < ApplicationController
     if current_user 
       if current_user.publisher
         redirect_to url_for(:action => "publisher") and return
-      elsif current_user.admin 
+      elsif current_user.is_admin? 
         redirect_to url_for(:action => "admin") and return
       end
     end
@@ -17,7 +17,7 @@ class HomesController < ApplicationController
   end
 
   def publisher
-    if current_user.admin? 
+    if current_user.is_admin? 
         if params[:publisher_id]
 	  @publisher = Publisher.find(params[:publisher_id])
         else 

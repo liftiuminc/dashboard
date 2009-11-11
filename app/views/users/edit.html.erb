@@ -4,7 +4,7 @@
 
 <p>
   <%= link_to "Show", @user %>
-  <%- if !current_user.publisher_id and current_user.admin %>
+  <%- if !current_user.publisher_id and current_user.is_admin? %>
     | <%= link_to "View All Users", users_path %>
   <% end %>  
 </p>

@@ -1,6 +1,6 @@
 <%= render :partial => 'shared/select_timeframe' %>
 
-<% if current_user.admin %>
+<% if current_user.is_admin? %>
   <% @show_revenue = true %>
 
   <% @title_bar_right_text += publisher_dropdown "Select a Publisher..."%>

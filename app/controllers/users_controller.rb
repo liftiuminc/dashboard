@@ -66,7 +66,7 @@ class UsersController < ApplicationController
 
   private
   def allowed_user
-    if !current_user.admin? or !params[:id]
+    if !current_user.is_admin? or !params[:id]
       @user = current_user
     else params[:id]
       @user = User.find(params[:id])

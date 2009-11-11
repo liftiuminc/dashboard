@@ -13,7 +13,7 @@
   <% for user in @users %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column"><%=h user.email %></td>
-      <td class="record_column"><%= user.admin ? image_tag("/images/icons/tick.png") : "-" %></td>
+      <td class="record_column"><%= user.is_admin? ? image_tag("/images/icons/tick.png") : "-" %></td>
       <td nowrap="true" class="record_column"><%=h user.publisher_id ? user.publisher.site_name : "" %></td>
       <td class="record_column"><%=h number_with_delimiter(user.login_count) %></td>
       <td class="record_action"><%= link_to "View", user, :action=> :show %></td>

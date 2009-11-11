@@ -6,7 +6,7 @@
 	<% if params[:debug] -%>
 	  <%= params.inspect -%>
 	<% end -%>
-      <%- if @publishers && current_user.admin? %>
+      <%- if @publishers && current_user.is_admin? %>
 	<li><%= label_tag :publisher %>
 	    <select name="publisher_id" id="publisherDD">
 	      <option value="">

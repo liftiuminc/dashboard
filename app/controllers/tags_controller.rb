@@ -11,7 +11,7 @@ class TagsController < ApplicationController
     conditions = session[:tag_params] || {}
   
     ### you can only find things for YOUR publisher
-    if !current_user.admin?
+    if !current_user.is_admin?
         conditions[:publisher_id] = current_publisher.id
     end
     
@@ -154,7 +154,7 @@ class TagsController < ApplicationController
 
       ### you can only view your own tags
       conditions = {}
-      if !current_user.admin? 
+      if !current_user.is_admin? 
         conditions[:publisher_id] = current_publisher.id
       end  
     

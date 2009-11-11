@@ -79,7 +79,7 @@
     <tr class="disabled" background="/images/disabled_bg.png">
    <%-end%>
       <td nowrap="true" class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
-      <td nowrap="true" class="record_column"><%= current_user.admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
+      <td nowrap="true" class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
       <td class="record_column" style="width:200px">
 	    <%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %><br />
         <span style="font-size: smaller">
@@ -99,7 +99,7 @@
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
 
-    <% if current_user.admin? %>
+    <% if current_user.is_admin? %>
       <td class="record_column" style="text-align:center">
 	<nobr>
 	<%= link_to "View", tag, :action=> :show %>

@@ -25,6 +25,14 @@ class User < ActiveRecord::Base
     admin ? "Yes" : "No"
   end
 
+  def is_admin?
+    (admin and !admin.to_s.empty?) ? true : nil
+  end
+  
+  def is_power_user?
+    ((power_user and !power_user.to_s.empty?) or self.is_admin?) ? true : nil
+  end
+  
   private
 
   def password_required?

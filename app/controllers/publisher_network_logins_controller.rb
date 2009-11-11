@@ -17,7 +17,7 @@ class PublisherNetworkLoginsController < ApplicationController
     end        
 
     ### an admin wants to see a different list of publishers?
-    if current_user.admin? and !params["publisher_id"].blank? 
+    if current_user.is_admin? and !params["publisher_id"].blank? 
         @loop_publishers = [ Publisher.find_by_id( params["publisher_id"] ) ]
     else
         @loop_publishers = @publishers
@@ -77,7 +77,7 @@ class PublisherNetworkLoginsController < ApplicationController
     ### load the publisher_network_login if allowed
     def allowed_publisher_network_login
         conditions = {}
-        if !current_user.admin? 
+        if !current_user.is_admin? 
             if !current_publisher
                 require_admin
             else                 

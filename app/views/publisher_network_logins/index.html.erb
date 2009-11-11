@@ -4,7 +4,7 @@
   <form>
     <ul>
 	  
-	  <% if current_user.admin? %>
+	  <% if current_user.is_admin? %>
         <li>
           <%= label_tag :publisher %>
           <!-- FIXME. Use built in rails helper instead? -->
@@ -61,7 +61,7 @@
           
           <% if pnl %>
             <td class="record_column"><%=h pnl.username %></td>
-            <td class="record_column"><%=h current_user.admin? ? pnl.password : '*****' %></td>
+            <td class="record_column"><%=h current_user.is_admin? ? pnl.password : '*****' %></td>
             <%# view/edit/delete %>    
             <td class="record_action"><%= link_to "View", pnl, :action=> :show %></td>
             <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(pnl) %></td>

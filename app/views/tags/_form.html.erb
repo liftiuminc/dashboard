@@ -53,7 +53,7 @@ function confirmForm(f){
 	<%= radio_button "tag", "enabled", "false"%>No
     <%- else -%>
 	<font color="red"><%= @tag.enabled_s%></font>
-	<%- if current_user.admin %>
+	<%- if current_user.is_admin? %>
 	  <%= link_to(@tag.network.network_name, @tag.network) %>
 	<%- end -%>
     <%- end %>

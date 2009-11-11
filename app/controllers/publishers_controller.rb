@@ -8,7 +8,7 @@ class PublishersController < ApplicationController
   end
   
   def show
-    id = !current_user.admin? ? current_publisher.id : params[:id]
+    id = !current_user.is_admin? ? current_publisher.id : params[:id]
     @publisher = Publisher.find( id )
   end
   
@@ -31,9 +31,9 @@ class PublishersController < ApplicationController
   end
   
   def update
-    if current_user.admin? && params[:publisher_id] 
+    if current_user.is_admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
-    elsif current_user.admin? && params[:id] 
+    elsif current_user.is_admin? && params[:id] 
       @publisher = Publisher.find(params[:id])
     else 
       @publisher = current_user.publisher
@@ -58,7 +58,7 @@ class PublishersController < ApplicationController
   end
   
   def ad_preview
-    id          = !current_user.admin? ? current_publisher.id : params[:id]
+    id          = !current_user.is_admin? ? current_publisher.id : params[:id]
     @publisher  = Publisher.find( id )
     @title      = "Publisher - " + @publisher.site_name
     
@@ -70,7 +70,7 @@ class PublishersController < ApplicationController
 
   def ad_formats 
     @ad_formats = AdFormat.all(:order => "id")
-    if current_user.admin? && params[:publisher_id] 
+    if current_user.is_admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
     elsif current_user.publisher
       @publisher = current_user.publisher
@@ -80,7 +80,7 @@ class PublishersController < ApplicationController
   end
 
   def save_ad_formats
-    if current_user.admin? && params[:publisher_id] 
+    if current_user.is_admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
     else 
       @publisher = current_user.publisher
@@ -97,7 +97,7 @@ class PublishersController < ApplicationController
   end
 
   def quality_control 
-    if current_user.admin? && params[:publisher_id] 
+    if current_user.is_admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
     elsif current_user.publisher
       @publisher = current_user.publisher
@@ -107,7 +107,7 @@ class PublishersController < ApplicationController
   end
 
   def site_info 
-    if current_user.admin? && params[:publisher_id] 
+    if current_user.is_admin? && params[:publisher_id] 
       @publisher = Publisher.find(params[:publisher_id])
     elsif current_user.publisher
       @publisher = current_user.publisher

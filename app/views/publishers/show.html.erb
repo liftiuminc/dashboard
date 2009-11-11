@@ -40,7 +40,7 @@
 </p>
 
 <p>
-  <%- if current_user.admin %>
+  <%- if current_user.is_admin? %>
     <%= link_to "Edit", edit_publisher_path(@publisher) %> |
     <%= link_to "View All", publishers_path %> |
     <%= link_to "Delete", @publisher, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
