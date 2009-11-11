@@ -3,16 +3,23 @@
 <% show_hint    = show_hint || nil %>
 <% config       = network.network_config( 
                     :username => username, :password => password ) %>
+<%# we get nil class exceptions in production when there's no entry in
+    the config. Not in development though. So be uber paranoid %>
+<% action       = nil
+   if config and !config.empty? and config["action"] and !config["action"].empty?
+     action = config["action"]
+   end
+%>
 
 <%# no login unless we have a username & password %>
 <% if username and password %>
-  <% if action = !config["action"].empty? %>
+  <% if action %>
     <%# automated login %>
     <% if params = config["params"] %>
-      <%= external_form_post "Login", config["action"], params %>          
+      <%= external_form_post "Login", action, params %>          
     <%# login link %>
     <% else %>
-      <%= link_to "Login", config["action"], :popup => true %>
+      <%= link_to "Login", action, :popup => true %>
       <% if show_hint %>
         <br /><span class="hint"><%= "#{username}/#{password}" %></span>
       <% end %>        
@@ -22,8 +29,8 @@
     N/A
   <% end %>
 <%# no username/password but a link %>  
-<% elsif config["action"] && !config["action"].empty? %>
-  <%= link_to "Login", config["action"], :popup => true %>
+<% elsif action %>
+  <%= link_to "Login", action, :popup => true %>
   <% if show_hint %>
     <br /><span class="hint"><%= "No Info" %></span>
   <% end %>    
