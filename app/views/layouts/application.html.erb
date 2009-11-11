@@ -46,6 +46,9 @@
           <li><%= link_to "Ad Quality Settings", :controller=> "publishers", :action => "quality_control" %>	
           <li><%= link_to "Reporting", data_export_url %>	
           <li><%= link_to "Tag Generator", tag_generator_url %>	
+          <% if current_user.is_power_user? %>
+            <li><%= link_to "Chain/Tag Mgmt", tags_url %>	          
+          <% end %>
 	  </ul>
        </div>
 

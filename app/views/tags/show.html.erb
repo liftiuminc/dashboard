@@ -33,7 +33,7 @@
 <iframe id="tag_preview" src="<%= @tag.preview_url %>" style="<%=@tag.css_size%>;border:1px dashed #660099" marginheight="0" marginwidth="0" frameborder="0" scrolling="auto"></iframe>
 <p>
   <strong>Network:</strong>
-  <%= link_to(@tag.network.network_name, {:action => "show", :controller=>"networks", :id => @tag.network_id})%>
+  <%= current_user.is_admin? ? link_to( @tag.network.network_name, @tag.network) : @tag.network.network_name %>
 </p>
 <p>
   <strong>Publisher:</strong>
@@ -96,7 +96,9 @@
 <p>
   <%= link_to "Edit", edit_tag_path(@tag) %> |
   <%= link_to "Copy", :controller => "tags", :action => "copy", :id => @tag.id  %> |
-  <%= link_to "Delete", @tag, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+  <% if current_user.is_admin? %>
+    <%= link_to "Delete", @tag, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+  <% end %>    
   <%= link_to "View All", tags_path %>
 </p>
 </div>

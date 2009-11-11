@@ -99,12 +99,14 @@
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
 
-    <% if current_user.is_admin? %>
+    <% if current_user.is_power_user? %>
       <td class="record_column" style="text-align:center">
 	<nobr>
 	<%= link_to "View", tag, :action=> :show %>
 	<%= link_to "Edit", edit_tag_path(tag) %>
-	<%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %>
+    <% if current_user.is_admin? %>
+      <%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %>
+    <% end %>  
 	</nobr>
          <%= link_to "Copy", "/tags/copy/#{tag.id}" %>
 	<%- if tag.network.enabled %>

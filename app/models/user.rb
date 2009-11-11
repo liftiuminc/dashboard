@@ -22,7 +22,11 @@ class User < ActiveRecord::Base
   end
 
   def admin_s
-    admin ? "Yes" : "No"
+    self.is_admin? ? "Yes" : "No"
+  end
+
+  def power_user_s
+    self.is_power_user? ? "Yes" : "No"
   end
 
   def is_admin?

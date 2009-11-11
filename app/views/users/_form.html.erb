@@ -7,6 +7,12 @@
 
   <% if current_user.is_admin? %>
     <div class="fieldset">
+      <%= f.label :power_user, "Power User" %>
+      <%= radio_button "user", "power_user", "true"%>Yes
+      <%= radio_button "user", "power_user", "false"%>No
+    </div>
+
+    <div class="fieldset">
       <%= f.label :admin, "Administrator" %>
       <%= radio_button "user", "admin", "true"%>Yes
       <%= radio_button "user", "admin", "false"%>No
