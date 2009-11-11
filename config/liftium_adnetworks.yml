@@ -35,7 +35,7 @@
 
 "Google AdSense":
     action: "https://www.google.com/accounts/ServiceLoginBoxAuth"
-    
+    # automated login does not appear to work cleanly
 #     params: 
 #       username: <%= user %>
 #       password: <%= pass %>
