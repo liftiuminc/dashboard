@@ -22,7 +22,7 @@
     N/A
   <% end %>
 <%# no username/password but a link %>  
-<% elsif !config["action"].empty? %>
+<% elsif !config.nil? && !config["action"].empty? %>
   <%= link_to "Login", config["action"], :popup => true %>
   <% if show_hint %>
     <br /><span class="hint"><%= "No Info" %></span>
