@@ -1,0 +1,28 @@
+<% username = pnl ? pnl.username : network.liftium_username %>
+<% password = pnl ? pnl.password : network.liftium_password %>            
+<% config   = network.network_config( 
+                :username => username, :password => password ) %>
+
+<%# no login unless we have a username & password %>
+<% if username and password %>
+  <% if action = !config["action"].empty? %>
+    <%# automated login %>
+    <% if params = config["params"] %>
+      <%= external_form_post "Login", config["action"], params %>          
+    <%# login link %>
+    <% else %>
+      <%= link_to "Login", config["action"], :popup => true %><br /> 
+      <span class="hint"><%= "#{username}/#{password}" %></span>
+    <% end %>
+  <%# we got nothing %>  
+  <% else %>
+    N/A
+  <% end %>
+<%# no username/password but a link %>  
+<% elsif !config["action"].empty? %>
+  <%= link_to "Login", config["action"], :popup => true %><br /> 
+  <span class="hint"><%= "No Info" %></span>
+<%# we got nothing %>
+<% else %>
+  N/A
+<% end %> 
