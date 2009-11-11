@@ -35,5 +35,23 @@ class Publisher < ActiveRecord::Base
    def privacy_policy_s
       privacy_policy ? "Yes" : "No"
    end
+   
+   def active_networks( limit=0 )
+       i = limit ? limit.to_i : 0
+       
+       ### is there not 'grep'? :(
+       networks = self.tags.map { |tag| 
+                    if i > 0
+                      tag.network.id == i ? tag.network : nil
+                    else 
+                      tag.network
+                    end  
+                  }      
+
+       ### remove 'nil' with compact   
+       networks.compact!
+       networks.uniq!
+       return networks
+   end
 
 end

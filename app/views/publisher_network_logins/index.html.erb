@@ -1,74 +1,135 @@
-<% @title_bar_right_text = '<a href="' + new_publisher_network_login_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Publisher Network Login", new_publisher_network_login_path) %>
-
 <% title "Publisher Network Logins" %>
 
 <div class="filter_form" id="filter_form">
   <form>
-     <ul>
-	<% if params[:debug] -%>
-	  <%= params.inspect -%>
-	<% end -%>
-	
-	<% if current_user.admin? %>
-	<li><%= label_tag :publisher %>
-	    <!-- FIXME. Use built in rails helper instead? -->
-	    <select name="publisher_id" id="publisherDD">
-	      <option value="">
-	      <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
-	    </select>
-	</li>
-    <% end %>
+    <ul>
+	  
+	  <% if current_user.admin? %>
+        <li>
+          <%= label_tag :publisher %>
+          <!-- FIXME. Use built in rails helper instead? -->
+          <select name="publisher_id" id="publisherDD">
+            <option value="">
+            <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
+          </select>
+        </li>
+      <% end %>
 
-	<li><%= label_tag :network %>
-	    <select name="network_id" id="networkDD">
-	      <option value="">
-	      <%= options_from_collection_for_select @networks, :id, :network_name_and_id, params[:network_id].to_i %>
-	    </select>
-	</li>
-	<li><%= liftium_submit "Filter Credentials"%></li>
+    <li>
+      <%= label_tag :network %>
+      <select name="network_id" id="networkDD">
+        <option value="">
+        <%= options_from_collection_for_select @networks, :id, :network_name_and_id, params[:network_id].to_i %>
+      </select>
+    </li>
+    <li><%= liftium_submit "Filter Credentials"%></li>
   </form>
 </div>
 
 <br />
-<table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
-  <tr class="record_listing_header">
-    <th>Network</th>
-    <th>Publisher</th>
-    <th>Username</th>
-    <th>Password</th>
-    <th colspan="3">Actions</th>
-    <th nowrap="true">Scraping instructions</th>
-    <th>Login</th>
-  </tr>
-  <% for publisher_network_login in @publisher_network_logins %>
 
-    <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column"><a href="<%= url_for(:controller => "networks", :action => "show", :id => publisher_network_login.network_id )%>"><%= publisher_network_login.network.network_name_and_id %></a></td>
-      <td class="record_column"><a href="<%=  url_for(:controller => "publishers", :action => "show", :id => publisher_network_login.publisher_id ) %>"><%=h publisher_network_login.publisher.site_name %></a></td>      
-      <td class="record_column"><%=h publisher_network_login.username %></td>
-      <td class="record_column">
-        <%=h current_user.admin? ? publisher_network_login.password : '*****' %>
-      </td>
-      <td class="record_action"><%= link_to "View", publisher_network_login, :action=> :show %></td>
-      <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(publisher_network_login) %></td>
-      <td class="record_column"><%= link_to "Delete", publisher_network_login, :confirm => 'Are you sure?', :method => "delete" %></td>
-      <td class="record_action"><span class="comments" style="font-size:smaller"><%=h publisher_network_login.network.scraping_instructions %></span></td>
-      <td class="record_column">
-        <% config = publisher_network_login.network.network_config( :username => publisher_network_login.username, :password => publisher_network_login.password ) %>
-        <% if action = config["action"] %>
-          <%# automated login %>
-          <% if params = config["params"] %>
-            <%= external_form_post "Login", action, params %>          
-          <%# login link %>
-          <% else %>
-            <%= link_to "Login", action, :popup => true %> 
+<% for publisher in @loop_publishers %>
+  <% networks = publisher.active_networks( @limit_to_network_id ) %>
+  
+  <% if !networks.empty? %>
+  
+    <h2><%= link_to publisher.site_name, publisher_path( publisher ) %></h2>
+    <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+      <tr class="record_listing_header">
+        <th>Network</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th colspan="3">Actions</th>
+        <th nowrap="true">Scraping instructions</th>
+        <th>Login</th>
+      </tr>
+
+      <% for network in networks %>
+
+        <%# find the log in for it if we have it %>        
+        <% pnl = PublisherNetworkLogin.first( :conditions => {
+                    :publisher_id => publisher.id,
+                    :network_id   => network.id
+             })
+        %>
+      
+        <tr class="record_row_<%= cycle("odd", "even")%>">
+
+          <td class="record_column">
+            <%= link_to network.network_name_and_id, network_path( network ) %>
+          </td>
+          
+          <% if pnl %>
+            <td class="record_column"><%=h pnl.username %></td>
+            <td class="record_column"><%=h current_user.admin? ? pnl.password : '*****' %></td>
+            <%# view/edit/delete %>    
+            <td class="record_action"><%= link_to "View", pnl, :action=> :show %></td>
+            <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(pnl) %></td>
+            <td class="record_column"><%= link_to "Delete", pnl, :confirm => 'Are you sure?', :method => "delete" %></td>
+            
+          <% else %>  
+            <td class="record_column">
+              <% if network.liftium_username %>
+                <span style="color:red">Liftium Umbrella User</span>
+              <% else %>
+                N/A
+              <% end %>  
+            </td>
+            <td class="record_column">
+              <% if network.liftium_password %>
+                <span style="color:red">Liftium Umbrella Password</span>
+              <% else %>
+                N/A
+              <% end %>            
+            </td>
+            <td class="record_action"><%= link_to "Create", new_publisher_network_login_path %></td>
+            <td class="record_column"></td>
+            <td class="record_column"></td>
           <% end %>
-        <%# we got nothing %>  
-        <% else %>
-          N/A
-        <% end %>
-      </td>
-    </tr>
+          
+          <td class="record_column">
+            <span class="comments" style="font-size:smaller">
+              <%=h network.scraping_instructions %>
+            </span>
+          </td>
+
+          <td class="record_column">
+            <% username = pnl ? pnl.username : network.liftium_username %>
+            <% password = pnl ? pnl.password : network.liftium_password %>            
+            <% config   = network.network_config( 
+                            :username => username, :password => password ) %>
+            
+            <%# no login unless we have a username & password %>
+            <% if username and password %>
+              <% if action = !config["action"].empty? %>
+                <%# automated login %>
+                <% if params = config["params"] %>
+                  <%= external_form_post "Login", config["action"], params %>          
+                <%# login link %>
+                <% else %>
+                  <%= link_to "Login", config["action"], :popup => true %> 
+                <% end %>
+              <%# we got nothing %>  
+              <% else %>
+                N/A
+              <% end %>
+            <%# no username/password but a link %>  
+            <% elsif !config["action"].empty? %>
+              <%= link_to "Login", config["action"], :popup => true %> 
+            
+            <%# we got nothing %>
+            <% else %>
+              N/A
+            <% end %>  
+          </td>         
+        </tr>
+      <% end %>
+    </table>
   <% end %>
-</table>
+  
+  <br />
+  
+<% end %>    
+
+
 
