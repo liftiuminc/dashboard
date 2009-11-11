@@ -19,9 +19,7 @@ class Network < ActiveRecord::Base
   validates_inclusion_of :pay_type, :in => ALL_PAY_TYPES, :message => "must be one of: " + ALL_PAY_TYPES.join(', ')
 
   ### configuration for scraping/logging in etc
-  @@NetworkConfig = YAML.load_file(
-    File.join(File.dirname(__FILE__), '../../config/liftium_adnetworks.yml')
-  )  
+  @@NetworkConfig = File.read( "#{RAILS_ROOT}/config/liftium_adnetworks.yml" )
 
    def enabled_s
       enabled ? "Yes" : "No"
@@ -55,8 +53,24 @@ class Network < ActiveRecord::Base
    end
 
    ### may return nil
-   def network_config
-      @@NetworkConfig[ network_name ]
+   def network_config( args = {} )
+      
+     ### Following this HOWTO (comment #8):
+     ### http://railscasts.com/episodes/85-yaml-configuration-file
+     ### any substitutions?
+     str  = ''
+     if user = args[:username] and pass = args[:password]
+       ### binding is needed so ERB can access variales in this scope
+       b   = binding
+       str = ERB.new( @@NetworkConfig ).result b
+
+     else
+       str = @@NetworkConfig
+     end       
+
+     config = YAML.load( str )[ network_name ] || {}
+
+     return config     
    end
 
 end
