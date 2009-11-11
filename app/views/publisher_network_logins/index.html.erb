@@ -36,8 +36,9 @@
     <th>Publisher</th>
     <th>Username</th>
     <th>Password</th>
-    <th colspan="4">Actions</th>
+    <th colspan="3">Actions</th>
     <th nowrap="true">Scraping instructions</th>
+    <th>Login</th>
   </tr>
   <% for publisher_network_login in @publisher_network_logins %>
 
@@ -48,13 +49,25 @@
       <td class="record_column">
         <%=h current_user.admin? ? publisher_network_login.password : '*****' %>
       </td>
-      <td class="record_column">
-        <%= link_to "Login", publisher_network_login.network.website, :popup => true %>
-      </td>
       <td class="record_action"><%= link_to "View", publisher_network_login, :action=> :show %></td>
       <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(publisher_network_login) %></td>
       <td class="record_column"><%= link_to "Delete", publisher_network_login, :confirm => 'Are you sure?', :method => "delete" %></td>
       <td class="record_action"><span class="comments" style="font-size:smaller"><%=h publisher_network_login.network.scraping_instructions %></span></td>
+      <td class="record_column">
+        <% config = publisher_network_login.network.network_config( :username => publisher_network_login.username, :password => publisher_network_login.password ) %>
+        <% if action = config["action"] %>
+          <%# automated login %>
+          <% if params = config["params"] %>
+            <%= external_form_post "Login", action, params %>          
+          <%# login link %>
+          <% else %>
+            <%= link_to "Login", action, :popup => true %> 
+          <% end %>
+        <%# we got nothing %>  
+        <% else %>
+          N/A
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>
