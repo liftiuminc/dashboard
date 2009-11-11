@@ -12,7 +12,7 @@
 %>
 
 <%# no login unless we have a username & password %>
-<% if username and password %>
+<% if username and !username.empty? and password and !password.empty? %>
   <% if action %>
     <%# automated login %>
     <% if params = config["params"] %>

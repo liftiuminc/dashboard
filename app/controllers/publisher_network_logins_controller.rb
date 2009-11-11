@@ -36,6 +36,14 @@ class PublisherNetworkLoginsController < ApplicationController
   
   def new   
     @publisher_network_login = PublisherNetworkLogin.new
+    
+    ### these may be passed through the url
+    %w[publisher_id network_id].each do |id|
+      if ! params[id].blank?
+        @publisher_network_login[id] = params[id]
+      end
+    end          
+    
   end
   
   def create

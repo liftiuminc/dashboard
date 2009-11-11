@@ -69,20 +69,20 @@
             
           <% else %>  
             <td class="record_column">
-              <% if network.liftium_username %>
+              <% if network.liftium_username and !network.liftium_username.empty? %>
                 <span style="color:red">Liftium Umbrella User</span>
               <% else %>
                 N/A
               <% end %>  
             </td>
             <td class="record_column">
-              <% if network.liftium_password %>
+              <% if network.liftium_password and !network.liftium_password.empty?%>
                 <span style="color:red">Liftium Umbrella Password</span>
               <% else %>
                 N/A
               <% end %>            
             </td>
-            <td class="record_action"><%= link_to "Create", new_publisher_network_login_path %></td>
+            <td class="record_action"><%= link_to "Create", new_publisher_network_login_path( :publisher_id => publisher.id, :network_id => network.id ) %></td>
             <td class="record_column"></td>
             <td class="record_column"></td>
           <% end %>

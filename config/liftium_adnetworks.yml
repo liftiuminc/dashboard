@@ -108,8 +108,9 @@
       doLogin:              true
 
 "Widget Bucks":
-    action: ""
+    action: "https://www.widgetbucks.com/login.flow"
     params: 
-      username: <%= user %>
+      email:    <%= user %>
       password: <%= pass %>
-
+      action:   call
+      formName: login
