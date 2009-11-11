@@ -2,111 +2,114 @@
 "Ad.com":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "AdBrite":
-    action: ""
+    action: "https://www.adbrite.com/mb/commerce/login.php"
     params: 
-      username: ""
-      password: ""
-
+      username: <%= user %>
+      pword:    <%= pass %>
 
 "ContextWeb":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "CPX Interactive":
-    action: ""
+    action: "http://reporting.cpxinteractive.com/index.php"
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "Game Advertising Online":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "Google AdSense":
-    action: ""
-    params: 
-      username: ""
-      password: ""
+    action: "https://www.google.com/accounts/ServiceLoginBoxAuth"
+    
+#     params: 
+#       username: <%= user %>
+#       password: <%= pass %>
 
 
 "Kitara":
-    action: ""
+    action: "http://aristotle.kitaramedia.com/web/"
     params: 
-      username: ""
-      password: ""
+      'signin[username]': <%= user %>
+      'signin[password]': <%= pass %>
 
 
 "Oridian":
-    action: ""
+    action: "http://my.adserverplus.com/index.php"
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "RealTechNetwork":
-    action: ""
+    action: "http://publisher.contextualmarketplace.com/checklogin.php"
     params: 
-      username: ""
-      password: ""
-
+      username: <%= user %>
+      password: <%= pass %>
+      Submit:   Login
 
 "SixApart":
-    action: ""
-    params: 
-      username: ""
-      password: ""
+    action: "https://go.adify.com/Default.aspx"
+# dynamic secret strings prohibit automatic logins
+#     params: 
+#       'ctl00$ctl00$BodyContent$BodyContent$UserName': <%= user %>
+#       'ctl00$ctl00$BodyContent$BodyContent$Password': <%= pass %>
+#       '__EVENTTARGET': 'ctl00$ctl00$BodyContent$BodyContent$SignInButton'
 
-
+      
 "Test":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "Traffic Marketplace Express":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "Tribal Fusion":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
 
 "ValueClick":
-    action: ""
+    action: "https://admin.valueclickmedia.com/v4/login.go"
     params: 
-      username: ""
-      password: ""
+      user_name:    <%= user %>
+      password:     <%= pass %>
 
 
 "VideoEgg":
-    action: ""
+    action: "https://partners.videoegg.com/p/eap/h/1"
     params: 
-      username: ""
-      password: ""
-
+      input.login.username: <%= user %>
+      input.login.password: <%= pass %>
+      form:                 Package.login.login
+      doLogin:              true
 
 "Widget Bucks":
     action: ""
     params: 
-      username: ""
-      password: ""
+      username: <%= user %>
+      password: <%= pass %>
 
