@@ -1,7 +1,8 @@
-<% username = pnl ? pnl.username : network.liftium_username %>
-<% password = pnl ? pnl.password : network.liftium_password %>            
-<% config   = network.network_config( 
-                :username => username, :password => password ) %>
+<% username     = pnl ? pnl.username : network.liftium_username %>
+<% password     = pnl ? pnl.password : network.liftium_password %>    
+<% show_hint    = show_hint || nil %>
+<% config       = network.network_config( 
+                    :username => username, :password => password ) %>
 
 <%# no login unless we have a username & password %>
 <% if username and password %>
@@ -11,8 +12,10 @@
       <%= external_form_post "Login", config["action"], params %>          
     <%# login link %>
     <% else %>
-      <%= link_to "Login", config["action"], :popup => true %><br /> 
-      <span class="hint"><%= "#{username}/#{password}" %></span>
+      <%= link_to "Login", config["action"], :popup => true %>
+      <% if show_hint %>
+        <br /><span class="hint"><%= "#{username}/#{password}" %></span>
+      <% end %>        
     <% end %>
   <%# we got nothing %>  
   <% else %>
@@ -20,8 +23,10 @@
   <% end %>
 <%# no username/password but a link %>  
 <% elsif !config["action"].empty? %>
-  <%= link_to "Login", config["action"], :popup => true %><br /> 
-  <span class="hint"><%= "No Info" %></span>
+  <%= link_to "Login", config["action"], :popup => true %>
+  <% if show_hint %>
+    <br /><span class="hint"><%= "No Info" %></span>
+  <% end %>    
 <%# we got nothing %>
 <% else %>
   N/A
