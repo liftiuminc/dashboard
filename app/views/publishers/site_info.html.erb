@@ -30,7 +30,7 @@
     <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
   </div>
   <div class="fieldset">
-    <%= f.label :privacy_policy, "Do you have a have a Privacy Policy?"%><br />
+    <%= f.label :privacy_policy, "Do you have a Privacy Policy?"%><br />
     <%= radio_button "publisher", "privacy_policy", "true"%>Yes
     <%= radio_button "publisher", "privacy_policy", "false"%>No
   </div>
