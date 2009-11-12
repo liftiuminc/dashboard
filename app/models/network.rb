@@ -52,7 +52,6 @@ class Network < ActiveRecord::Base
       write_attribute( :website, url )
    end
 
-   ### may return nil
    def network_config( args = {} )
       
      ### Following this HOWTO (comment #8):
