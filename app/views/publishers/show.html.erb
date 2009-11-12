@@ -39,6 +39,13 @@
   <%=h @publisher.xdm_iframe_path %>
 </p>
 
+<% if current_user.is_admin? %>
+  <p>
+    <strong>Note:</strong>
+    <%=h !@publisher.comments.empty? ? "#{@publisher.comments[0].comment}" : "-"%> 
+  </p>
+<% end %>
+
 <p>
   <%- if current_user.is_admin? %>
     <%= link_to "Edit", edit_publisher_path(@publisher) %> |
