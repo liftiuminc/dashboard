@@ -86,10 +86,31 @@ function confirmForm(f){
   </div>
   <!-- This style will allow for arbitrary key values later -->
   <div class="fieldset">
-    <input type="hidden" name="tag[tag_targets_attributes][0][id]" type="hidden" value="<%=h !@tag.tag_targets.empty? ? @tag.tag_targets[0].id : "" %>" />
+    <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""}, {"id"=> "", "key_name" => "", "key_value" => ""}]  %>
+    <%  # Assure there is a properly constructed array with the things in the right order.
+	# http://ewwwabandaid.ytmnd.com/
+	for tag_target in @tag.tag_targets do 
+	  if (tag_target.key_name == "country")
+		tt[0]["id"] = tag_target.id
+		tt[0]["key_name"] = "country"
+		tt[0]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "browser")
+		tt[1]["id"] = tag_target.id
+		tt[1]["key_name"] = "browser"
+		tt[1]["key_value"] = tag_target.key_value
+          end
+	end
+    %>
+    <input type="hidden" name="tag[tag_targets_attributes][0][id]" type="hidden" value="<%=tt[0]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][0][key_name]" value="country" />
     <%= f.label :country %> <span class="hint">for geo-targeting. comma separated. <%= link_to "Ex. 'us,uk,row'", "http://www.iso.org/iso/english_country_names_and_code_elements", :popup => true %></span><br />
-    <input type="text" size="30" name="tag[tag_targets_attributes][0][key_value]" value="<%=h !@tag.tag_targets.empty? ? @tag.tag_targets[0].key_value : "" %>"/>
+    <input type="text" size="30" name="tag[tag_targets_attributes][0][key_value]" value="<%=h tt[0]["key_value"] %>"/>
+  </div>
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][1][id]" type="hidden" value="<%= tt[1]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][1][key_name]" value="browser" />
+    <%= f.label :browser %> <span class="hint">Ex. 'Windows Explorer 6', 'Mac Safari' or 'Firefox'. Comma separated</span><br />
+    <input type="text" size="31" name="tag[tag_targets_attributes][1][key_value]" value="<%=h tt[1]["key_value"] %>"/>
   </div>
 
   <div class="fieldset" id="tag_template_notes">
