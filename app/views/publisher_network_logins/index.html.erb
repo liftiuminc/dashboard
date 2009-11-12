@@ -56,7 +56,11 @@
         <tr class="record_row_<%= cycle("odd", "even")%>">
 
           <td class="record_column">
-            <%= link_to network.network_name_and_id, network_path( network ) %>
+            <% if current_user.is_admin? %>
+              <%= link_to network.network_name_and_id, network_path( network ) %>
+            <% else %>
+              <%= network.network_name %>
+            <% end %>  
           </td>
           
           <% if pnl %>
