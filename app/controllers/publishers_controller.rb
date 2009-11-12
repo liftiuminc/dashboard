@@ -19,6 +19,15 @@ class PublishersController < ApplicationController
   def create
     @publisher = Publisher.new(params[:publisher])
     if @publisher.save
+    
+      ### any associated notes? See FB 24
+      if params[:note]
+        comment = Comment.new( :title   => params[:publisher][:site_name],
+                               :comment => params[:note][:publisher] )
+
+        @publisher.add_comment comment
+      end
+      
       flash[:notice] = "Successfully created publisher."
       redirect_to @publisher
     else
@@ -39,6 +48,24 @@ class PublishersController < ApplicationController
       @publisher = current_user.publisher
     end
     if @publisher.update_attributes(params[:publisher])
+    
+      ### any associated notes? See FB 24
+      if params[:note]
+
+        ### if we already have a comment, update it
+        if !@publisher.comments.empty?
+          @publisher.comments[0].update_attributes( 
+                    :comment => params[:note][:publisher] )
+
+        ### otherwise, create a new one
+        else
+          comment = Comment.new( :title   => params[:publisher][:site_name],
+                                 :comment => params[:note][:publisher] )
+
+          @publisher.add_comment comment
+        end
+      end    
+    
       flash[:notice] = "Successfully updated publisher settings"
       if params[:redirect_back]
         redirect_to :back
