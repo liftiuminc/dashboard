@@ -44,8 +44,8 @@ dev_mysql:
 
 dev_delivery:
   adapter: mysql
-  database: liftium
-  username: liftium_dev_delivery
+  database: liftium_dev_delivery
+  username: liftiumdev
   password: monkey
   host: localhost
   encoding: utf8
