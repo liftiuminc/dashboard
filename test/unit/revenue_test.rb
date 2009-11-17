@@ -4,11 +4,11 @@ class RevenueTest < ActiveSupport::TestCase
   @@day = '2004-01-01'
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
 
   should_belong_to :tag

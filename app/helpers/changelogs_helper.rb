@@ -18,26 +18,18 @@ module ChangelogsHelper
   end
 
   def render_changelog_links(changelog)
-    [link_to("View", changelog_path(changelog)), 
+    [link_to("View", changelog_path(changelog)),
      link_to("Original", changelog.record),
-     link_to("All changelogs", changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
-  end
-
-  def changelogs_title(params)
-    if params[:record_id] && params[:record_type]
-      "Changelogs - Filtered by #{params[:record_type]} with id #{params[:record_id]} (#{link_to("Show All", changelogs_path)})"
-    elsif params[:user_id] && user = User.find_by_id(params[:user_id])
-      "Changelogs - Filtered by #{user.email}'s changes (#{link_to("Show All", changelogs_path)})"
-    else
-      title = "Changelogs - Showing #{@entries || "all"} entries"
-      title += " excluding #{User.find_by_id(params[:excluded_user_id]).email} (#{link_to("Show All", changelogs_path)})" if params[:excluded_user_id] && params[:excluded_user_id] != "none"
-      title
-    end
+     link_to("All changelogs", commits_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
   end
 
   def distinct_changelog_users_for_select
-    results = User.find_by_sql("SELECT id, email FROM users WHERE id IN (SELECT distinct(user_id) FROM acts_as_changelogs)")
+    results = User.find_by_sql("SELECT id, email FROM users WHERE id IN (SELECT distinct(user_id) FROM changelogs)")
     results.collect{|u|[u.email, u.id]}.unshift(["none"])
+  end
+
+  def commit_text(commit)
+    "#{pluralize(commit.changelogs.size, "Change")} by #{commit.user_name} on #{commit.created_at}"
   end
 
   private

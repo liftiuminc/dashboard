@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   #
   map.resource :account, :controller => "users"
   map.resources :ad_formats
+  map.resources :commits
   map.resources :changelogs
   map.resources :comments
   map.resources :movers

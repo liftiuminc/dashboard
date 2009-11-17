@@ -129,7 +129,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_acts_as_changelogable_current_user
-    ActsAsChangelogable::Changelog.current_user = current_user
+    Changelog.current_user = current_user
   end
 
 ### the list of publishers accessible to this user

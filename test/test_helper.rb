@@ -62,10 +62,10 @@ class ActiveSupport::TestCase
 
     context "acts_as_changelogable" do
       should "add an entry into the acts_as_changelogs table each time a record is created" do
-        assert_changes(ActsAsChangelogable::Changelog) do
+        assert_changes(Changelog) do
           yield
         end
-        changelog = ActsAsChangelogable::Changelog.find(:first, :order => "created_at DESC")
+        changelog = Changelog.find(:first, :order => "created_at DESC")
         assert_equal target_klass_string, changelog.record_type
       end
     end

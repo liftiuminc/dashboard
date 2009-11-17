@@ -4,13 +4,13 @@ class NetworksControllerTest < ActionController::TestCase
   setup :activate_authlogic
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
-  
+
   context "index action NOT logged in" do
     setup { get :index }
     should_redirect_to "login url" do

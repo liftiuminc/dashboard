@@ -6,11 +6,11 @@ class AdFormatTest < ActiveSupport::TestCase
   should_validate_presence_of :ad_format_name, :size
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
 
   should_acts_as_changelogable do

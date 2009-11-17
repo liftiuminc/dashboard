@@ -1,6 +1,6 @@
-<h1 align="center"><%= changelogs_title(params) %></h1>
+<h1 align="center"><%= commits_title(params) %></h1>
 
-<% form_tag changelogs_path, :method => :get do -%>
+<% form_tag commits_path, :method => :get do -%>
   Limit Number of Entries: <%= select_tag "entries", options_for_select([10, 25, 50, 100, "all"], @entries) %>
   Exclude User: <%= select_tag "excluded_user_id",
                                options_for_select(distinct_changelog_users_for_select, @excluded_user_id.to_i) %>
@@ -8,11 +8,12 @@
 <% end %>
 <table class="record_listing" with="100%">
   <tr class="record_listing_header">
+    <th>Commit</th>
     <th>Change</th>
     <th>Operation</th>
     <th width="40%">Field Changes</th>
     <th>User</th>
     <th>Date</th>
   </tr>
-  <%= render :partial => "changelog", :collection => @changelogs %>
+  <%= render :partial => "commit", :collection => @commits %>
 </table>

@@ -4,11 +4,11 @@ class TagsControllerTest < ActionController::TestCase
   setup :activate_authlogic
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
 
   context "index action" do
@@ -120,7 +120,7 @@ class TagsControllerTest < ActionController::TestCase
       end
 
       should "add an entry into the changelogs with the currently logged in user and a polymorphic association back to original" do
-        changelog = ActsAsChangelogable::Changelog.find_by_user_id(@admin_user.id)
+        changelog = Changelog.find_by_user_id(@admin_user.id)
         assert changelog
         assert_equal Tag, changelog.record.class
         assert_equal @new_tag, changelog.record

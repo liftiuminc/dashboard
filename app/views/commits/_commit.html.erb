@@ -1,0 +1,4 @@
+<tr>
+  <td colspan="6"><%= commit_text(commit) %></td>
+</tr>
+<%= render :partial => "changelog", :collection => commit.changelogs %>

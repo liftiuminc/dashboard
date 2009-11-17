@@ -3,11 +3,11 @@ require 'test_helper'
 class NetworkTest < ActiveSupport::TestCase
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
 
   should_acts_as_changelogable do

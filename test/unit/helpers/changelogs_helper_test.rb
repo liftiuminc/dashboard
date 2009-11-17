@@ -3,80 +3,57 @@ require 'test_helper'
 class ChangelogsHelperTest < ActionView::TestCase
 
   def test_render_diffs_for_create
-    changelog = ActsAsChangelogable::Changelog.new(:diff => '{"size":[null,"728x90"],"created_at":[null,"2009-11-01T00:20:11Z"]}')
+    changelog = Changelog.new(:diff => '{"size":[null,"728x90"],"created_at":[null,"2009-11-01T00:20:11Z"]}')
     assert_equal '<b>created_at</b> initialized to <i>2009-11-01T00:20:11Z</i><br/><b>size</b> initialized to <i>728x90</i>',
                   render_diffs(changelog)
   end
 
   def test_render_diffs_for_update
-    changelog = ActsAsChangelogable::Changelog.new(:diff => '{"size":["120x20","728x90"],"created_at":["2009-10-01T00:20:11Z","2009-11-01T00:20:11Z"]}')
+    changelog = Changelog.new(:diff => '{"size":["120x20","728x90"],"created_at":["2009-10-01T00:20:11Z","2009-11-01T00:20:11Z"]}')
     assert_equal '<b>created_at</b> changed from <i>2009-10-01T00:20:11Z</i> to <i>2009-11-01T00:20:11Z</i><br/><b>size</b> changed from <i>120x20</i> to <i>728x90</i>',
                   render_diffs(changelog)
   end
 
   def test_render_diffs_truncates_long_diffs_to_30
-    changelog = ActsAsChangelogable::Changelog.new(:diff => "{\"something\":[null, \"#{"T" * 80}\"]}")
+    changelog = Changelog.new(:diff => "{\"something\":[null, \"#{"T" * 80}\"]}")
     assert_equal "<b>something</b> initialized to <i>#{"T" * 27}...</i>", render_diffs(changelog, truncate = true)
   end
 
   def test_render_diffs_truncate_handles_fixnums
-    changelog = ActsAsChangelogable::Changelog.new(:diff => "{\"something\":[null, 80]}")
+    changelog = Changelog.new(:diff => "{\"something\":[null, 80]}")
     assert_equal "<b>something</b> initialized to <i>80</i>", render_diffs(changelog, truncate = true)
   end
 
   def test_render_diffs_shows_nothing_when_set_to_empty_string
-    changelog = ActsAsChangelogable::Changelog.new(:diff => '{"comments":[null,""],"tag_template":[null,""]}')
+    changelog = Changelog.new(:diff => '{"comments":[null,""],"tag_template":[null,""]}')
     assert_equal '', render_diffs(changelog)
   end
 
   def test_render_user
     user = users(:nick)
-    changelog = ActsAsChangelogable::Changelog.new(:user_id => user.id)
+    changelog = Changelog.new(:user_id => user.id)
     assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a><br/><a href=\"/changelogs?user_id=#{user.id}\">Filter</a>", render_user(changelog)
   end
 
   def test_render_user_renders_na_when_no_user
-    changelog = ActsAsChangelogable::Changelog.new
+    changelog = Changelog.new
     assert_equal "N/A", render_user(changelog)
   end
 
   def test_render_changelog_links
-    ActsAsChangelogable::Session.begin
-    changelog = ActsAsChangelogable::Changelog.create!(:record_id => 1, :record_type => "Network")
-    ActsAsChangelogable::Session.end
-    assert_equal "<a href=\"/changelogs/#{changelog.id}\">View</a> | <a href=\"/networks/1\">Original</a> | <a href=\"/changelogs?record_id=1&amp;record_type=Network\">All changelogs</a>", render_changelog_links(changelog)
-  end
-
-  def test_changelogs_title_no_filter
-    assert_equal "Changelogs - Showing all entries", changelogs_title({})
-  end
-
-  def test_changelogs_title_filter_by_record_id_and_record_type
-    assert_equal "Changelogs - Filtered by Network with id 1 (<a href=\"/changelogs\">Show All</a>)",
-                 changelogs_title({:record_id => 1, :record_type => "Network"})
-  end
-
-  def test_changelogs_title_filter_by_user_id
-    assert_equal "Changelogs - Filtered by nick@liftium.com's changes (<a href=\"/changelogs\">Show All</a>)",
-                 changelogs_title({:user_id => users(:nick).id})
-  end
-
-  def test_changelogs_title_filter_by_user_id_not_found_shows_all
-    assert_equal "Changelogs - Showing all entries", changelogs_title({:user_id => nil})
-  end
-
-  def test_changelogs_title_excluded_users
-    assert_equal "Changelogs - Showing all entries excluding nick@liftium.com (<a href=\"/changelogs\">Show All</a>)",
-                 changelogs_title({:excluded_user_id => 42})
+    ChangelogSession.begin
+    changelog = Changelog.create!(:record_id => 1, :record_type => "Network")
+    ChangelogSession.end
+    assert_equal "<a href=\"/changelogs/#{changelog.id}\">View</a> | <a href=\"/networks/1\">Original</a> | <a href=\"/commits?record_id=1&amp;record_type=Network\">All changelogs</a>", render_changelog_links(changelog)
   end
 
   def test_distinct_changelog_users_for_select
     nick = users(:nick)
-    ActsAsChangelogable::Changelog.current_user = nick
-    ActsAsChangelogable::Session.begin
-    changelog = ActsAsChangelogable::Changelog.create!(:record_id => 1, :record_type => "Tag", :user_id => nick.id,
+    Changelog.current_user = nick
+    ChangelogSession.begin
+    changelog = Changelog.create!(:record_id => 1, :record_type => "Tag", :user_id => nick.id,
                                   :diff => '{"size":["120x20","728x90"],"created_at":["2009-10-01T00:20:11Z","2009-11-01T00:20:11Z"]}')
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
     assert_equal [["none"], ["nick@liftium.com", 42]], distinct_changelog_users_for_select
   end
 end

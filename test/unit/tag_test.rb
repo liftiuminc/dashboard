@@ -6,13 +6,13 @@ class TagTest < ActiveSupport::TestCase
   should_validate_presence_of   :tag_name, :network, :size, :publisher
 
   setup do
-    ActsAsChangelogable::Session.begin
+    ChangelogSession.begin
   end
 
   teardown do
-    ActsAsChangelogable::Session.end
+    ChangelogSession.end
   end
-  
+
   should_acts_as_changelogable do
     Tag.create!(
         "sample_rate"   => "",
