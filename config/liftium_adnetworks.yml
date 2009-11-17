@@ -84,11 +84,14 @@
 
 
 "Traffic Marketplace Express":
-    action: ""
-    url: ""    
+    action: "http://adm.trafficmp.com/trafficKing/Login,loginForm.direct"
+    url: "http://www.trafficmp.com/login"    
     params: 
-      username: <%= user %>
-      password: <%= pass %>
+      userName:     <%= user %>
+      password:     <%= pass %>
+      formids:      "userName,password,login"
+      Submit:       Submit
+      clientType:   1
 
 
 "Tribal Fusion":
