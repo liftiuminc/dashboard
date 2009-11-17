@@ -11,8 +11,24 @@ class NetworkTest < ActiveSupport::TestCase
   end
 
   should_acts_as_changelogable do
-    Network.create!(:network_name => "name", :website => "www.something.url", :pay_type => Network::ALL_PAY_TYPES.first,
-                    :enabled => true, :supports_threshold => true, :default_always_fill => true, :us_only => true,
-                    :comments => "comments")
+    Network.create!(
+        ### use this network
+        :network_name           => "name", 
+        :website                => "www.something.url", 
+        :pay_type               => Network::ALL_PAY_TYPES.first,
+        :enabled                => true, 
+        :supports_threshold     => true, 
+        :default_always_fill    => true, 
+        :us_only                => true,
+        :comments               => "comments"
+    )
   end
+
+  should "have a network configuration" do
+    obj = Network.first( :conditions => { :network_name => "Test" } )
+
+    assert obj
+    assert obj.network_config
+    assert !obj.network_config.empty?    
+  end    
 end

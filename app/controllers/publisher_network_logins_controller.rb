@@ -6,6 +6,8 @@ class PublisherNetworkLoginsController < ApplicationController
   before_filter :find_user_networks
 
   def index
+
+
     # any conditions to filter by?
     conditions = {}
     %w[publisher_id network_id].each do |id|
@@ -14,18 +16,19 @@ class PublisherNetworkLoginsController < ApplicationController
         end
     end        
 
-    ### if we're not an admin, we'll set the publisher to our current publisher
-    ### otherwise, we'd better be an admin
-    if !current_user.admin?
-        if current_publisher
-            conditions[:publisher_id] = current_publisher.id
-        else
-            require_admin
-        end
+    ### an admin wants to see a different list of publishers?
+    if current_user.is_admin? and !params["publisher_id"].blank? 
+        @loop_publishers = [ Publisher.find_by_id( params["publisher_id"] ) ]
+    else
+        @loop_publishers = @publishers
     end        
-
-    @publisher_network_logins = PublisherNetworkLogin.find( 
-                                        :all, :conditions => conditions )
+    
+    ### limit to this network? has to be done in the template, as it's
+    ### in a tight loop
+    if !params["network_id"].blank? 
+        @limit_to_network_id = params["network_id"]
+    end
+    
   end
   
   def show
@@ -33,6 +36,14 @@ class PublisherNetworkLoginsController < ApplicationController
   
   def new   
     @publisher_network_login = PublisherNetworkLogin.new
+    
+    ### these may be passed through the url
+    %w[publisher_id network_id].each do |id|
+      if ! params[id].blank?
+        @publisher_network_login[id] = params[id]
+      end
+    end          
+    
   end
   
   def create
@@ -66,7 +77,7 @@ class PublisherNetworkLoginsController < ApplicationController
     ### load the publisher_network_login if allowed
     def allowed_publisher_network_login
         conditions = {}
-        if !current_user.admin? 
+        if !current_user.is_admin? 
             if !current_publisher
                 require_admin
             else                 

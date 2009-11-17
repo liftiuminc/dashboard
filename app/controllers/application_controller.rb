@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user
 
   before_filter :set_acts_as_changelogable_current_user
+  before_filter :set_time_zone
 
   private
 
@@ -33,6 +34,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_time_zone
+    Time.zone = @current_user.time_zone if current_user
+  end
+
   def require_user
     unless current_user
       store_location
@@ -40,6 +45,7 @@ class ApplicationController < ActionController::Base
       redirect_to new_user_session_url
       return false
     end
+    true
   end
 
   def require_publisher
@@ -47,6 +53,7 @@ class ApplicationController < ActionController::Base
       permission_denied( "You must be a publisher to access this page" )
       return false
     end
+    true
   end
 
   def require_no_user
@@ -56,6 +63,7 @@ class ApplicationController < ActionController::Base
       redirect_to account_url
       return false
     end
+    true
   end
 
   def store_location
@@ -67,14 +75,19 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-  def require_admin
-    unless current_user
-      store_location
-      flash[:notice] = "You must be logged in to access this page"
-      redirect_to new_user_session_url
+  def require_power_user
+    require_user or return false
+
+    if !current_user.is_power_user?
+      permission_denied ("You must be a Power User to access this page")
       return false
     end
-    if !current_user.admin?
+  end
+
+  def require_admin
+    require_user or return false
+
+    if !current_user.is_admin?
       permission_denied ("You must be an administrator to access this page")
       return false
     end
@@ -98,7 +111,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_user_networks
-    if !current_user.admin?
+    if !current_user.is_admin?
       if current_publisher
         ### XXX FIXME there is probably a more ActiveRecordy way to handle this
         @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN (SELECT network_id FROM tags where publisher_id = ? AND enabled = ? ORDER BY network_name ASC)", current_publisher.id, 1])
@@ -111,7 +124,7 @@ class ApplicationController < ActionController::Base
   end
 
   def find_user_adformats
-    if !current_user.admin?
+    if !current_user.is_admin?
       if current_publisher
         ### XXX FIXME there is probably a more ActiveRecordy way to handle this
         @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])
@@ -134,7 +147,7 @@ class ApplicationController < ActionController::Base
 
 ### the list of publishers accessible to this user
   def allowed_publishers
-    if !current_user.admin?
+    if !current_user.is_admin?
       @publishers = [ current_publisher ]
     else
       # Get the list of publishers for admin users

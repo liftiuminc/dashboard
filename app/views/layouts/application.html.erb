@@ -5,6 +5,8 @@
     <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css?1' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
+    <%= javascript_include_tag 'fastinit' %>
+    <%= javascript_include_tag 'tablesort' %>
     <%= feedback_includes %>
     <%= yield(:head) %>
   </head>
@@ -46,10 +48,13 @@
           <li><%= link_to "Ad Quality Settings", :controller=> "publishers", :action => "quality_control" %>
           <li><%= link_to "Reporting", data_export_url %>
           <li><%= link_to "Tag Generator", tag_generator_url %>
+          <% if current_user.is_power_user? %>
+            <li><%= link_to "Chain/Tag Mgmt", tags_url %>
+          <% end %>
 	  </ul>
        </div>
 
-     <% if current_user.admin? %>
+     <% if current_user.is_admin? %>
       <div class="navsection">
           <!-- admin only section -->
 	  <div class="navsection_header">Admin</div>

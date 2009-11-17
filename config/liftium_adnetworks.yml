@@ -1,0 +1,124 @@
+
+"Ad.com":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"AdBrite":
+    action: "https://www.adbrite.com/mb/commerce/login.php"
+    params: 
+      username: <%= user %>
+      pword:    <%= pass %>
+
+"ContextWeb":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"CPX Interactive":
+    action: "http://reporting.cpxinteractive.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"Game Advertising Online":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"Google AdSense":
+    action: "https://www.google.com/accounts/ServiceLoginBoxAuth"
+    url: "https://www.google.com/adsense"
+    # automated login does not appear to work cleanly
+#     params: 
+#       username: <%= user %>
+#       password: <%= pass %>
+
+
+"Kitara":
+    action: "http://aristotle.kitaramedia.com/web/"
+    params: 
+      'signin[username]': <%= user %>
+      'signin[password]': <%= pass %>
+
+
+"Oridian":
+    action: "http://my.adserverplus.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"RealTechNetwork":
+    action: "http://publisher.contextualmarketplace.com/checklogin.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+      Submit:   Login
+
+"SixApart":
+    action: "https://go.adify.com/Default.aspx"
+# dynamic secret strings prohibit automatic logins
+#     params: 
+#       'ctl00$ctl00$BodyContent$BodyContent$UserName': <%= user %>
+#       'ctl00$ctl00$BodyContent$BodyContent$Password': <%= pass %>
+#       '__EVENTTARGET': 'ctl00$ctl00$BodyContent$BodyContent$SignInButton'
+
+      
+"Test":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"Traffic Marketplace Express":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"Tribal Fusion":
+    action: ""
+    url: ""    
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+
+"ValueClick":
+    action: "https://admin.valueclickmedia.com/v4/login.go"
+    url: "https://www.valueclickmedia.com/login.shtml"
+    params: 
+      user_name:    <%= user %>
+      password:     <%= pass %>
+
+
+"VideoEgg":
+    action: "https://partners.videoegg.com/p/eap/h/1"
+    params: 
+      input.login.username: <%= user %>
+      input.login.password: <%= pass %>
+      form:                 Package.login.login
+      doLogin:              true
+
+"Widget Bucks":
+    action: "https://www.widgetbucks.com/login.flow"
+    params: 
+      email:    <%= user %>
+      password: <%= pass %>
+      action:   call
+      formName: login

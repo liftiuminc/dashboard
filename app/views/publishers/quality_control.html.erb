@@ -1,4 +1,4 @@
-<% if current_user.admin %>
+<% if current_user.is_admin? %>
   <% @title_bar_right_text = publisher_dropdown "Select a Publisher..."%>
   <script>
   function publisherSelect(dd){

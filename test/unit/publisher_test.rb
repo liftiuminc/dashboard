@@ -14,7 +14,20 @@ class PublisherTest < ActiveSupport::TestCase
   end
 
   should_acts_as_changelogable do
-    Publisher.create!(:site_name => "name", :site_url => "www.something.url", :brand_safety_level => 1, :hoptime => 1)
+    Publisher.create!(
+        :site_name          => "name", 
+        :site_url           => "www.something.url", 
+        :brand_safety_level => 1, 
+        :hoptime            => 1
+    )
+  end
+
+  should "find publisher" do
+    obj = Publisher.find_by_id( 1 )
+    
+    assert obj
+    assert obj.active_networks
+    
   end
 
 end

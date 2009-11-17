@@ -446,3 +446,39 @@ iframefill_call_top:
   value: 1.00
   size: "234x60"
   tag: 'This is a fill from "Test: Iframe fill with testPassed" (tag 70) <script>top.LiftiumTest.testPassed();</script>'
+
+browser_target_1:
+  id: 80
+  publisher_id: 1042
+  tag_name: "Test: Browser Targeting. Firefox"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "180x150"
+  tag: 'This is a fill from "Test: Browser Targeting. Firefox" (tag 80)'
+
+browser_target_2:
+  id: 81
+  publisher_id: 1042
+  tag_name: "Test: Browser Targeting. Any browser"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 0.75
+  size: "180x150"
+  tag: 'This is a fill from "Test: Browser Targeting. Any browser" (tag 81)'
+
+browser_target_3:
+  id: 82
+  publisher_id: 1042
+  tag_name: "Test: Browser Targeting. Windows Explorer"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "180x150"
+  tag: 'This is a fill from "Test: Browser Targeting. Windows Explorer" (tag 82)'

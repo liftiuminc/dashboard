@@ -41,5 +41,14 @@
     <%= f.label :cross_domain_iframe_path %> <span class="hint">for enabling iframe hopping in IE 6/7 - default is /liftium_iframe.html</span><br />
     <%= f.text_field :xdm_iframe_path %>
   </div>
+  
+  <% if current_user.is_admin? %>
+    <div class="fieldset" id="publisher_notes">
+      <%= f.label :publisher_notes %> 
+      <span class="hint">additional notes for this publisher. Ex. "Call Bob for permission"</span><br />
+      <input type="text" size="30" name="note[publisher]" value="<%=h !@publisher.comments.empty? ? "#{@publisher.comments[0].comment}" : "" %>" />
+    </div>
+  <% end %>
+  
   <p><%= liftium_submit "Save Changes" %></p>
 <% end %>

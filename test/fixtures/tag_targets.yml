@@ -4,3 +4,15 @@ one:
   tag_id: 40
   key_name: country
   key_value: us
+
+browser1:
+  id: 2
+  tag_id: 80
+  key_name: browser
+  key_value: firefox
+
+browser2:
+  id: 3
+  tag_id: 82
+  key_name: browser
+  key_value: Windows explorer

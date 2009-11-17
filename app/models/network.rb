@@ -2,6 +2,7 @@ class Network < ActiveRecord::Base
   acts_as_changelogable
   
   require 'uri'
+  require 'yaml'
 
   ALL_PAY_TYPES = ["Per Click", "Per Impression", "Affliate" ]
 
@@ -16,6 +17,9 @@ class Network < ActiveRecord::Base
   validates_inclusion_of :default_always_fill, :in => [true, false]
   validates_inclusion_of :supports_threshold, :in => [true, false]
   validates_inclusion_of :pay_type, :in => ALL_PAY_TYPES, :message => "must be one of: " + ALL_PAY_TYPES.join(', ')
+
+  ### configuration for scraping/logging in etc
+  @@NetworkConfig = File.read( "#{RAILS_ROOT}/config/liftium_adnetworks.yml" )
 
    def enabled_s
       enabled ? "Yes" : "No"
@@ -46,6 +50,26 @@ class Network < ActiveRecord::Base
       end
 
       write_attribute( :website, url )
+   end
+
+   def network_config( args = {} )
+      
+     ### Following this HOWTO (comment #8):
+     ### http://railscasts.com/episodes/85-yaml-configuration-file
+     ### any substitutions?
+     str  = ''
+     if user = args[:username] and pass = args[:password]
+       ### binding is needed so ERB can access variales in this scope
+       b   = binding
+       str = ERB.new( @@NetworkConfig ).result b
+
+     else
+       str = @@NetworkConfig
+     end       
+
+     config = YAML.load( str )[ network_name ] || {}
+
+     return config     
    end
 
 end

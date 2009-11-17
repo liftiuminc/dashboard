@@ -1,6 +1,8 @@
 <%= render :partial => 'shared/select_timeframe' %>
 
-<% if current_user.admin %>
+<% if current_user.is_admin? %>
+  <% @show_revenue = true %>
+
   <% @title_bar_right_text += publisher_dropdown "Select a Publisher..."%>
   <script>
   function publisherSelect(dd){
@@ -12,6 +14,14 @@
 <% title @publisher.site_name %>
 <%= javascript_include_tag "jscharts" %>
 
+<% if params[:debug] %>
+Impressions: <%= debug(@impressions_graph_data) %>
+stats : <%= debug(@stats) %>
+previous_stats : <%= debug(@previous_stats) %>
+revenue: <%= debug(@revenue_graph_data) %>
+ecpm: <%= debug(@ecpm_graph_data) %>
+<% @show_revenue = true %>
+<% end %>
 
 <style type="text/css">
 .publisher_chart {
@@ -99,6 +109,7 @@ window.onload=function(){
 	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
     </td>
+<% if @show_revenue  %>
     <td width="33%">
 	<div id="revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
@@ -220,7 +231,9 @@ window.onload=function(){
 
 	<%-end  %>
 
+<% end %><!-- show revenue -->
      <td height="350">
+
 	<div id="network_revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
 	var data = <%= @network_graph_data.to_json %>
@@ -238,6 +251,4 @@ window.onload=function(){
      </td>
   </tr>
 </table>
-
-
 

@@ -1,5 +1,7 @@
 <% title "New Tag" %>
 
+<% @title_bar_right_text = '<a href="' + new_publisher_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Publisher", new_publisher_path, :popup => true) %>
+
 <%= render :partial => 'form' %>
 
 <p><%= link_to "Back to List", tags_path %></p>

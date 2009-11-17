@@ -9,7 +9,7 @@
     <%= f.text_field :website %>
   </div>
   <div class="fieldset">
-    <%= f.label :pay_type %><br />
+    <%= f.label :pay_type %>*<br />
     <%= select("network", "pay_type", Network::ALL_PAY_TYPES, {:include_blank => true}) %>
   </div>
   <div class="fieldset">
@@ -37,6 +37,20 @@
     <%= radio_button "network", "us_only", "true"%>Yes
     <%= radio_button "network", "us_only", "false"%>No
   </div>
+  
+  <div class="fieldset">
+    <%= f.label :liftium_username %>
+    <span class="hint">Liftium umbrella account</span><br />
+    <%= f.text_field :liftium_username %>
+
+  </div>
+  <div class="fieldset">
+    <%= f.label :liftium_password %>
+    <span class="hint">Liftium umbrella account</span><br />
+    <%= f.text_field :liftium_password %>
+  </div>
+
+  
   <div class="fieldset">
     <%= f.label :contact_info, "Contact Information" %><br />
     <%= f.text_area :contact_info, {:rows => 5} %><br />

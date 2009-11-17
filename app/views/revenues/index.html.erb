@@ -7,7 +7,7 @@
       <tr class="record_listing_header">
         <th>Network</th>
         <th>Publisher</th>
-        <th>Login/Pass</th>
+        <th>Login</th>
         <th>Size</th>
         <th>Impressions</th>
         <th>Clicks</th>
@@ -31,7 +31,10 @@
           <td class="record_column"><%= link_to tag.network.network_name, tag.network %></td>
 
           <td class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
-          <td class="record_column"><%= link_to ( pnl ? "#{pnl.username}/#{pnl.password}" : "<span style='color:red'>default</span>" ), tag.network.website %>
+          <td class="record_column">
+            <%= render :partial => "shared/publisher_network_login_button", 
+                       :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1 } %>
+          </td>
           <td class="record_column"><%= link_to tag.size, tag, :action => :show %><br><span class="hint"><%=h tag.tag_name %></span></td>
           <td class="record_column"><%=h rev ? rev.attempts : "?"  %></td>
           <td class="record_column"><%=h rev ? rev.clicks   : "?"  %></td>

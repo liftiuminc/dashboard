@@ -16,7 +16,7 @@ class DataExportController < ApplicationController
   def create 
 
     ### if you're not an admin, you only get to see your own publisher
-    if !current_user.admin?
+    if !current_user.is_admin?
       if current_publisher
         params[:publisher_id] = current_publisher.id
       else 

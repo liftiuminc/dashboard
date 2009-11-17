@@ -6,7 +6,7 @@ class HomesController < ApplicationController
     if current_user 
       if current_user.publisher
         redirect_to url_for(:action => "publisher") and return
-      elsif current_user.admin 
+      elsif current_user.is_admin? 
         redirect_to url_for(:action => "admin") and return
       end
     end
@@ -17,13 +17,12 @@ class HomesController < ApplicationController
   end
 
   def publisher
-    if !current_user.publisher
-        permission_denied("Your account is not associated with a publisher")
-        return
-    end
-
-    if current_user.admin? and params[:publisher_id]
-	@publisher = Publisher.find(params[:publisher_id])
+    if current_user.is_admin? 
+        if params[:publisher_id]
+	  @publisher = Publisher.find(params[:publisher_id])
+        else 
+	  @publisher = Publisher.first;
+        end
     else 
 	@publisher = current_user.publisher
     end
@@ -32,13 +31,15 @@ class HomesController < ApplicationController
 
     @dates = DateRangeHelper.get_date_range(params[:date_select])
     
-    
-    if @dates[0].to_time < (DateTime.now - 7.days)
+    if @dates[0].to_time > (DateTime.now - 1.hour)
+        model = FillsMinute
+	time_format = "%I:%M:p"
+    elsif @dates[0].to_time > (DateTime.now - 7.days)
+        model = FillsHour
+	time_format = "%I:%p"
+    else
         model = FillsDay
 	time_format = "%m/%d"
-    else
-        model = FillsHour
-	time_format = "%H:%p"
     end
 
     
@@ -47,7 +48,7 @@ class HomesController < ApplicationController
     col = model.new.time_column
     sql = "SELECT * FROM #{model.table_name}"+
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND #{col} >= ?  AND #{col} <= ? ORDER by #{col} DESC"
+        " AND #{col} >= ?  AND #{col} <= ? GROUP BY #{col} ORDER by #{col} DESC"
         
     @stats = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
     @previous_stats = model.find_by_sql [sql, @publisher.id, @dates[2], @dates[0]]

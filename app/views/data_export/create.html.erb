@@ -5,20 +5,21 @@ total_clicks = 0
 <%= render :partial => 'filter_form' %>
 
 <% if !@fill_stats.empty? && @fill_stats.length > 0 %>
-<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
+<table class="record_listing sortable" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
+  <thead>
   <tr class="record_listing_header">
     <th>Publisher</th>
     <th>Ad Network</th>
     <th>Tag</th>
     <th>Size</th>
-    <th><%= @fill_stats[0].time_name %></th>
+    <th class"sortfirstdesc"><%= @fill_stats[0].time_name %></th>
     <th>Attempts</th>
     <th>Loads</th>
     <th>Rejects</th>
    <%- if params[:interval] == "day" %>
     <th>Clicks</th>
    <%- end %>
-   <% if current_user.admin? %>
+   <% if current_user.is_admin? %>
     <th>Slip</th>
    <% end %> 
     <th>Fill Rate</th>
@@ -27,6 +28,8 @@ total_clicks = 0
     <th>eCPM</th>
    <%- end %>
   </tr>
+  </thead>
+  <tbody>
   <% counter = 0 %>
   <%- for fill_stat in @fill_stats %>
 
@@ -45,7 +48,7 @@ total_clicks = 0
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column"><a href="<%= publisher_url fill_stat.tag.publisher %>"><%= fill_stat.tag.publisher.site_name%></a></td>
       <td class="record_column">
-        <% if current_user.admin? %>
+        <% if current_user.is_admin? %>
           <a href="<%= network_url fill_stat.tag.network %>"><%= fill_stat.tag.network.network_name%></a>
         <% else %>
           <%= fill_stat.tag.network.network_name %>
@@ -53,7 +56,7 @@ total_clicks = 0
       </td>
       <td class="record_column">
         #<%= fill_stat.tag_id%> - 
-        <% if current_user.admin? %>
+        <% if current_user.is_admin? %>
           <a href="<%=tag_url fill_stat.tag %>"><%= fill_stat.tag.tag_name%></a>
         <% else %>   
           <%= fill_stat.tag.tag_name %>
@@ -69,7 +72,7 @@ total_clicks = 0
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column">
-        <% if current_user.admin? %>
+        <% if current_user.is_admin? %>
           <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a>
         <% else %>
           <%= fill_stat.fill_rate %>%
@@ -85,7 +88,8 @@ total_clicks = 0
     <%- end %>
     </tr>
   <%- end %>
-
+  </tbody>
+  <tfoot>
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
       <td class="record_column" colspan="5">Totals</td>
       <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:attempts))%></td>
@@ -101,6 +105,6 @@ total_clicks = 0
       <td class="record_column">$<%= Revenue.calculate_ecpm(@fill_stats.sum(&:loads), total_revenue).round(3)%></td>
     <%- end %>
     </tr>
-  
+  </tfoot>  
 </table>
 <% end %>

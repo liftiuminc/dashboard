@@ -5,7 +5,13 @@
     <%= f.text_field :email, {:style=> "width: 200px"} %>
   </div>
 
-  <% if current_user.admin? %>
+  <% if current_user.is_admin? %>
+    <div class="fieldset">
+      <%= f.label :power_user, "Power User" %>
+      <%= radio_button "user", "power_user", "true"%>Yes
+      <%= radio_button "user", "power_user", "false"%>No
+    </div>
+
     <div class="fieldset">
       <%= f.label :admin, "Administrator" %>
       <%= radio_button "user", "admin", "true"%>Yes
@@ -17,13 +23,18 @@
       <%= collection_select(:user, :publisher_id, @publishers, :id, :site_name, :include_blank => true) %>
     </div>
   <% end %>
+
+  <div class="fieldset">
+    <%= f.label :time_zone %><br />
+    <%= f.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones %>
+  </div>
   
   <div class="fieldset">
-    <%= f.label :password %><% if !current_user.admin? %>*<% end %><br />
+    <%= f.label :password %><% if !current_user.is_admin? %>*<% end %><br />
     <%= f.password_field :password,  {:style=> "width: 200px"}%>
   </div>
   <div class="fieldset">
-    <%= f.label :password_confirmation %><% if !current_user.admin? %>*<% end %><br />
+    <%= f.label :password_confirmation %><% if !current_user.is_admin? %>*<% end %><br />
     <%= f.password_field :password_confirmation,  {:style=> "width: 200px"}%>
   </div>
   <p><%= liftium_submit "Save Changes" %></p>

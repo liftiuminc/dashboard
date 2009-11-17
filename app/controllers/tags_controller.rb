@@ -1,6 +1,7 @@
 class TagsController < ApplicationController
   before_filter :require_user
-  before_filter :require_admin,      :except => [:index, :generator, :html_preview]
+  before_filter :require_power_user, :except => [:index, :generator, :html_preview]
+  before_filter :require_admin,      :only => [:destroy]
   before_filter :save_filter_fields, :only => [:index]
   before_filter :debug_sql,          :only => [:index]
   before_filter :find_user_networks, :only => [:select_network, :new, :edit, :copy, :index]
@@ -11,7 +12,7 @@ class TagsController < ApplicationController
     conditions = session[:tag_params] || {}
   
     ### you can only find things for YOUR publisher
-    if !current_user.admin?
+    if !current_user.is_admin?
         conditions[:publisher_id] = current_publisher.id
     end
     
@@ -21,10 +22,12 @@ class TagsController < ApplicationController
 
   def show
     @tag = Tag.find(params[:id])
+    @networks
   end
 
   def select_network
-    @tag = Tag.new
+    @tag        = Tag.new
+    @networks   = find_enabled_networks
   end
 
   def new
@@ -154,7 +157,7 @@ class TagsController < ApplicationController
 
       ### you can only view your own tags
       conditions = {}
-      if !current_user.admin? 
+      if !current_user.is_admin? 
         conditions[:publisher_id] = current_publisher.id
       end  
     
