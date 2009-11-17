@@ -31,14 +31,6 @@ class CommitsControllerTest < ActionController::TestCase
         assert_not_nil assigns(:commits)
       end
 
-      should "filter by record id and record type if params are passed" do
-        login_as_admin
-        get :index, :record_id => @network.id, :record_type => "Network"
-        assert_template :index
-        assert_not_nil assigns(:commits)
-        assert_match "Filtered by Network with id 1", @response.body
-      end
-
       should "filter by user and only show results from that user if user_id passed" do
         nick = User.find_by_id(42)
         login_as(nick)

@@ -1,14 +1,13 @@
 <h1 align="center"><%= commits_title(params) %></h1>
 
-<%= render :partial => "form" %>
+<%= render :partial => "commits/form" %>
 <table class="record_listing" width="100%">
   <tr class="record_listing_header">
-    <th>Commit</th>
-    <th>Change</th>
+    <th colspan="2">Change</th>
     <th>Operation</th>
     <th width="40%">Field Changes</th>
     <th>User</th>
     <th>Date</th>
   </tr>
-  <%= render :partial => "commit", :collection => @commits %>
+  <%= render :partial => "commits/changelog", :collection => @changelogs %>
 </table>

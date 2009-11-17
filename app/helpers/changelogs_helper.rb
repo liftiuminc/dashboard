@@ -10,7 +10,7 @@ module ChangelogsHelper
   def render_user(changelog)
     if changelog.user && user = User.find(changelog.user_id)
       [link_to(user.email, user_path(user)),
-       link_to("Filter", changelogs_path(:user_id => user.id))
+       link_to("Filter", commits_path(:user_id => user.id))
       ].join("<br/>")
     else
       "N/A"
@@ -20,7 +20,7 @@ module ChangelogsHelper
   def render_changelog_links(changelog)
     [link_to("View", changelog_path(changelog)),
      link_to("Original", changelog.record),
-     link_to("All changelogs", commits_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
+     link_to("All changelogs",changelogs_path(:record_id => changelog.record_id, :record_type => changelog.record_type))].join(" | ")
   end
 
   def distinct_changelog_users_for_select

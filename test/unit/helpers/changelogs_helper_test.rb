@@ -32,7 +32,7 @@ class ChangelogsHelperTest < ActionView::TestCase
   def test_render_user
     user = users(:nick)
     changelog = Changelog.new(:user_id => user.id)
-    assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a><br/><a href=\"/changelogs?user_id=#{user.id}\">Filter</a>", render_user(changelog)
+    assert_equal "<a href=\"/users/#{user.id}\">#{user.email}</a><br/><a href=\"/commits?user_id=#{user.id}\">Filter</a>", render_user(changelog)
   end
 
   def test_render_user_renders_na_when_no_user
@@ -44,7 +44,7 @@ class ChangelogsHelperTest < ActionView::TestCase
     ChangelogSession.begin
     changelog = Changelog.create!(:record_id => 1, :record_type => "Network")
     ChangelogSession.end
-    assert_equal "<a href=\"/changelogs/#{changelog.id}\">View</a> | <a href=\"/networks/1\">Original</a> | <a href=\"/commits?record_id=1&amp;record_type=Network\">All changelogs</a>", render_changelog_links(changelog)
+    assert_equal "<a href=\"/changelogs/#{changelog.id}\">View</a> | <a href=\"/networks/1\">Original</a> | <a href=\"/changelogs?record_id=1&amp;record_type=Network\">All changelogs</a>", render_changelog_links(changelog)
   end
 
   def test_distinct_changelog_users_for_select
