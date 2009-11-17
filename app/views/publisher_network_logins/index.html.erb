@@ -1,5 +1,7 @@
 <% title "Publisher Network Logins" %>
 
+<% @title_bar_right_text = '<a href="' + new_publisher_network_login_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Credentials", new_publisher_network_login_path) %>
+
 <div class="filter_form" id="filter_form">
   <form>
     <ul>
@@ -29,7 +31,16 @@
 <br />
 
 <% for publisher in @loop_publishers %>
-  <% networks = publisher.active_networks( @limit_to_network_id ) %>
+  <% networks = publisher.active_networks( @limit_to_network_id ) || [ ] %>
+  
+  <% publisher.publisher_network_logins.map do |pnl| 
+       networks.push pnl.network
+     end
+  
+     ### remove 'nil' with compact   
+     networks.compact!
+     networks.uniq!  
+  %>
   
   <% if !networks.empty? %>
   
