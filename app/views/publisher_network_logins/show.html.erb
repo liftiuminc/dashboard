@@ -1,5 +1,7 @@
 <% title "Publisher Network Login" %>
 
+<% @title_bar_right_text = '<a href="' + new_publisher_network_login_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create Another Credential", new_publisher_network_login_path) %>
+
 <p>
   <strong>Network:</strong>
   <a href="<%= network_url @publisher_network_login.network %>"><%=h @publisher_network_login.network.network_name_and_id %></a>
