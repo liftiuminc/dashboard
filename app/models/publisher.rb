@@ -24,6 +24,8 @@ class Publisher < ActiveRecord::Base
 
    ### make sure all urls start with http(s?). See FB 32
    def site_url=(url)
+      ###  have to strip the url, in case there is whitespace
+      url.strip!
 
       ### this will catch any malformed uris
       if url.length > 0
