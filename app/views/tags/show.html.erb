@@ -104,4 +104,8 @@
   <% end %>    
   <%= link_to "View All", tags_path %>
 </p>
+<%- if @tag.enabled %>
+  <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => @tag.id ) %>"><img src="<%= tag_sparkline_url @tag, "1h"%>" width="50" height="25"/></a>
+<%- end %>
+
 </div>
