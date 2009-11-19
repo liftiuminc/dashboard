@@ -15,11 +15,16 @@
 <%= javascript_include_tag "jscharts" %>
 
 <% if params[:debug] %>
-Impressions: <%= debug(@impressions_graph_data) %>
-stats : <%= debug(@stats) %>
-previous_stats : <%= debug(@previous_stats) %>
-revenue: <%= debug(@revenue_graph_data) %>
-ecpm: <%= debug(@ecpm_graph_data) %>
+Impression graph data: <%= debug(@impressions_graph_data) %><hr />
+Impressions: <%= debug(@impressions) %><br />
+Previous Impressions: <%= debug(@previous_impressions) %><br />
+total_loads <%= debug(@total_loads) %><hr />
+stats : <%= debug(@stats) %><hr />
+previous_stats : <%= debug(@previous_stats) %><hr />
+revenue graph data: <%= debug(@revenue_graph_data) %><hr />
+ecpm graph data: <%= debug(@ecpm_graph_data) %><hr />
+revenues <%= debug(@revenues) %>
+revenue <%= debug(@revenue) %>
 <% @show_revenue = true %>
 <% end %>
 

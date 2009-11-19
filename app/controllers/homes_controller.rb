@@ -99,8 +99,19 @@ class HomesController < ApplicationController
     @revenues = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
     @previous_revenues = model.find_by_sql [sql, @publisher.id, @dates[2], @dates[0]]
   
-    @revenue = @revenues.sum(&:revenue).to_f
-    @previous_revenue = @revenues.sum(&:revenue).to_f
+    # Grumble. This doesn't work if it is a float. Rails bug?
+    #@revenue = @revenues.sum(&:revenue).to_f
+    #@previous_revenue = @revenues.sum(&:revenue).to_f
+    @revenue = 0.0
+    for rev in @revenues do
+       @revenue += rev.revenue.to_f
+    end
+    @previous_revenue = 0.0
+    for rev in @previous_revenues do
+       @previous_revenue += rev.revenue.to_f
+    end
+
+
 
     @revenue_graph_data = [] 
     @ecpm_graph_data = []
