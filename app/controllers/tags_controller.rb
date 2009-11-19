@@ -45,6 +45,7 @@ class TagsController < ApplicationController
 
   def create
     @tag = Tag.new(params[:tag])
+    iframe_with_always_fill_xdm_iframe_path(@tag)
 
     if @tag.save
 
@@ -102,6 +103,7 @@ class TagsController < ApplicationController
 
   def update
     @tag = Tag.find(params[:id])
+    iframe_with_always_fill_xdm_iframe_path(@tag)
     if @tag.update_attributes(params[:tag])
 
       ### any associated notes? See FB 24
@@ -194,4 +196,15 @@ class TagsController < ApplicationController
     @name_search = params[:name_search]
     @include_disabled = params[:include_disabled]
   end
+
+  # Fogbugz 86
+  def iframe_with_always_fill_xdm_iframe_path(tag)
+    if !tag.network or !tag.publisher
+      # This will already fail for other reasons
+      return
+    elsif (tag.tag =~ /iframe/i or (tag.tag.empty? and tag.network.tag_template =~ /iframe/i)) and tag.publisher.xdm_iframe_path.blank? and !tag.always_fill
+      flash[:warning] = "Since the publisher's 'cross domain iframe path' is not set, this tag will not fill for HTML 4 browsers (IE 6/7)"
+    end
+  end
+
 end

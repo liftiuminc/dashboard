@@ -36,17 +36,6 @@ class Tag < ActiveRecord::Base
     end
   end
 
-  # Fogbugz 86
-  validate :iframe_with_always_fill_xdm_iframe_path
-  def iframe_with_always_fill_xdm_iframe_path
-    if !network or !publisher 
-      # This will already fail for other reasons
-      return
-    elsif (tag =~ /iframe/i or network.tag_template =~ /iframe/i) and publisher.xdm_iframe_path.blank? and !always_fill
-      errors.add_to_base("Since the publisher's 'cross domain iframe path' is not set, iframe tags cannot be used unless it's an 'always fill'")
-    end 
-  end
-
    def auto_update_ecpm_s
       auto_update_ecpm ? "Yes" : "No"
    end
