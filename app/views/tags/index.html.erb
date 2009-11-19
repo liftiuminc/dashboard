@@ -54,6 +54,7 @@
     <th>Value</th>
     <th>Always Fill</th>
     <th>Criteria</th>
+    <th>Created</th>
     <th>Actions</th>
     <th colspan="2">Fill Rate</th>
   </tr>
@@ -100,6 +101,8 @@
 	  <%=h criteria.key_name + ": " + criteria.key_value %><br />
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
+
+    <td nowrap="true" class="record_column"><%= tag.created_at.strftime('%Y-%m-%d %H:%M') %></td>
 
     <% if current_user.is_power_user? %>
       <td class="record_column" style="text-align:center">
