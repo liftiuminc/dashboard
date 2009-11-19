@@ -76,6 +76,12 @@
   <strong>Rejection Time:</strong>
   <%=h @tag.rejection_time ? "#{@tag.rejection_time} minutes" : "-"%>
 </p>
+
+<p>
+  <strong>Created at:</strong>
+  <%= @tag.created_at.strftime('%Y-%m-%d %H:%M') %>
+</p>
+
 <p>
   <strong>Targeting Critera:</strong>
   <%- for target_criteria in @tag.tag_targets do %>
