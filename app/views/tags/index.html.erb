@@ -44,8 +44,8 @@
   <% end %>
 </div>
 
-<table class="record_listing" width="100%" cellpadding="0" cellspacing="0">
-
+<table class="record_listing sortable" width="100%" cellpadding="0" cellspacing="0">
+  <thead>
   <tr class="record_listing_header">
     <th>Publisher</th>
     <th>Network</th>
@@ -57,7 +57,8 @@
     <th>Actions</th>
     <th colspan="2">Fill Rate</th>
   </tr>
-
+  </thead>
+  
 <%  @tier_to_color = {
         1   => '#60FC6F',   # light green
         2   => '#50A91E',   # dark green
@@ -72,6 +73,7 @@
     }
 %>
 
+  <tbody>
   <% for tag in @tags %>
    <%- if tag.enabled && tag.network.enabled %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
@@ -134,5 +136,5 @@
       </td>
     </tr>
   <% end %>
-
+  </tbody>
 </table>
