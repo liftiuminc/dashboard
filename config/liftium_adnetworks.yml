@@ -13,6 +13,20 @@
       username: <%= user %>
       pword:    <%= pass %>
 
+"Burst Media":
+    action: "https://www.burstmedia.com/PUBLISHERS/login.aspx"
+    url: "http://www.burstmedia.com"
+    params:
+      username: <%= user %>
+      password: <%= pass %>
+
+"Casale Media":
+    action: "https://casalemedia.com/login"
+    url: "http://www.casalemedia.com/"
+    params:
+      signIn: <%= user %>
+      password: <%= pass %>
+
 "ContextWeb":
     action: ""
     url: ""    
@@ -26,6 +40,13 @@
     params: 
       username: <%= user %>
       password: <%= pass %>
+
+"Fox Audience Network (FAN)":
+    action: "https://publishers.foxaudiencenetwork.com/j_security_check"
+    url: "https://publishers.foxaudiencenetwork.com/pnp/login"   
+    params:
+      j_username: <%= user %>
+      j_password: <%= pass %>
 
 
 "Game Advertising Online":
@@ -51,6 +72,13 @@
       'signin[username]': <%= user %>
       'signin[password]': <%= pass %>
 
+"Microsoft PubCenter":
+    action: "https://beta.pubcenter.microsoft.com/"
+    url: "https://beta.pubcenter.microsoft.com/"
+# uses JS to do the submits etc, can't do it programatticaly :(
+#    params:
+#      ctl00_MainContent_txtUserName: <%= user %>
+#      ctl00_MainContent_txtPassword: <%= pass %>
 
 "Oridian":
     action: "http://my.adserverplus.com/index.php"
@@ -58,6 +86,22 @@
       username: <%= user %>
       password: <%= pass %>
 
+"Platform-A":
+    action: "https://reports.advertising.com/login?rlp=1&force=0&n=17158986"
+    url: "https://reports.advertising.com/login.jsp"
+    params: 
+      username:         <%= user %>
+      password:         <%= pass %>
+      Submit:           Login
+
+
+"Price Grabber":
+    action: "https://dnb.doubleclick.net/dnbLogin"
+    url: "https://dnb.doubleclick.net/login"
+    params: 
+      username:         <%= user %>
+      password:         <%= pass %>
+      'method:login':   'Sign in'
 
 "RealTechNetwork":
     action: "http://publisher.contextualmarketplace.com/checklogin.php"
@@ -74,6 +118,13 @@
 #       'ctl00$ctl00$BodyContent$BodyContent$Password': <%= pass %>
 #       '__EVENTTARGET': 'ctl00$ctl00$BodyContent$BodyContent$SignInButton'
 
+"Sustain Lane":
+    action: "https://go.adify.com/Default.aspx"
+# dynamic secret strings prohibit automatic logins
+#     params: 
+#       'ctl00$ctl00$BodyContent$BodyContent$UserName': <%= user %>
+#       'ctl00$ctl00$BodyContent$BodyContent$Password': <%= pass %>
+#       '__EVENTTARGET': 'ctl00$ctl00$BodyContent$BodyContent$SignInButton'
       
 "Test":
     action: ""
@@ -95,11 +146,12 @@
 
 
 "Tribal Fusion":
-    action: ""
-    url: ""    
+    action: "https://www.tribalfusion.com/adapp/login/checkLogin"
+    url: "https://www.tribalfusion.com/adapp/login/expo9"    
     params: 
       username: <%= user %>
       password: <%= pass %>
+      expo:     expo9
 
 
 "ValueClick":
