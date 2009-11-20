@@ -128,7 +128,7 @@ class HomesController < ApplicationController
     @previous_ecpm = Revenue.calculate_ecpm(@previous_impressions, @previous_revenue)
 
 
-    sql = "SELECT revenues.id, revenues.tag_id, tags.size, " + 
+    sql = "SELECT revenues.id, revenues.tag_id, tags.size, tags.network_id, " + 
 	" COALESCE(SUM(attempts), 0) AS attempts," +
 	" COALESCE(SUM(rejects), 0) AS rejects," + 
 	" COALESCE(SUM(clicks), 0) AS clicks," +
@@ -136,12 +136,11 @@ class HomesController < ApplicationController
 	" INNER JOIN tags on revenues.tag_id = tags.id" + 
 	" AND tags.publisher_id = ?" + 
 	" WHERE day >= ? AND day <= ?" + 
-	" GROUP BY ?"
-	" ORDER BY revenue DESC"
+	" GROUP BY "
 
-    @ad_network_revenues = Revenue.find_by_sql [sql, @publisher.id, @dates[0], @dates[1], "tags.network_id"]
+    @ad_network_revenues = Revenue.find_by_sql [sql + "tags.network_id  ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
 
-    @ad_size_revenues = Revenue.find_by_sql [sql, @publisher.id, @dates[0], @dates[1], "tags.size"]
+    @ad_size_revenues = Revenue.find_by_sql [sql + "tags.size ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
 
   end
 
