@@ -1,26 +1,35 @@
-
 <% title "Javascript Errors" %>
+
+<%= render :partial => 'filter_form' %>
+
+Last 100
 
 <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
   <tr class="record_listing_header">
+    <th>Publisher</th>
+    <th>Tag</th>
     <th>Error Type</th>
-    <th>Language</th>
     <th>Browser</th>
-    <th>IP</th>
     <th>Url</th>
-    <th>Line</th>
     <th>Message</th>
+    <th>When</th>
     <th colspan="3">Actions</th>
   </tr>
   <% for javascript_error in @javascript_errors %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column"><%= link_to javascript_error.publisher.site_name, javascript_error.publisher %></td>
+      <td class="record_column">
+	<%- if javascript_error.tag %>
+	   <%= link_to truncate(javascript_error.tag.tag_name, :length=> 30), javascript_error.tag, :action=> :show %>
+	<%- else %>
+	   -
+	<%- end %>
       <td class="record_column"><%=h javascript_error.error_type %></td>
-      <td class="record_column"><%=h javascript_error.language %></td>
       <td class="record_column"><%=h javascript_error.browser %></td>
-      <td class="record_column"><%=h javascript_error.ip %></td>
-      <td class="record_column"><%=h javascript_error.url %></td>
-      <td class="record_column"><%=h javascript_error.line %></td>
-      <td class="record_column"><%=h javascript_error.message %></td>
+      <td class="record_column"><a target="_blank" title="<%=h javascript_error.url %>" href="<%=h javascript_error.url %>"><%=h truncate(javascript_error.url, :length => 50) %></a><br />
+	Line #<%=h javascript_error.line %></td>
+      <td class="record_column"><span title="<%=h javascript_error.message %>"><%=h truncate(javascript_error.message, :length => 75) %></span></td>
+      <td nowrap="true" class="record_column"><%= time_ago_in_words(javascript_error.created_at) %></td>
       <td class="record_action"><%= link_to "View", javascript_error, :action=> :show %></td>
     </tr>
   <% end %>

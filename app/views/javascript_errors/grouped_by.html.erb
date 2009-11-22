@@ -1,0 +1,33 @@
+<% title "Javascript Errors" %>
+
+<%= render :partial => 'filter_form' %>
+
+<table class="record_listing" width="700" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th><%=h @field %></th>
+    <th>Times</th>
+  </tr>
+  <% for javascript_error in @javascript_errors %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column">
+        <% if @field == "message" %>
+	  <span title="<%=h javascript_error.message%>"><%=h truncate(javascript_error.message, :length => 200) %></span>
+        <% elsif @field == "publisher_id"%> 
+      	  <%= link_to javascript_error.publisher.site_name, javascript_error.publisher %>
+        <% elsif @field == "browser"%> 
+          <%=h javascript_error.browser %>
+        <% elsif @field == "tag_id"%> 
+	   <%- if javascript_error.tag %>
+       	    <%= link_to truncate(javascript_error.tag.tag_name, :length=> 75), javascript_error.tag, :action=> :show %>
+           <%- else %>
+             -
+           <%- end %>
+        <% elsif @field == "url"%> 
+      	  <a target="_blank" title="<%=h javascript_error.url %>" href="<%=h javascript_error.url %>"><%=h truncate(javascript_error.url, :length => 75) %></a><br />
+        <% end %>
+      </td>
+      <td class="record_action"><%= javascript_error.field_count %></td>
+    </tr>
+  <% end %>
+</table>
+
