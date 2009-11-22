@@ -1,100 +1,12 @@
 <% title "Tag Generator / Publisher Preview" %>
 
-<script>
-var dimRegexp = /^([0-9]{2,4})x([0-9]{2,4})/;
-var deliveryHost = "http://cdn.liftium.com";
-//var deliveryHost = "http://nick.dev.liftium.com";
-function generateTag(f) {
-  try {
-	var pubid = $("pubid").value;
-	if (pubid == ""){
-		alert("You must select a publisher to continue.");	
-		return false;
-	}
-	var size = $("size").value;
-	if (size == ""){
-		alert("You must select a size to continue.");	
-		return false;
-	}
-	var delivery = $("delivery_iframe").checked ? "iframe" : "script";
-	var comments = $("comments").checked;
+<%= javascript_include_tag "TagGenerator" %>
 
-	if (delivery == "iframe") {
-		var t = $("tag").value = generateIframeTag(pubid, size, comments);
-		$("tag").value = t;
-		if ($("preview").checked){
-			$("preview_div").innerHTML = t;
-			$("preview_iframe").hide();
-			$("preview_div").show();
-		}
-	} else {
-		$("tag").value = generateScriptTag(pubid, size, comments);
-		if ($("preview").checked){
-			$("preview_div").innerHTML = "";
-			doPreview();
-		}
-	}
+<%- if Rails.env == "development" %>
+  <script>TagGenerator.deliveryHost = "http://nick.dev.liftium.com";</script>
+<%- end %>
 
-	return false;
-  } catch (e) {
-	alert("Tag Generator Error " + e.message);
-	return false;
-  }
-}
-
-function generateIframeTag (pubid, size, comments){
-	var url = deliveryHost + "/tag_iframe?pubid=" + pubid + '&size=' + size
-	var t = '';
-	if (comments){ t += '<!-- Begin Liftium Tag. -->\n'; }
-
-	var dim = size.match(dimRegexp);
-	if (! dim){
-		return false;
-	}
-
-	t += '<iframe src="' + url + '" width="' + dim[1] + '" height="' + dim[2] + '"' + 
-		' noresize="true" scrolling="no" frameborder="0" marginheight="0"' +
-		' marginwidth="0" style="border:none" target="_blank"></iframe>';
-
-	if (comments){ t += '<!-- End Liftium Tag -->\n'; }
-	return t;
-}
-
-function generateScriptTag (pubid, size, comments){
-	var t = '';
-	if (comments){
-		t += '<!-- Begin Liftium set up. \n' +
-		     'This only needs to appear once on your page, anywhere above the tag is ok. -->\n';
-	}
-
-	t += '<script>LiftiumOptions = {pubid:' + pubid + '}</\script>\n' +
-	    '<script src="' + deliveryHost + '/js/Liftium.js"><\/script>\n';
-
-	if (comments){ t += '<!-- End Liftium set up -->\n'; }
-	if (comments){ t += '<!-- Display Tag. Put this in the exact place where you want the ad -->\n'; }
-	t += '<script>Liftium.callAd("' + size + '")<\/script>';
-	return t;
-}
-
-function doPreview(){
-	var size = $("size").value;
-	var dim = size.match(dimRegexp);
-	if (! dim){
-		return false;
-	}
-
-	iframe = document.getElementById("preview_iframe");
-	iframe.width=dim[1];
-	iframe.height=dim[2];
-	iframe.style.display="block";
-
-	var f = document.getElementById("preview_form");
-	f.html.value = $("tag").value; 
-	f.submit();
-}
-</script>
-
-<form onSubmit="return generateTag(this);">
+<form onSubmit="return TagGenerator.generateTag(this);">
  <%- if @publishers %>
   <div class="fieldset">
     <%= label_tag :publisher, nil, :class => "left_label" %>
@@ -120,8 +32,9 @@ function doPreview(){
   </div>
   <div class="fieldset">
     <%= label_tag :delivery, "Delivery Method", :class => "left_label" %>
-    <%= radio_button_tag("delivery", "script", true) %>Inline Javascript <span class="hint">(recommended)</span>
-    <%= radio_button_tag("delivery", "iframe", false) %>Iframe
+    <%= radio_button_tag("delivery", "script", true) %>Javascript on page <span class="hint">(recommended)</span>
+    <%= radio_button_tag("delivery", "adserver", false) %>Javascript through Ad Server
+    <%= radio_button_tag("delivery", "iframe", false) %>Iframe <span class="hint">(contextual targeting reduced)</span>
   </div>
   <div class="fieldset" id="tag_template_fieldset">
     <%= label_tag :tag %><br />
@@ -132,6 +45,7 @@ function doPreview(){
 <!-- FIXME: form for remote ?-->
 <form id="preview_form" target="preview_iframe" method="post" action="/tags/html_preview"><!-- FIXME: url for html preview? -->
 <input type="hidden" name="html"/>
+<input type="hidden" name="document_write"/>
 </form>
-<iframe name="preview_iframe" id="preview_iframe" style="border: 1px dashed #660099;display:none"></iframe>
+<iframe name="preview_iframe" id="preview_iframe" style="border: 1px dashed #660099;display:none" marginheight="0" marginwidth="0" frameborder="0" scrolling="auto"></iframe>
 <div id="preview_div" style="border: 1px dashed #660099;display:none"></div>
