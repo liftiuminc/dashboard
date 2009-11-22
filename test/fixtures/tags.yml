@@ -482,3 +482,41 @@ browser_target_3:
   value: 1.00
   size: "180x150"
   tag: 'This is a fill from "Test: Browser Targeting. Windows Explorer" (tag 82)'
+
+sampling_1:
+  id: 90
+  publisher_id: 1043
+  tag_name: "Test: Browser Targeting. Firefox"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "180x150"
+  tag: 'This is a fill from Tag #90'
+
+sampling_2:
+  id: 91
+  publisher_id: 1043
+  tag_name: "Test: Browser Targeting. Any browser"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 0.75
+  size: "180x150"
+  tag: 'This is a fill from Tag #91'
+  tag: 'This is a fill from "Test: Browser Targeting. Any browser" (tag 81)'
+
+sampling_3:
+  id: 92
+  publisher_id: 1043
+  tag_name: "Test: Browser Targeting. Windows Explorer"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 10
+  value: 0.01
+  size: "180x150"
+  tag: 'This is a fill from Tag #92 (sampled at 50%)'
+ 
