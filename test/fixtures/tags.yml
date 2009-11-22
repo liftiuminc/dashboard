@@ -519,4 +519,5 @@ sampling_3:
   value: 0.01
   size: "180x150"
   tag: 'This is a fill from Tag #92 (sampled at 50%)'
+  sample_rate : 50
  
