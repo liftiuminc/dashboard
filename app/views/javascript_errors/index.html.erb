@@ -6,7 +6,9 @@
     <th>Error Type</th>
     <th>Language</th>
     <th>Browser</th>
-    <th>Ip</th>
+    <th>IP</th>
+    <th>Url</th>
+    <th>Line</th>
     <th>Message</th>
     <th colspan="3">Actions</th>
   </tr>
@@ -16,6 +18,8 @@
       <td class="record_column"><%=h javascript_error.language %></td>
       <td class="record_column"><%=h javascript_error.browser %></td>
       <td class="record_column"><%=h javascript_error.ip %></td>
+      <td class="record_column"><%=h javascript_error.url %></td>
+      <td class="record_column"><%=h javascript_error.line %></td>
       <td class="record_column"><%=h javascript_error.message %></td>
       <td class="record_action"><%= link_to "View", javascript_error, :action=> :show %></td>
     </tr>

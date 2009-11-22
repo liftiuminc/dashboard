@@ -13,8 +13,12 @@
   <%=h @javascript_error.browser %>
 </p>
 <p>
-  <strong>Ip:</strong>
+  <strong>IP:</strong>
   <%=h @javascript_error.ip %>
+</p>
+<p>
+  <strong>Url/Line:</strong>
+  Line #<%=h @javascript_error.line %> of <%=h @javascript_error.ip %>
 </p>
 <p>
   <strong>Message:</strong>
