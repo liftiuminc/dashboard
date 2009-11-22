@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+
   map.feedback 'feedbacks', :controller => 'feedbacks', :action => 'create'
   map.new_feedback 'feedbacks/new', :controller => 'feedbacks', :action => 'new'
 
@@ -8,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :ad_formats
   map.resources :changelogs
   map.resources :comments
+  map.resources :javascript_errors
   map.resources :movers
   map.resources :networks, :has_many => :network_tag_options
   map.publisher_ad_formats 'publishers/ad_formats', :controller => 'publishers', :action => 'ad_formats'

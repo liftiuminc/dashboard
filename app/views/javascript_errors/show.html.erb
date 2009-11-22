@@ -1,0 +1,26 @@
+<% title "Javascript Error" %>
+
+<p>
+  <strong>Error Type:</strong>
+  <%=h @javascript_error.error_type %>
+</p>
+<p>
+  <strong>Language:</strong>
+  <%=h @javascript_error.language %>
+</p>
+<p>
+  <strong>Browser:</strong>
+  <%=h @javascript_error.browser %>
+</p>
+<p>
+  <strong>Ip:</strong>
+  <%=h @javascript_error.ip %>
+</p>
+<p>
+  <strong>Message:</strong>
+  <%=h @javascript_error.message %>
+</p>
+
+<p>
+  <%= link_to "View All", javascript_errors_path %>
+</p>

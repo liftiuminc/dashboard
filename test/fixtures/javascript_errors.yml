@@ -1,0 +1,13 @@
+one:
+  error_type: MyString
+  language: MyString
+  browser: MyString
+  ip: MyString
+  message: MyString
+
+two:
+  error_type: MyString
+  language: MyString
+  browser: MyString
+  ip: MyString
+  message: MyString

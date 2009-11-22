@@ -1,0 +1,24 @@
+
+<% title "Javascript Errors" %>
+
+<table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Error Type</th>
+    <th>Language</th>
+    <th>Browser</th>
+    <th>Ip</th>
+    <th>Message</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% for javascript_error in @javascript_errors %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column"><%=h javascript_error.error_type %></td>
+      <td class="record_column"><%=h javascript_error.language %></td>
+      <td class="record_column"><%=h javascript_error.browser %></td>
+      <td class="record_column"><%=h javascript_error.ip %></td>
+      <td class="record_column"><%=h javascript_error.message %></td>
+      <td class="record_action"><%= link_to "View", javascript_error, :action=> :show %></td>
+    </tr>
+  <% end %>
+</table>
+
