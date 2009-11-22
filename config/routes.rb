@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :ad_formats
   map.resources :changelogs
   map.resources :comments
+  map.javascript_errors_by 'javascript_errors/grouped_by/:field', :controller => 'javascript_errors', :action => 'grouped_by'
   map.resources :javascript_errors
   map.resources :movers
   map.resources :networks, :has_many => :network_tag_options

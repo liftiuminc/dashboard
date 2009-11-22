@@ -36,5 +36,36 @@ class JavascriptErrorsControllerTest < ActionController::TestCase
     end
   end
 
+  context "grouped_by action for tag" do
+    should "render grouped_by template" do
+      login_as_admin
+      get :grouped_by, :field => "tag"
+      assert_template 'grouped_by'
+    end
+  end
+
+  context "grouped_by action for browser" do
+    should "render grouped_by template" do
+      login_as_admin
+      get :grouped_by, :field => "browser"
+      assert_template 'grouped_by'
+    end
+  end
+
+  context "grouped_by action for message" do
+    should "render grouped_by template" do
+      login_as_admin
+      get :grouped_by, :field => "message"
+      assert_template 'grouped_by'
+    end
+  end
+
+ context "grouped_by action for url" do
+    should "render grouped_by template" do
+      login_as_admin
+      get :grouped_by, :field => "url"
+      assert_template 'grouped_by'
+    end
+  end
 
 end

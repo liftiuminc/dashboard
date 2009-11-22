@@ -5,6 +5,14 @@
   <%= link_to @javascript_error.publisher.site_name, @javascript_error.publisher %>
 </p>
 <p>
+  <strong>Tag:</strong>
+        <%- if @javascript_error.tag %>
+           <%= link_to @javascript_error.tag.tag_name, @javascript_error.tag, :action=> :show %>
+        <%- else %>
+           -
+        <%- end %>
+</p>
+<p>
   <strong>When:</strong>
   <%=h @javascript_error.created_at %>
 </p>

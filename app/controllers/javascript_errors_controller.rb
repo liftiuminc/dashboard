@@ -22,26 +22,29 @@ class JavascriptErrorsController < ApplicationController
   end
  
   def grouped_by
+
     if current_user.is_admin?
 	if params[:publisher_id] && !params[:publisher_id].empty?
 	   pubidWhere = "publisher_id = " + params[:publisher_id].to_i.to_s
 	else 
-	   pubidWhere = ""
+	   pubidWhere = "1=1"
 	end
     else 
 	pubidWhere = "publisher_id = " + current_user.publisher.id.to_s
     end
 
     case params[:field]
-      when "tag" then field = "tag_id"
-      when "message" then field = "message"
-      when "publisher" then field = "publisher_id"
-      else field = "tag_id"
+      when "tag" then @field = "tag_id"
+      when "message" then @field = "message"
+      when "publisher" then @field = "publisher_id"
+      when "url" then @field = "url"
+      else @field = "tag_id"
     end
 
-    @javascript_errors = JavascriptError.find_by_sql(["SELECT *, count(#{field}) AS fieldcount" +
+    @javascript_errors = JavascriptError.find_by_sql(["SELECT *, count(#{@field}) AS field_count" +
 	" FROM javascript_errors WHERE " + pubidWhere +
-	" GROUP by #{field} ORDER BY ifeldcount DESC"])
+	" AND #{@field} != ''" +
+	" GROUP by #{@field} ORDER BY field_count DESC"])
 	
   end
 

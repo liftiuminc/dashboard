@@ -1,0 +1,24 @@
+<div class="filter_form" id="javascript_error_filter_form">
+  <% form_tag javascript_errors_path, :method => :get do %>
+     <ul>
+        <% if params[:debug] -%>
+          <%= params.inspect -%>
+        <% end -%>
+      <%- if @publishers && current_user.is_admin? %>
+        <li><%= label_tag :publisher %>
+            <select name="publisher_id" id="publisherDD">
+              <option value="">
+              <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
+            </select>
+        </li>
+      <%- end %>
+        <li><%= label_tag :group_by %>
+	    <a href=/javascript_errors/grouped_by/tag>Tag</a> |
+	    <a href=/javascript_errors/grouped_by/url>Url</a> |
+	    <a href=/javascript_errors/grouped_by/message>Error</a> |
+	    <a href=/javascript_errors/grouped_by/browser>Browser</a> 
+	</li>
+      <li><%= liftium_submit "Filter Errors"%></li>
+  </ul>
+  <% end %>
+</div>
