@@ -1,3 +1,3 @@
 class JavascriptError < ActiveRecord::Base
-  attr_accessible :error_type, :language, :browser, :ip, :message
+  belongs_to :publisher
 end

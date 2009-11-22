@@ -1,12 +1,16 @@
 <% title "Javascript Error" %>
 
 <p>
-  <strong>Error Type:</strong>
-  <%=h @javascript_error.error_type %>
+  <strong>Publisher:</strong>
+  <%= link_to @javascript_error.publisher.site_name, @javascript_error.publisher %>
 </p>
 <p>
-  <strong>Language:</strong>
-  <%=h @javascript_error.language %>
+  <strong>When:</strong>
+  <%=h @javascript_error.created_at %>
+</p>
+<p>
+  <strong>Error Type:</strong>
+  <%=h @javascript_error.error_type %>
 </p>
 <p>
   <strong>Browser:</strong>
@@ -18,11 +22,11 @@
 </p>
 <p>
   <strong>Url/Line:</strong>
-  Line #<%=h @javascript_error.line %> of <%=h @javascript_error.ip %>
+  Line #<%=h @javascript_error.line %> of <a target="_blank" href="<%=h @javascript_error.url %>"><%=h @javascript_error.url %></a>
 </p>
 <p>
   <strong>Message:</strong>
-  <%=h @javascript_error.message %>
+  <span class="comments"><%=h @javascript_error.message %></span>
 </p>
 
 <p>

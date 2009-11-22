@@ -1,13 +1,20 @@
 one:
+  publisher_id: 1
   error_type: MyString
   language: MyString
   browser: MyString
   ip: MyString
   message: MyString
+  url: "http://example.com"
+  line: 19
 
 two:
+  publisher_id: 1042
   error_type: MyString
+  tag_id: 1
   language: MyString
   browser: MyString
   ip: MyString
   message: MyString
+  url: "http://example.com"
+  line: 235
