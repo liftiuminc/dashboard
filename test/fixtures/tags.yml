@@ -501,7 +501,7 @@ sampling_2:
   tag_name: "Test: Browser Targeting. Any browser"
   network_id: 42
   enabled: true
-  always_fill: false
+  always_fill: true
   tier: 5
   value: 0.75
   size: "180x150"
