@@ -85,8 +85,9 @@ function confirmForm(f){
     <span class="hint">Wait this many minutes before trying again after a rejection. Ex. 45</span>
   </div>
   <!-- This style will allow for arbitrary key values later -->
-  <div class="fieldset">
-    <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""}, {"id"=> "", "key_name" => "", "key_value" => ""}]  %>
+    <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""}]  %>
     <%  # Assure there is a properly constructed array with the things in the right order.
 	# http://ewwwabandaid.ytmnd.com/
 	for tag_target in @tag.tag_targets do 
@@ -98,9 +99,14 @@ function confirmForm(f){
 		tt[1]["id"] = tag_target.id
 		tt[1]["key_name"] = "browser"
 		tt[1]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "domain")
+		tt[2]["id"] = tag_target.id
+		tt[2]["key_name"] = "domain"
+		tt[2]["key_value"] = tag_target.key_value
           end
 	end
     %>
+  <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][0][id]" type="hidden" value="<%=tt[0]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][0][key_name]" value="country" />
     <%= f.label :country %> <span class="hint">for geo-targeting. comma separated. <%= link_to "Ex. 'us,uk,row'", "http://www.iso.org/iso/english_country_names_and_code_elements", :popup => true %></span><br />
@@ -112,11 +118,16 @@ function confirmForm(f){
     <%= f.label :browser %> <span class="hint">Ex. 'Windows Explorer 6', 'Mac Safari' or 'Firefox'. Comma separated</span><br />
     <input type="text" size="31" name="tag[tag_targets_attributes][1][key_value]" value="<%=h tt[1]["key_value"] %>"/>
   </div>
-
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][2][id]" type="hidden" value="<%= tt[2]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][2][key_name]" value="browser" />
+    <%= f.label :domain %> <span class="hint">Ex. subdomain.yoursite.com. Comma separated</span><br />
+    <input type="text" size="31" name="tag[tag_targets_attributes][2][key_value]" value="<%=h tt[2]["key_value"] %>"/>
+  </div>
   <div class="fieldset" id="tag_template_notes">
     <%= f.label :tag_notes %> 
     <span class="hint">additional notes for this tag. Ex. "Stick to tier 10"</span><br />
-    <input type="text" size="30" name="note[tag]" value="<%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "" %>" />
+    <textarea name="note[tag]" rows="4"><%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "" %></textarea>
   </div>
 
 
