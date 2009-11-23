@@ -38,6 +38,7 @@ class JavascriptErrorsController < ApplicationController
       when "message" then @field = "message"
       when "publisher" then @field = "publisher_id"
       when "url" then @field = "url"
+      when "browser" then @field = "browser"
       else @field = "tag_id"
     end
 
