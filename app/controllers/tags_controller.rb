@@ -10,13 +10,32 @@ class TagsController < ApplicationController
 
   def index
     conditions = session[:tag_params] || {}
+
+    ### arbitrary 50 record limit in the model code
+    conditions[:limit] = 250
   
     ### you can only find things for YOUR publisher
     if !current_user.is_admin?
         conditions[:publisher_id] = current_publisher.id
     end
     
-    @tags = Tag.new.search( conditions )
+    @countries  = TagTarget.new.all_countries
+    @tags       = Tag.new.search( conditions )
+
+    ### should we limit the output by country? See FB 153
+    ### Logic somewhat complicated by a non-normalized DB
+    if !params[:country].blank?
+      filtered_tags = []
+      @tags.map do |t|
+        tt = TagTarget.find( :first, :conditions => [
+                            "tag_id = ? and key_name = ? and key_value like ?",
+                            t.id, 'country', "%#{params[:country]}%" ] )
+        
+        filtered_tags.push t if tt
+      end
+      @tags = filtered_tags
+    end
+
     flash[:warning] = "No matching tags found" if @tags.empty?
   end
 

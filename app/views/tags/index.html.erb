@@ -30,6 +30,13 @@
 	    </select>
 	</li>
 
+	<li><%= label_tag :country %>
+	    <select name="country" id="countryDD">
+	      <option value="">
+	      <%= options_for_select @countries, params[:country] %>
+	    </select>
+	</li>
+
 	<li><%= label_tag "Tag name or ID" %>
 	    <%= text_field_tag :name_search, @name_search %>
 	</li>
@@ -44,7 +51,7 @@
   <% end %>
 </div>
 
-<table class="record_listing sortable" width="100%" cellpadding="0" cellspacing="0">
+<table class="record_listing sortable" width="100%" cellpadding="0" cellspacing="0" id='tagtable'>
   <thead>
   <tr class="record_listing_header">
     <th>Publisher</th>

@@ -486,7 +486,7 @@ browser_target_3:
 sampling_1:
   id: 90
   publisher_id: 1043
-  tag_name: "Test: Browser Targeting. Firefox"
+  tag_name: "Test: Sampling 1"
   network_id: 42
   enabled: true
   always_fill: false
@@ -498,7 +498,7 @@ sampling_1:
 sampling_2:
   id: 91
   publisher_id: 1043
-  tag_name: "Test: Browser Targeting. Any browser"
+  tag_name: "Test: Sampling 2"
   network_id: 42
   enabled: true
   always_fill: true
@@ -506,12 +506,11 @@ sampling_2:
   value: 0.75
   size: "180x150"
   tag: 'This is a fill from Tag #91'
-  tag: 'This is a fill from "Test: Browser Targeting. Any browser" (tag 81)'
 
 sampling_3:
   id: 92
   publisher_id: 1043
-  tag_name: "Test: Browser Targeting. Windows Explorer"
+  tag_name: "Test: Sampling 3"
   network_id: 42
   enabled: true
   always_fill: false
@@ -521,3 +520,28 @@ sampling_3:
   tag: 'This is a fill from Tag #92 (sampled at 50%)'
   sample_rate : 50
  
+
+# See tag_targets for the domain targeting criteria
+domain_1:
+  id: 100
+  publisher_id: 1046
+  tag_name: "Test: Domain 1"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "180x150"
+  tag: 'This is a fill from Tag #100'
+
+domain_2:
+  id: 101
+  publisher_id: 1046
+  tag_name: "Test: Domain 2"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 5
+  value: 0.75
+  size: "180x150"
+  tag: 'This is a fill from Tag #101'

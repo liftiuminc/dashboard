@@ -16,3 +16,15 @@ browser2:
   tag_id: 82
   key_name: browser
   key_value: Windows explorer
+
+domain1:
+  id: 4
+  tag_id: 100
+  key_name: domain
+  key_value: somerandom.domain.com
+
+domain2:
+  id: 5
+  tag_id: 101
+  key_name: domain
+  key_value: delivery.dev.liftium.com
