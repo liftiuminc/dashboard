@@ -10,4 +10,19 @@ class TagTarget < ActiveRecord::Base
 
   validates_uniqueness_of :key_name, {:scope => :tag_id}
 
+  def all_countries 
+    countries = []
+
+    TagTarget.find( :all, :conditions => { :key_name => "country" } ).map do |tt|
+      tt.key_value.split.map do |c|
+        countries.push c.downcase
+      end  
+    end
+
+    countries.uniq!
+    countries.sort!
+    
+    return countries
+  end
+
 end

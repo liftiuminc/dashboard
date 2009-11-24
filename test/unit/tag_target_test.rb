@@ -7,4 +7,12 @@ class TagTargetTest < ActiveSupport::TestCase
     TagTarget.create!(:tag_id => tag.id, :key_name => "key", :key_value => "value")
   end
 
+  should "list countries" do 
+    countries = TagTarget.new.all_countries
+    
+    assert countries
+    assert countries.length
+  
+  end 
+
 end
