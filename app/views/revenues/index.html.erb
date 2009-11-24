@@ -3,7 +3,7 @@
 <%= render :partial => 'selector', :locals => { :show_submit => true } %>
 
 <% if @tags %>
-    <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+    <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
       <tr class="record_listing_header">
         <th>Network</th>
         <th>Publisher</th>
@@ -21,10 +21,7 @@
                     :publisher_id   => tag.publisher_id,
                     :network_id     => tag.network_id } )
                     
-           rev = Revenue.first( :conditions => {
-                    :tag_id         => tag.id,
-                    :day            => @day.to_s } )
-
+           rev = Revenue.first( :conditions => { :tag_id   => tag.id  } )
         %>                    
 
         <tr class="record_row_<%= cycle("odd", "even")%>">
@@ -42,8 +39,8 @@
           <td class="record_column"><%=h rev ? rev.ecpm     : "?"  %></td>          
  
           <% if rev %>
-              <td class="record_action"><%= link_to "View", rev, :action => :show, :popup => true %></td>
-              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev), :popup => true %></td>
+              <td class="record_column"><%= link_to "View", rev, :action => :show, :popup => true %>
+              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev), :popup => true %>
               <td class="record_action"><%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %></td>
           <% else %>
             <td class="record_action">
@@ -56,5 +53,4 @@
       <% end %>
     </table>
 <% end %>
-
 
