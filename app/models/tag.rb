@@ -155,7 +155,7 @@ class Tag < ActiveRecord::Base
 #
     query[0] += " ORDER BY tier ASC, value DESC"
 
-    if (! params[:limit].to_s.empty? && params[:limit].to_i < 100)
+    if (! params[:limit].to_s.empty? && params[:limit].to_i < 300)
        query[0] += " LIMIT ?"
        query.push(params[:limit].to_i)
     else

@@ -14,7 +14,7 @@ class TagTarget < ActiveRecord::Base
     countries = []
 
     TagTarget.find( :all, :conditions => { :key_name => "country" } ).map do |tt|
-      tt.key_value.split.map do |c|
+      tt.key_value.split(/\s*,\s*/).map do |c|
         countries.push c.downcase
       end  
     end
