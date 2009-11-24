@@ -17,16 +17,16 @@
               <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
             </select>
         </li>
+<!--
         <li><b>-AND-</b></li>
         <li>
           <%= label_tag :date %>
           <% s = !params[:day].blank? ? params[:day].to_s : "" %>
           <%= calendar_date_select_tag "day", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>            
         </li>
+-->
         
-        <% if show_submit %>
-            <li><%= liftium_submit "Submit"%></li>
-        <% end %>
+        <li><%= liftium_submit "Submit"%></li>
     </ul>
   </form>
 </div>
