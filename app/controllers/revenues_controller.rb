@@ -7,10 +7,7 @@ class RevenuesController < ApplicationController
   def index
     conditions = {}
     
-    ### find all the tags that are by this publisher or network and created at 
-    ### or before this day
-    if !params[:day].blank?
-        conditions[ :created_before ] = params[ :day ]
+    if params[:commit] 
 
         if !params[:network_id].blank?
             conditions[ :network_id ] = params[:network_id]
@@ -25,9 +22,6 @@ class RevenuesController < ApplicationController
         unless @tags.length > 0 
             flash.now[:warning] = "No tags found for these criteria -- were the tags enabled at this date?"
         end            
-
-    else 
-        flash[:notice] = "Select either a publisher or network, and a date"
     end    
   end
   
