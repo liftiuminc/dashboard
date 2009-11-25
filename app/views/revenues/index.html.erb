@@ -12,9 +12,9 @@
         <th>Impressions</th>
         <th>Clicks</th>
         <th>Revenue</th>
-        <th>Ecpm</th>
-        <th colspan="3">Actions</th>
-        <th>Howto</th>
+        <th>eCPM</th>
+        <th>Actions</th>
+        <th>Instructions</th>
       </tr>
       <% for tag in @tags %>
         <% pnl = PublisherNetworkLogin.first( :conditions => { 
@@ -33,22 +33,21 @@
                        :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1 } %>
           </td>
           <td class="record_column"><%= link_to tag.size, tag, :action => :show %><br><span class="hint"><%=h tag.tag_name %></span></td>
-          <td class="record_column"><%=h rev ? rev.attempts : "?"  %></td>
-          <td class="record_column"><%=h rev ? rev.clicks   : "?"  %></td>
-          <td class="record_column"><%=h rev ? rev.revenue  : "?"  %></td>          
-          <td class="record_column"><%=h rev ? rev.ecpm     : "?"  %></td>          
+          <td class="record_column"><%=h rev ? number_with_delimiter(rev.attempts) : "?"  %></td>
+          <td class="record_column"><%=h rev ? number_with_delimiter(rev.clicks)   : "?"  %></td>
+          <td class="record_column">$<%=h rev ? rev.revenue  : "?"  %></td>          
+          <td class="record_column">$<%=h rev ? rev.ecpm.to_f.round(3) : "?"  %></td>          
  
-          <% if rev %>
-              <td class="record_column"><%= link_to "View", rev, :action => :show, :popup => true %>
-              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev), :popup => true %>
-              <td class="record_action"><%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %></td>
-          <% else %>
-            <td class="record_action">
-            <%= '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create", new_revenue_path(:tag_id => tag.id, :day => @day.to_s ), :popup => true ) %></td>
-             <td class="record_action"></td>
-             <td class="record_action"></td>             
-          <% end %>
-          <td class="record_column"><%= tag.network.scraping_instructions %></td>          
+              <td class="record_column" nowrap="true">
+          	<% if rev %>
+		  <%= link_to "View", rev, :action => :show, :popup => true %>
+                  <%= link_to "Edit", edit_revenue_path(rev), :popup => true %>
+             	  <%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %>
+		<% else %>
+		  <%= '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create", new_revenue_path(:tag_id => tag.id, :day => @day.to_s ), :popup => true ) %>
+                <% end %>
+	      </td>
+          <td class="record_column"><span title="<%=h tag.network.scraping_instructions %>" class="comments"><%= truncate(tag.network.scraping_instructions, :length=> 150) %></td>          
         </tr>
       <% end %>
     </table>
