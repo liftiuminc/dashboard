@@ -108,7 +108,7 @@ ul {
 	font-size: 150%;
 	font-weight:bold;
 	padding: 14px;
-	margin-bottom: 0px; /* Clear out the default one */
+	margin-bottom: 0; /* Clear out the default one */
 }
 
 #titlebar_right_text {
@@ -228,12 +228,18 @@ ul {
 
 .record_row_odd {
 	vertical-align: top;
+	border-bottom:1px solid #CCC;
 }
 
 .record_row_even {
 	background-color: #E3E3E3;
+	border-bottom:1px solid #CCC;
 	vertical-align: top;
 }
+
+.record_input_field {
+        width: 50px;
+};
 
 .disabled {
 	/* FIXME repeats oddly in IE */

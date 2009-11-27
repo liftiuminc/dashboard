@@ -39,6 +39,29 @@ class TagsController < ApplicationController
     flash[:warning] = "No matching tags found" if @tags.empty?
   end
 
+  def bulk_update
+      saved = 0
+
+      tags = params[:tags]
+      for rev in tags do
+
+	# Update existing entry
+	@tag        = Tag.find(rev["id"])
+	@tag.attributes = rev
+	if @tag.changed?
+	   if @tag.save
+	     saved += 1
+	   else
+	     render :action => 'edit' and return
+	   end
+	end
+
+      end
+      flash[:notice] = "Updated " + saved.to_s + " tags."
+      redirect_to tags_url
+  end
+
+
   def show
     @tag = Tag.find(params[:id])
     @networks

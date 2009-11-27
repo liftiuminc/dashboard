@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :publisher_tags
   map.resources :password_resets
   map.revenue_index_results 'revenues/index_results', :controller => 'revenues', :action => 'index_results'
-  map.revenue_index_results 'revenues/bulk_update', :controller => 'revenues', :action => 'bulk_update'
+  map.revenue_bulk_update 'revenues/bulk_update', :controller => 'revenues', :action => 'bulk_update'
   map.resources :revenues
   map.resources :tag_targets
 
@@ -36,6 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.tag_generator  'tags/generator/:id', :controller => 'tags', :action => 'generator'
   map.tag_html_preview  'tags/html_preview', :controller => 'tags', :action => 'html_preview'
   map.tag_copy  'tags/copy/:id', :controller => 'tags', :action => 'copy'
+  map.tag_bulk_update 'tags/bulk_update', :controller => 'tags', :action => 'bulk_update'
   map.resources :tags, :has_many => [ :ad_formats, :tag_options, :tag_targets ]
   map.resource :user_session
   map.resources :users
