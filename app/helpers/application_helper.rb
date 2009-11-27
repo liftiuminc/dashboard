@@ -18,6 +18,11 @@ module ApplicationHelper
     return form
   end
 
+  # alternate version of the above that uses javascript form instead of inline form (handy if you are already in a form)
+  def external_form_post_js( label = "Submit", action = '', params = {} )
+    return "<input type='button' value='#{label}' onClick='externalFormPost(" + action.to_json + "," +  params.to_json + ")'/>"
+  end
+
   #http://transfs.com/devblog/2009/06/26/nested-forms-with-rails-2-3-helpers-and-javascript-tricks/
   def generate_html(form_builder, method, options = {})
     options[:object] ||= form_builder.object.class.reflect_on_association(method).klass.new

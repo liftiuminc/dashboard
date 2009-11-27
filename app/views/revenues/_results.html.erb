@@ -46,10 +46,8 @@
           <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][revenue]"%>" value="<%=h rev.revenue %>"/>
           <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][ecpm]"%>" value="<%=h rev.ecpm ? rev.ecpm.to_f.round(3) : "" %>"/></td>          
           <td class="record_column">
-	<!--
             <%= render :partial => "shared/publisher_network_login_button", 
-                       :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1 } %><br />
-	-->
+                       :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1, :jsform => true } %><br />
 		<span title="<%=h tag.network.scraping_instructions %>" class="comments" style="font-size:smaller"><%= truncate(tag.network.scraping_instructions, :length=> 90) %></span>
           </td>
         </tr>

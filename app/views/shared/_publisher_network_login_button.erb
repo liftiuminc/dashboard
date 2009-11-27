@@ -7,27 +7,31 @@
  action       = (config and config["action"] and !config["action"].empty? ) ? config["action"] : nil 
  url          = (config and config["url"]    and !config["url"].empty?    ) ? config["url"]    : action %>
 
-<%# no login unless we have a username & password %>
-<% if username and !username.empty? and password and !password.empty? %>
-  <% if action %>
+<%-# no login unless we have a username & password %>
+<%- if username and !username.empty? and password and !password.empty? %>
+  <%- if action %>
     <%# automated login %>
-    <% if params = config["params"] %>
-      <%= external_form_post "Login", action, params %>          
-    <%# login link %>
-    <% else %>
+    <%- if params = config["params"] %>
+      <%- if jsform %>
+         <%= external_form_post_js "Login", action, params %>          
+      <%- else %>
+         <%= external_form_post "Login", action, params %>          
+      <%- end %>
+    <%-# login link %>
+    <%- else %>
       <%= link_to "Login", url, :popup => true %>
-      <% if show_hint %>
+      <%- if show_hint %>
         <br /><span class="hint"><%= "#{username}/#{password}" %></span>
-      <% end %>        
-    <% end %>
-  <%# we got nothing %>  
-  <% else %>
+      <%- end %>        
+    <%- end %>
+  <%-# we got nothing %>  
+  <%- else %>
     N/A
-  <% end %>
-<%# no username/password but a link %>  
-<% elsif url %>
+  <%- end %>
+<%-# no username/password but a link %>  
+<%- elsif url %>
   <%= link_to "Login", url, :popup => true %>
-<%# we got nothing %>
-<% else %>
+<%-# we got nothing %>
+<%- else %>
   N/A
-<% end %> 
+<%- end %> 
