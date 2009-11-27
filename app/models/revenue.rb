@@ -83,7 +83,7 @@ class Revenue < ActiveRecord::Base
 		" fills_day.rejects AS liftium_rejects, fills_day.loads AS liftium_loads" +
 		" FROM fills_day" + 
 		" LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND revenues.day = fills_day.day" + 
-		" INNER JOIN TAGS ON tags.id = fills_day.tag_id" +
+		" INNER JOIN tags ON tags.id = fills_day.tag_id" +
 		" WHERE fills_day.attempts > 50 "]
 
 	if criteria["publisher_id"] && criteria["publisher_id"].to_i > 0
