@@ -9,7 +9,7 @@ module ApplicationHelper
     form = "<form action='#{action}' method='post' target='_blank'>"
 
     params.each do|k, v|
-      form += "<input type='hidden' name='#{k}' value='#{v}'>"
+      form += hidden_field_tag k, v
     end
     
     form += "<input type='submit' value='#{label}'>"
