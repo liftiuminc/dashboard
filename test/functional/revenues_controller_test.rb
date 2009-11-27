@@ -13,8 +13,16 @@ class RevenuesControllerTest < ActionController::TestCase
   context "index action" do
     should "render index template" do
       login_as_admin
-      get :index
+      get :index, :commit => 1
       assert_template 'index'
+    end
+  end
+
+  context "index_results action" do
+    should "render index_results template" do
+      login_as_admin
+      get :index_results, :commit => 1
+      assert_template 'revenues/_results.html.erb'
     end
   end
   

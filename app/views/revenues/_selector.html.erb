@@ -1,8 +1,6 @@
-<!-- XXX FIXME heavily borrowed from data export -->
-
 <%= calendar_date_select_includes "silver" %>
 <div class="filter_form" id="tag_filter_form">
-  <form action="<%= revenues_url%>">
+  <%= form_remote_tag :url => { :action => "index_results" }, :update => "results" %>
      <ul>
         <li><%= label_tag :network %>
             <select name="network_id" id="networkDD">
@@ -10,34 +8,26 @@
               <%= options_from_collection_for_select @networks, :id, :network_name, params[:network_id].to_i %>
             </select>
         </li>
-        <li><b>-OR-</b></li>
         <li><%= label_tag :publisher %>
             <select name="publisher_id" id="publisherDD">
               <option value="">
               <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
             </select>
         </li>
-<!--
-        <li><b>-AND-</b></li>
         <li>
           <%= label_tag :date %>
-          <% s = !params[:day].blank? ? params[:day].to_s : "" %>
-          <%= calendar_date_select_tag "day", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>            
+          <% s = !params[:start_date].blank? ? params[:start_date].to_s : "" %>
+          <%= calendar_date_select_tag "start_date", s, :time => "mixed" %>            
+	  TO
+          <% s = !params[:end_date].blank? ? params[:end_date].to_s : "" %>
+          <%= calendar_date_select_tag "end_date", s, :time => "mixed" %>            
         </li>
--->
+        <li><%= label_tag :include_disabled, "Hide Filled-In Entries"%>
+            <%= radio_button_tag "only_empty", "", params[:only_empty] || params[:only_empty].blank?%>No
+            <%= radio_button_tag "only_empty", "true", params[:only_empty] == "true"%>Yes
+        </li>
         
-        <li><%= liftium_submit "Submit"%></li>
+        <li><%= liftium_submit "Refresh List"%></li>
     </ul>
   </form>
 </div>
-<script>
-function dateSelect(select){
-    if (select.selectedIndex > 7) {
-        $("interval_day").checked = true;
-    }
-    if (select.selectedIndex > 0){
-        $("start_date").value = "";
-        $("end_date").value = "";
-    }
-}
-</script>

@@ -3,43 +3,28 @@ class RevenuesController < ApplicationController
   before_filter :find_enabled_networks
   before_filter :find_all_publishers
 
-
   def index
-    conditions = {}
-    
-    if params[:commit] 
-
-        if !params[:network_id].blank?
-            conditions[ :network_id ] = params[:network_id]
-        elsif !params[:publisher_id].blank?
-            conditions[ :publisher_id ] = params[:publisher_id]      
-        end
-
-        ### @day is used in the template to load the associated revenue
-        @tags = Tag.new.search( conditions )
-        
-        unless @tags.length > 0 
-            flash.now[:warning] = "No tags found for these criteria -- were the tags enabled at this date?"
-        end            
-    end    
+	@revenues = Revenue.revenues_table(params)
   end
-  
+
+  def index_results 
+	@revenues = Revenue.revenues_table(params)
+	render :partial => "results"
+  end 
+
   def show
     @revenue = Revenue.find(params[:id])
-    @tag     = @revenue.tag
   end
   
   ### use find_by_id so no exception is thrown
   def new
     @revenue = Revenue.new
-    @tag     = Tag.find_by_id( params[:tag_id] )
     
     flash[:error] = "No tag found for #{params[:tag_id]}" unless @tag    
   end
   
   def create
     @revenue        = Revenue.new( params[:revenue] )
-    @tag            = @revenue.tag
     @revenue.user   = current_user
  
     if @revenue.save

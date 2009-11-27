@@ -21,6 +21,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :publisher_network_logins
   map.resources :publisher_tags
   map.resources :password_resets
+  map.revenue_index_results 'revenues/index_results', :controller => 'revenues', :action => 'index_results'
   map.resources :revenues
   map.resources :tag_targets
 
