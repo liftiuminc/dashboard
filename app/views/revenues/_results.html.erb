@@ -5,7 +5,7 @@
 </style>
 <form action="/revenues/bulk_update" method="post">
 <table width="800" cellspacing="0" cellpadding="0">
-      <tr><td colspan="9" align="right" style="border-right: none"><%= liftium_submit "Update all values"%></td></tr>
+      <tr><td colspan="9" align="right" style="border-right: none"><%= liftium_submit "Save all"%></td></tr>
 </table>
 <br />
 <table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
@@ -14,42 +14,42 @@
         <th>Network</th>
         <th>Tag</th>
         <th>Date</th>
-        <th>Impressions</th>
+        <th title="Impressions">Impres.</th>
         <th>Clicks</th>
         <th>Revenue</th>
         <th>eCPM</th>
         <th>Login / Instructions</th>
       </tr>
-      <%- i=0
-	 for rev in @revenues %>
+      <%- for rev in @revenues %>
 	<%-
             tag = rev.tag ? rev.tag : Tag.new() 
 	    pnl = PublisherNetworkLogin.first( :conditions => { 
                     :publisher_id   => tag.publisher_id,
                     :network_id     => tag.network_id } )
 	   
-	   i += 1
-	   field_prefix = "revenues[" + i.to_s + "]"
        	   if rev.id.nil? 
 	     rowstyle = "background-color:#FFB6C1"
 	   else
 	     rowstyle = ""
 	   end
         %>
-        <%= hidden_field_tag field_prefix + "[id]", rev.id %> 
-        <%= hidden_field_tag field_prefix + "[day]", rev.day %> 
+        <%= hidden_field_tag "revenues[][id]", rev.id %> 
+        <%= hidden_field_tag "revenues[][tag_id]", rev.tag_id %> 
+        <%= hidden_field_tag "revenues[][day]", rev.day %> 
         <tr class="record_row_<%= cycle("odd", "even")%>">
           <td class="record_column"><%= link_to rev.tag.network.network_name, rev.tag.network %></td>
           <td class="record_column"><%= link_to rev.tag.publisher.site_name, rev.tag.publisher %></td>
           <td class="record_column" title="<%=h tag.inspect %>"><%= link_to tag.size, tag, :action => :show %><br><span class="hint"><%=h tag.tag_name %></span></td>
           <td class="record_column" nowrap="true"><%= rev.day.strftime('%m/%d/%Y')%></td>
-          <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%=field_prefix + "[attempts]"%>" value="<%=h rev.impressions %>"/></td>
-          <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%=field_prefix + "[clicks]"%>" value="<%=h rev.clicks %>"/></td>
-          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%=field_prefix + "[revenue]"%>" value="<%=h rev.revenue %>"/>
-          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%=field_prefix + "[ecpm]"%>" value="<%=h rev.ecpm.to_f.round(3) %>"/></td>          
+          <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][attempts]"%>" value="<%=h rev.impressions %>"/></td>
+          <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][clicks]"%>" value="<%=h rev.clicks %>"/></td>
+          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][revenue]"%>" value="<%=h rev.revenue %>"/>
+          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][ecpm]"%>" value="<%=h rev.ecpm ? rev.ecpm.to_f.round(3) : "" %>"/></td>          
           <td class="record_column">
+	<!--
             <%= render :partial => "shared/publisher_network_login_button", 
                        :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1 } %><br />
+	-->
 		<span title="<%=h tag.network.scraping_instructions %>" class="comments" style="font-size:smaller"><%= truncate(tag.network.scraping_instructions, :length=> 90) %></span>
           </td>
         </tr>

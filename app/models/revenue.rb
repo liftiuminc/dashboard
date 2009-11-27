@@ -84,7 +84,7 @@ class Revenue < ActiveRecord::Base
 		" FROM fills_day" + 
 		" LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND revenues.day = fills_day.day" + 
 		" INNER JOIN TAGS ON tags.id = fills_day.tag_id" +
-		" WHERE fills_day.attempts > 1000 "]
+		" WHERE fills_day.attempts > 50 "]
 
 	if criteria["publisher_id"] && criteria["publisher_id"].to_i > 0
 	  query[0] += " AND tags.publisher_id = ?"
@@ -96,8 +96,8 @@ class Revenue < ActiveRecord::Base
 	  query.push(criteria["network_id"])
         end
 
-	{   :start_date     => "AND fills_day.day  >= ?",
-	    :end_date       => "AND fills_day.day <= ?"
+	{   :start_date     => " AND fills_day.day  >= ?",
+	    :end_date       => " AND fills_day.day <= ?"
 	}.each do |param, condition|
 	  if !criteria[param].to_s.blank?
 	    query[0] += condition 
@@ -106,7 +106,7 @@ class Revenue < ActiveRecord::Base
 	end
 
 	# Only show blank ones
-	if criteria["only_empty"]
+	if criteria["only_empty"] && !criteria["only_empty"].blank?
 	   query[0] += " AND revenues.revenue IS NULL"
 	end
 
@@ -115,7 +115,7 @@ class Revenue < ActiveRecord::Base
 	if !criteria["limit"]
           query[0] += " LIMIT 100"
         else 
-          query[0] += " LIMIT " + criteria.to_i.to_s
+          query[0] += " LIMIT " + criteria["limit"].to_i.to_s
 	end
 
 	find_by_sql(query)

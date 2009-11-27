@@ -2,8 +2,6 @@
 
 <%= render :partial => 'selector', :locals => { :show_submit => true } %>
 
-<div id="results">
-<% if @revenues %>
+<% if @revenues && @revenues.length > 0%>
   <%= render :partial => 'results' %>
 <% end %>
-</div>
