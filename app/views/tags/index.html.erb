@@ -107,7 +107,7 @@
         <br />Created <%= tag.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         </span>
       </td>
-      <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><%=h tag.tier ? tag.tier : "-"%></td>
+      <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><select name="tags[][tier]"><%= options_for_select([10,9,8,7,6,5,4,3,2,1], tag.tier)%></select></td>
       <td class="record_column_number" nowrap="true">$<input type="text" style="width:35px" name="<%="tags[][value]"%>" value="<%=h tag.value %>"/></td> 
       <td class="record_column_number" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>"><%= tag.always_fill ? "Yes" : "No" %></td>
       <td class="record_column" style="font-size:smaller; width:150px">
