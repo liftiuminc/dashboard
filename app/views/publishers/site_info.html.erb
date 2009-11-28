@@ -7,7 +7,7 @@
   </script>
 <% end %>
 
-<% title "Site Inforamtion for " + @publisher.site_name %>
+<% title "Site Information for " + @publisher.site_name %>
 
 <% form_for @publisher, :url => { :action => "save_quality_control" } do |f| %>
   <%= hidden_field_tag "publisher_id", @publisher.id %>
