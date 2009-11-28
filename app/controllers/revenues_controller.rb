@@ -61,7 +61,7 @@ class RevenuesController < ApplicationController
       saved = 0
 
       revenues = params[:revenues]
-      revenues.delete_if {|r| r["revenue"].blank? || r["attempts"].blank? }
+      revenues.delete_if {|r| r["revenue"].blank? && r["attempts"].blank? }
       for rev in revenues do
 
 	  if rev["id"].blank?
