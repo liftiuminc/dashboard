@@ -56,9 +56,9 @@ class NetworksController < ApplicationController
 
   def dropdown 
     if current_user.admin? && params[:publisher_id] && !params[:publisher_id].blank?
-      @networks = Network.find_by_sql(["SELECT networks.* from networks WHERE enabled = ? AND id IN (SELECT DISTINCT network_id from tags where publisher_id = ?)", 1, params[:publisher_id]])
+      @networks = Network.find_by_sql(["SELECT networks.* from networks WHERE enabled = ? AND id IN (SELECT DISTINCT network_id from tags where publisher_id = ?) ORDER BY network_name", 1, params[:publisher_id]])
     else 
-      @networks = Network.find(:all, :conditions => {:enabled => 1})
+      @networks = Network.find(:all, :conditions => {:enabled => 1}, :order => "network_name")
     end
     render :partial => "dropdown"    
   end
