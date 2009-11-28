@@ -545,3 +545,28 @@ domain_2:
   value: 0.75
   size: "180x150"
   tag: 'This is a fill from Tag #101'
+
+# See tag_targets for the domain targeting criteria
+exclude_tags1:
+  id: 110
+  publisher_id: 1042
+  tag_name: "Test: Domain 1"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "125x125"
+  tag: 'This is a fill from Tag #110'
+
+exclude_tags2:
+  id: 111
+  publisher_id: 1042
+  tag_name: "Test: Domain 2"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 5
+  value: 0.75
+  size: "125x125"
+  tag: 'This is a fill from Tag #111'
