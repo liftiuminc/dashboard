@@ -5,11 +5,10 @@ class RevenuesController < ApplicationController
   before_filter :save_filter_fields, :only => [:index]
 
   def index
-	@revenues = Revenue.revenues_table(params)
+	@revenues = Revenue.revenues_table(session[:data_entry_params] || params)
   end
-
   def index_results 
-	@revenues = Revenue.revenues_table(params)
+	@revenues = Revenue.revenues_table(session[:data_entry_params] || params)
 	render :partial => "results"
   end 
 
