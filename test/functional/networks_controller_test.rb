@@ -86,7 +86,7 @@ class NetworksControllerTest < ActionController::TestCase
     should "render dropdown template" do
       login_as_admin
       get :dropdown, :publisher_id => Publisher.first
-      assert_template 'revenues/_dropdown.html.erb'
+      assert_template 'networks/_dropdown.html.erb'
     end
   end
 
@@ -94,7 +94,7 @@ class NetworksControllerTest < ActionController::TestCase
     should "render dropdown template" do
       login_as_admin
       get :dropdown
-      assert_template 'revenues/_dropdown.html.erb'
+      assert_template 'networks/_dropdown.html.erb'
     end
   end
 end
