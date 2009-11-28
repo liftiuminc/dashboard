@@ -24,6 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :password_resets
   map.revenue_index_results 'revenues/index_results', :controller => 'revenues', :action => 'index_results'
   map.revenue_bulk_update 'revenues/bulk_update', :controller => 'revenues', :action => 'bulk_update'
+  map.revenue_bulk_update 'revenues/discrepancies', :controller => 'revenues', :action => 'discrepancies'
   map.resources :revenues
   map.resources :tag_targets
 

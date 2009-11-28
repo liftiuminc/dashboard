@@ -22,11 +22,11 @@
         </li>
         <li>
           <%= label_tag :date %>
-          <%= calendar_date_select_tag "start_date", @start_date, :time => "mixed" %>            
+          <%= calendar_date_select_tag "start_date", @start_date %>            
 	  TO
-          <%= calendar_date_select_tag "end_date", @end_date, :time => "mixed" %>            
+          <%= calendar_date_select_tag "end_date", @end_date %>            
         </li>
-        <li><%= label_tag :include_disabled, "Hide Filled-In Entries"%>
+        <li id="hide_filled_in"><%= label_tag :include_disabled, "Hide Filled-In Entries"%>
             <%= radio_button_tag "only_empty", "", @only_empty || @only_empty.blank?%>No
             <%= radio_button_tag "only_empty", "true", @only_empty == "true"%>Yes
         </li>
