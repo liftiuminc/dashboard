@@ -11,7 +11,7 @@ class PublishersController < ApplicationController
     id = !current_user.is_admin? ? current_publisher.id : params[:id]
     @publisher = Publisher.find( id )
   end
-  
+
   def new
     @publisher = Publisher.new
   end

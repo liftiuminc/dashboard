@@ -2,16 +2,17 @@
 <div class="filter_form" id="tag_filter_form">
   <form>
      <ul>
-        <li><%= label_tag :network %>
-            <select name="network_id" id="networkDD">
-              <option value="">
-              <%= options_from_collection_for_select @networks, :id, :network_name, @network_id.to_i %>
-            </select>
-        </li>
-        <li><%= label_tag :publisher %>
+	<li><%= label_tag :publisher %>
             <select name="publisher_id" id="publisherDD">
               <option value="">
               <%= options_from_collection_for_select @publishers, :id, :site_name, @publisher_id.to_i %>
+            </select>
+	    <a href="<%%>">Filter Networks</a>
+        </li>
+	<li id="network_dd_html"><%= label_tag :network %>
+            <select name="network_id" id="networkDD">
+              <option value="">
+              <%= options_from_collection_for_select @networks, :id, :network_name, @network_id.to_i %>
             </select>
         </li>
         <li>

@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.javascript_errors_by 'javascript_errors/grouped_by/:field', :controller => 'javascript_errors', :action => 'grouped_by'
   map.resources :javascript_errors
   map.resources :movers
+  map.network_dropdown "networks/dropdown", :controller => "networks", :action => "dropdown"
   map.resources :networks, :has_many => :network_tag_options
   map.publisher_ad_formats 'publishers/ad_formats', :controller => 'publishers', :action => 'ad_formats'
   map.publisher_save_ad_formats 'publishers/save_ad_formats', :controller => 'publishers', :action => 'save_ad_formats'

@@ -8,7 +8,7 @@ class NetworksController < ApplicationController
   def show
     @network = Network.find(params[:id])
   end
-  
+
   def new
     @network = Network.new
     @network.network_tag_options.build
@@ -52,6 +52,15 @@ class NetworksController < ApplicationController
                                 :network_id => @network.id,
                                 :enabled    => true
                             })    
+  end
+
+  def dropdown 
+    if current_user.admin? && params[:publisher_id] && !params[:publisher_id].blank?
+      @networks = Network.find_by_sql(["SELECT networks.* from networks WHERE enabled = ? AND id IN (SELECT DISTINCT network_id from tags where publisher_id = ?)", 1, params[:publisher_id]])
+    else 
+      @networks = Network.find(:all, :conditions => {:enabled => 1})
+    end
+    render :partial => "dropdown"    
   end
 
 end
