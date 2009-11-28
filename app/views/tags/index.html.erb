@@ -14,13 +14,19 @@
 	      <option value="">
 	      <%= options_from_collection_for_select @publishers, :id, :site_name, @publisher_id.to_i %>
 	    </select>
-	</li>
+	    <%= link_to_remote "Filter Networks by Publisher", :update => "network_dd_html",
+                  :url => {:controller => "networks", :action => "dropdown" },
+                  :before => "$('network_dd_html').html = 'Laoding...'",
+                  :with => "'publisher_id=' + $('publisherDD').value"%>
 
+	</li>
 	<li><%= label_tag :network %>
+	    <span id="network_dd_html">
 	    <select name="network_id" id="networkDD">
 	      <option value="">
 	      <%= options_from_collection_for_select @networks, :id, :network_name_and_id, @network_id.to_i %>
 	    </select>
+	    </span>
 	</li>
 
 	<li><%= label_tag :size %>
