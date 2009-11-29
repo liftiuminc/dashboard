@@ -43,11 +43,11 @@ class TagsController < ApplicationController
       saved = 0
 
       tags = params[:tags]
-      for rev in tags do
+      for tag in tags do
 
 	# Update existing entry
-	@tag        = Tag.find(rev["id"])
-	@tag.attributes = rev
+	@tag        = Tag.find(tag["id"])
+	@tag.attributes = tag
 	if @tag.changed?
 	   if @tag.save
 	     saved += 1
