@@ -101,7 +101,7 @@ class RevenuesController < ApplicationController
   def new
     @revenue = Revenue.new
     
-    flash[:error] = "No tag found for #{params[:tag_id]}" unless @tag    
+    flash.now[:error] = "No tag found for #{params[:tag_id]}" unless @tag    
   end
   
   def create

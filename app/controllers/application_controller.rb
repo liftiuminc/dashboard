@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
   ### break the tests in homes_controller verifying 403s. Mystery! Adding
   ### the #{RAILS_ROOT} here works for both tests. --Jos
   def permission_denied (msg)
-    flash[:notice] = msg
+    flash.now[:notice] = msg
     render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
   end
 

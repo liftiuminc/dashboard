@@ -72,7 +72,7 @@ class DataExportController < ApplicationController
     params[:limit] = @limit unless is_csv
 
     if params[:debug]
-      flash[:notice] = "<span style='font-size:smaller'>SQL: " + @model.new.search(@model, params).inspect + "</span>"
+      flash.now[:notice] = "<span style='font-size:smaller'>SQL: " + @model.new.search(@model, params).inspect + "</span>"
     end
 
     @fill_stats = @model.new.search(@model, params)
@@ -86,7 +86,7 @@ class DataExportController < ApplicationController
       end
       return
     elsif @fill_stats.length == @limit
-      flash[:warning] = "Limit of #{@limit} reached. Use the CSV option to see all"
+      flash.now[:warning] = "Limit of #{@limit} reached. Use the CSV option to see all"
     end 
 
     if params[:format] == "csv"
