@@ -118,25 +118,25 @@
          <% weekly_ecpm = Revenue.calculate(:avg, 'ecpm', 
 		{:conditions => ["tag_id = ? and day >= ?", tag.id, 7.days.ago.to_s(:db) ]}) %>
          <%- if weekly_ecpm %>
-	    <% pct_diff = calc_percentage_difference(weekly_ecpm.to_f, tag.value) %>
+	    <% pct_diff = calc_percentage_difference(weekly_ecpm.to_f, tag.value).abs %>
 	    <% if tag.value.to_f > 0.25 and pct_diff > 25.0
 	    	style = "background-color:red; color:black; weight:bold"
-	       elsif tag.value.to_f > 0.10 and pct_diff > 10.0
-	    	style = "font-color:red"
+	       elsif tag.value.to_f > 0.08 and pct_diff > 10.0
+	    	style = "color:red"
 	       else
 	    	style = ""
 	       end 
             %>
 	    <br />
-            <span class="hint">7 day: $<%= weekly_ecpm.to_f.round(2) %></span>
+            <span class="hint" style="<%=style %>">7 day: $<%= weekly_ecpm.to_f.round(2) %></span>
          <%-end %>
          <% last_ecpm = Revenue.first(:first, :conditions => ["tag_id = ?", tag.id], :order => "day DESC") %>
          <%- if last_ecpm %>
-	    <% pct_diff = calc_percentage_difference(last_ecpm.ecpm.to_f, tag.value) %>
+	    <% pct_diff = calc_percentage_difference(last_ecpm.ecpm.to_f, tag.value).abs %>
 	    <% if tag.value.to_f > 0.25 and pct_diff > 25.0
 	    	style = "background-color:red; color:black; weight:bold"
-	       elsif tag.value.to_f > 0.10 and pct_diff > 10.0
-	    	style = "font-color:red"
+	       elsif tag.value.to_f > 0.08 and pct_diff > 10.0
+	    	style = "color:red"
 	       else
 	    	style = ""
 	       end 
