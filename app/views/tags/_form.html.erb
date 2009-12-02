@@ -139,7 +139,12 @@ function confirmForm(f){
   <div id="template_tag_block">
 
   <div class="fieldset" id="tag_template_fieldset">
-    <%= f.label :tag_template %><br />
+    <%= f.label :tag_template %>
+    <% if current_user.is_admin? %>
+      <%= link_to("Edit Network Template", {:action => "edit", :controller=>"networks", :id => @tag.network_id, :anchor => "tag_template"})%>
+    <% end %>
+    <br />
+
     <%= pretty_tag @tag.network.tag_template %>
 
   </div>
