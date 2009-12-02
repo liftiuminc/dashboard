@@ -54,14 +54,14 @@ module LayoutHelper
   end
 
   def percentage_difference (from, to)
-   if (! diff = calc_percentage_diff) 
+   if (! diff = calc_percentage_difference(from, to)) 
       return ""
    end 
 
    if from < to 
-     return "<span style='color: green'>UP " + diff + "%</span>"
+     return "<span style='color: green'>UP " + diff.to_s + "%</span>"
    elsif from > to 
-     return "<span style='color: red'>DOWN " + diff + "%</span>"
+     return "<span style='color: red'>DOWN " + diff.to_s + "%</span>"
    else
      return ""
    end 
