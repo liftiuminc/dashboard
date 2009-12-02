@@ -54,21 +54,33 @@ module LayoutHelper
   end
 
   def percentage_difference (from, to)
-   from = from.to_f
-   to = to.to_f
-   if from <= 0 || to <= 0
-     # not going to work out
-     return ""
+   if (! diff = calc_percentage_diff) 
+      return ""
    end 
 
    if from < to 
-     diff = ((from-to)/from * -100).to_f.round(1).to_s
      return "<span style='color: green'>UP " + diff + "%</span>"
    elsif from > to 
-     diff = ((to-from)/from * 100).to_f.round(1).to_s
      return "<span style='color: red'>DOWN " + diff + "%</span>"
    else
      return ""
    end 
  end
+
+ def calc_percentage_difference (from, to)
+   from = from.to_f
+   to = to.to_f
+   if from <= 0 || to <= 0
+     # not going to work out
+     return 0.to_f
+   end 
+
+   if from < to 
+     return ((from-to)/from * -100).to_f.round(1)
+   elsif from > to 
+     return  ((to-from)/from * 100).to_f.round(1)
+   else
+     return 0.to_f
+   end 
+ end 
 end
