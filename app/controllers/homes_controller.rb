@@ -148,9 +148,15 @@ class HomesController < ApplicationController
 		" COALESCE(clicks, 0) AS clicks," +
 		" COALESCE(ecpm, 0.0) AS ecpm," +
 		" COALESCE(revenue, 0.0) AS revenue, day FROM revenues" +
-		" INNER JOIN tags on revenues.tag_id = tags.id" + 
-		" INNER JOIN networks on tags.network_id = networks.id" + 
-		" WHERE tags.publisher_id = ?" +
+		" INNER JOIN tags ON revenues.tag_id = tags.id" + 
+		" INNER JOIN networks ON tags.network_id = networks.id" 
+
+     if params["us_only"]
+	sql += " INNER JOIN tag_targets ON tags.id = tag_targets.tag_id" + 
+		" AND tag_targets.key_name = 'country' AND key_value LIKE '%us%'"
+     end
+      
+     sql += " WHERE tags.publisher_id = ?" +
 		" AND day >= ? AND day <= ?" +
 		" GROUP BY revenues.day, tags.size, network_name" + 
 		" ORDER BY day, size, ecpm DESC"; 
