@@ -186,9 +186,9 @@ window.onload=function(){
       <td class="record_action">$<%= ar.ecpm.to_f.round(2) %></td>
     </tr>
 
-   <%-if i < @revenue_reports.length-1 and @revenue_reports[i+1].day.to_s != ar.day.to_s %>
-    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-      <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day %></td>
+   <%-if i < @revenue_reports.length-1 and @revenue_reports[i+1].size != ar.size %>
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold; background-color: #e1e5f8">
+      <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day %>, <%= ar.size %></td>
       <td class="record_column"><%= number_with_delimiter(daily_imp)%></td>
       <td class="record_column">$<%= number_with_delimiter(daily_revenue.round(2))%></td>
       <td class="record_action">$<%= Revenue.calculate_ecpm(daily_imp, daily_revenue).round(2) %></td>
@@ -200,7 +200,7 @@ window.onload=function(){
 
   <%- } %>
 
-    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold; background-color: #a2aad0">
       <td class="record_column" colspan="3" style="text-align:right">Grand Totals</td>
       <td class="record_column"><%= number_with_delimiter(@revenue_reports.sum(&:attempts))%></td>
       <td class="record_column">$<%= number_with_delimiter(@revenue_reports.sum(&:revenue).to_f.round(2))%></td>
