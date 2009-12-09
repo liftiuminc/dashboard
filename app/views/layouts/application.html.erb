@@ -54,6 +54,7 @@
           <% if current_user.is_power_user? %>
             <li><%= link_to "Javascript Errors", javascript_errors_url %>	
             <li><%= link_to "Chain/Tag Mgmt", tags_url %>	          
+            <li><%= link_to "Discrepancy Report", "/revenues/discrepancies" %>
           <% end %>
 	  </ul>
        </div>
@@ -72,7 +73,6 @@
           <li><%= link_to "Change Logs", changelogs_url %>
           <li><%= link_to "Big Movers", movers_url %>
           <li><%= link_to "Data Entry", revenues_url %>
-          <li><%= link_to "Discrepancy Report", "/revenues/discrepancies" %>
 	  </ul>
        </div>
      <% end %>
