@@ -161,6 +161,14 @@ window.onload=function(){
 <%-if @revenue_reports %>
 <br />
 <h2>Revenue by size/date/network</h2>
+<%- if !params["us_only"] %>
+  <a href="/homes/publisher?us_only=1&publisher_id=<%=@publisher.id%>">US Only</a> |
+  All Traffic
+<%- else %>
+  US Only |
+  <a href="/homes/publisher?&publisher_id=<%=@publisher.id%>">All Traffic</a> 
+<%- end %>
+<br />
 <br />
 <table class="record_listing" width="100%">
   <tr class="record_listing_header">
