@@ -178,7 +178,7 @@ window.onload=function(){
 	daily_revenue += ar.revenue.to_f
   %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
-      <td class="record_column"><%=h ar.day%></td>
+      <td class="record_column"><%=h ar.day.strftime('%m/%d/%Y')%></td>
       <td class="record_column"><%=h ar.size%></td>
       <td class="record_column" style="width:200px"><%=h ar.network_name%></td>
       <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
@@ -187,11 +187,11 @@ window.onload=function(){
     </tr>
 
    <%-if i < @revenue_reports.length-1 and @revenue_reports[i+1].size != ar.size %>
-    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold; background-color: #e1e5f8">
-      <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day %>, <%= ar.size %></td>
-      <td class="record_column"><%= number_with_delimiter(daily_imp)%></td>
-      <td class="record_column">$<%= number_with_delimiter(daily_revenue.round(2))%></td>
-      <td class="record_action">$<%= Revenue.calculate_ecpm(daily_imp, daily_revenue).round(2) %></td>
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="background-color: #e1e5f8">
+      <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day.strftime('%m/%d/%Y') %>, <%= ar.size %></td>
+      <td class="record_column"><b><%= number_with_delimiter(daily_imp)%></b></td>
+      <td class="record_column"><b>$<%= number_with_delimiter(daily_revenue.round(2))%></b></td>
+      <td class="record_action"><b>$<%= Revenue.calculate_ecpm(daily_imp, daily_revenue).round(2) %></b></td>
     </tr>
     <% daily_imp = 0
       daily_revenue = 0.0
