@@ -1,5 +1,6 @@
 class RevenuesController < ApplicationController
-  before_filter :require_admin 
+  before_filter :require_admin, :except => [:discrepancies]
+  before_filter :require_power_user 
   before_filter :find_enabled_networks
   before_filter :find_all_publishers
   before_filter :save_filter_fields, :only => [:index, :discrepancies]
