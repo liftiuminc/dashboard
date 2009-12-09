@@ -25,7 +25,7 @@ revenue graph data: <%= debug(@revenue_graph_data) %><hr />
 ecpm graph data: <%= debug(@ecpm_graph_data) %><hr />
 revenues <%= debug(@revenues) %>
 revenue <%= debug(@revenue) %><hr />
-ad_network_revenues <%= debug(@ad_network_revenues) %>
+revenue_reports <%= debug(@revenue_reports) %>
 <% @show_revenue = true %>
 <% end %>
 
@@ -66,7 +66,7 @@ liftiumChartToolTips = function (chart, data){
 
 liftiumPieChart = function (divid){
 	var c = new JSChart(divid, "pie");
-	c.setSize(400, 350);
+	c.setSize(500, 450);
 	c.setTitleColor('#4D505D');
 	c.setPieUnitsColor('#413A7B');
 	c.setPieUnitsFontSize(11);
@@ -115,7 +115,7 @@ window.onload=function(){
 	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
 	<%= percentage_difference(@previous_impressions, @impressions) %>
     </td>
-<% if @show_revenue  %>
+<%- if @show_revenue  %>
     <td width="33%">
 	<div id="revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
@@ -154,107 +154,73 @@ window.onload=function(){
 	<%=h params[:date_select] %> : $<%= @ecpm.round(2) %>
 	<%= percentage_difference(@previous_ecpm, @ecpm) %>
     </td>
+  <%- end %><!-- show revenue -->
   </tr>
 </table>
 
-<table>
-  <tr valign="top">
-    <td width="475">
-
-	<div class="section_break">Top Performing Ad Networks</div>
-
-	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
-	  No Ad Network data available for the selected date range
-	<%- else %>
-
-	<table class="record_listing" width="100%">
-	  <tr class="record_listing_header">
-	    <th>Ad Network</th>
-	    <th>Last Updated</th>
-	    <th>Impressions</th>
-	    <th>CTR</th> 
-	    <th>Revenue</th>
-	    <th>eCPM</th>
-	  </tr>
-	  <%- for ar in @ad_network_revenues %>
-	    <tr class="record_row_<%= cycle("odd", "even")%>">
-	      <td class="record_column" style="width:200px"><%=h ar.tag.network.network_name%></td>
-	      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
-	      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
-	      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
-	      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
-	      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
-	    </tr>
-	  <%- end %>
-
-
-	    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-	      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
-	      <td class="record_column"><%= number_with_delimiter(@ad_network_revenues.sum(&:attempts))%></td>
-	      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_network_revenues.sum(&:clicks), @ad_network_revenues.sum(&:attempts)) %>%</td> 
-	      <td class="record_column">$<%= number_with_delimiter(@ad_network_revenues.sum(&:revenue))%></td>
-	      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_network_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
-	    </tr>
-	</table>
-
-	<%-end  %>
-
-	<div class="section_break">Top Performing Ad Sizes</div>
-
-	<%-if !@ad_network_revenues || @ad_network_revenues.length == 0 %>
-	  No Ad Size data available for the selected date range
-	<%- else %>
-
-	<table class="record_listing" width="100%">
-	  <tr class="record_listing_header">
-	    <th>Size</th>
-	    <th>Last Updated</th>
-	    <th>Impressions</th>
-	    <th>CTR</th> 
-	    <th>Revenue</th>
-	    <th>eCPM</th>
-	  </tr>
-	  <%- for ar in @ad_size_revenues %>
-	    <tr class="record_row_<%= cycle("odd", "even")%>">
-	      <td class="record_column" style="width:200px"><%=h ar.tag.size%></td>
-	      <td class="record_column"><%= ar.max_day.to_date.strftime("%m/%d/%Y") %></td>
-	      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
-	      <td class="record_column"><%=FillsBase.calculate_fill_rate(ar.clicks, ar.attempts) %>%</td> 
-	      <td class="record_column">$<%=h number_with_delimiter(ar.revenue)%></td>
-	      <td class="record_action">$<%= Revenue.calculate_ecpm(ar.attempts, ar.revenue).round(2) %></td>
-	    </tr>
-	  <%- end %>
-
-
-	    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
-	      <td class="record_column" colspan="2" style="text-align:right">Totals</td>
-	      <td class="record_column"><%= number_with_delimiter(@ad_size_revenues.sum(&:attempts))%></td>
-	      <td class="record_column"><%=FillsBase.calculate_fill_rate(@ad_size_revenues.sum(&:clicks), @ad_size_revenues.sum(&:attempts)) %>%</td> 
-	      <td class="record_column">$<%= number_with_delimiter(@ad_size_revenues.sum(&:revenue))%></td>
-	      <td class="record_action">$<%= Revenue.calculate_ecpm(@ad_size_revenues.sum(&:attempts), @ad_network_revenues.sum(&:revenue)).round(2) %></td>
-	    </tr>
-	</table>
-
-	<%-end  %>
-
-<% end %><!-- show revenue -->
-     <td height="350">
-
-	<div id="network_revenue_chart" class="publisher_chart">Loading chart...</div>
-	<script type="text/javascript">
-	var data = <%= @network_graph_data.to_json %>
-	if (data.length == 0){
-		$("network_revenue_chart").innerHTML = "<br />No data available for the selected date range";
-		npc = null;
-	} else {
-		var npc = liftiumPieChart("network_revenue_chart");
-		npc.setTitle("Impressions By Network " + <%= params[:date_select].to_json %>);
-		npc.setDataArray(data);
-		npc.colorize(liftiumColorArray(data.length));
-	}
-	</script>
-	
-     </td>
+<%-if @revenue_reports %>
+<br />
+<h2>Revenue by size/date/network</h2>
+<br />
+<table class="record_listing" width="100%">
+  <tr class="record_listing_header">
+    <th>Day</th>
+    <th>Size</th>
+    <th>Network</th>
+    <th>Impressions</th> 
+    <th>Revenue</th>
+    <th>eCPM</th>
   </tr>
-</table>
+ <% daily_imp = 0
+    daily_revenue = 0.0
+  @revenue_reports.each_with_index {|ar,i|
+	daily_imp += ar.attempts.to_i
+	daily_revenue += ar.revenue.to_f
+  %>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+      <td class="record_column"><%=h ar.day%></td>
+      <td class="record_column"><%=h ar.size%></td>
+      <td class="record_column" style="width:200px"><%=h ar.network_name%></td>
+      <td class="record_column"><%= number_with_delimiter(ar.attempts)%></td>
+      <td class="record_column">$<%= number_with_delimiter(ar.revenue)%></td>
+      <td class="record_action">$<%= ar.ecpm.to_f.round(2) %></td>
+    </tr>
 
+   <%-if i < @revenue_reports.length-1 and @revenue_reports[i+1].day.to_s != ar.day.to_s %>
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+      <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day %></td>
+      <td class="record_column"><%= number_with_delimiter(daily_imp)%></td>
+      <td class="record_column">$<%= number_with_delimiter(daily_revenue.round(2))%></td>
+      <td class="record_action">$<%= Revenue.calculate_ecpm(daily_imp, daily_revenue).round(2) %></td>
+    </tr>
+    <% daily_imp = 0
+      daily_revenue = 0.0
+    %>
+   <%- end %>
+
+  <%- } %>
+
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
+      <td class="record_column" colspan="3" style="text-align:right">Grand Totals</td>
+      <td class="record_column"><%= number_with_delimiter(@revenue_reports.sum(&:attempts))%></td>
+      <td class="record_column">$<%= number_with_delimiter(@revenue_reports.sum(&:revenue).to_f.round(2))%></td>
+      <td class="record_action">$<%= Revenue.calculate_ecpm(@revenue_reports.sum(&:attempts), @revenue_reports.sum(&:revenue)).round(2) %></td>
+    </tr>
+
+</table>
+<%-end %>
+
+<hr />
+<div style="height:450px;" id="network_revenue_chart" class="publisher_chart">Loading chart...</div>
+<script type="text/javascript">
+var data = <%= @network_graph_data.to_json %>
+if (data.length == 0){
+	$("network_revenue_chart").innerHTML = "<br />No data available for the selected date range";
+	npc = null;
+} else {
+	var npc = liftiumPieChart("network_revenue_chart");
+	npc.setTitle("Impressions By Network " + <%= params[:date_select].to_json %>);
+	npc.setDataArray(data);
+	npc.colorize(liftiumColorArray(data.length));
+}
+</script>
