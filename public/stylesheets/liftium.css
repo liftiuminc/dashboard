@@ -129,8 +129,12 @@ ul {
 	margin-bottom: 10px;
 }
 
-.fieldset input[type=text], .fieldset textarea {
+.fieldset input[type=text] {
 	width: 325px;
+}
+
+.fieldset textarea {
+	width: 525px;
 }
 
 .fieldset label {
