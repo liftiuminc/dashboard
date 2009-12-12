@@ -25,13 +25,9 @@
       <%- end %>        
     <%- end %>
   <%-# we got nothing %>  
-  <%- else %>
-    N/A
   <%- end %>
 <%-# no username/password but a link %>  
 <%- elsif url %>
   <%= link_to "Login", url, :popup => true %>
 <%-# we got nothing %>
-<%- else %>
-  N/A
 <%- end %> 
