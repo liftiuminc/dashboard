@@ -19,7 +19,7 @@
       <%- end %>
     <%-# login link %>
     <%- else %>
-      <%= link_to "Login", url, :popup => true %>
+      [ <%= link_to "Login", url, :popup => true %> ]
       <%- if show_hint %>
         <br /><span class="hint"><%= "#{username}/#{password}" %></span>
       <%- end %>        
@@ -28,6 +28,6 @@
   <%- end %>
 <%-# no username/password but a link %>  
 <%- elsif url %>
-  <%= link_to "Login", url, :popup => true %>
+  [ <%= link_to "Login", url, :popup => true %> ]
 <%-# we got nothing %>
 <%- end %> 
