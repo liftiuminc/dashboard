@@ -20,6 +20,12 @@
             </select>
 	    </span>
         </li>
+	<li><%= label_tag :size %>
+            <select name="size" id="sizeDD">
+              <option value="">
+	     <%= options_from_collection_for_select @adformats, :size, :name_with_size, @size  %>
+	    </select>
+        </li>
         <li>
           <%= label_tag :date %>
           <%= calendar_date_select_tag "start_date", @start_date %>            

@@ -91,6 +91,11 @@ class Revenue < ActiveRecord::Base
 	  query.push(criteria["publisher_id"])
         end
 
+	if criteria["size"] && !criteria["size"].blank?
+	  query[0] += " AND tags.size = ?"
+	  query.push(criteria["size"])
+        end
+
 	if criteria["network_id"] && criteria["network_id"].to_i > 0
 	  query[0] += " AND tags.network_id = ?"
 	  query.push(criteria["network_id"])

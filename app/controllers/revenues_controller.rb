@@ -4,6 +4,7 @@ class RevenuesController < ApplicationController
   before_filter :find_enabled_networks
   before_filter :find_all_publishers
   before_filter :save_filter_fields, :only => [:index, :discrepancies]
+  before_filter :find_user_adformats
 
   def index
 	@revenues = Revenue.revenues_table(session[:data_entry_params] || params)
@@ -153,6 +154,7 @@ class RevenuesController < ApplicationController
   def assign_filter_fields(params)
     @network_id = params[:network_id]
     @publisher_id = params[:publisher_id]
+    @size = params[:size]
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     @only_empty = params[:only_empty]
