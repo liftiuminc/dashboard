@@ -4,6 +4,10 @@ module ApplicationHelper
   def liftium_submit(text="Submit")
 	submit_tag text
   end
+
+  def liftium_reset(text="Clear Form")
+	"<input type='button' onClick='blankForm(this.form)' value='#{text}'/>"
+  end
   
   def external_form_post( label = "Submit", action = '', params = {} )
     form = "<form action='#{action}' method='post' target='_blank'>"

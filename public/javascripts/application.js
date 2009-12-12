@@ -28,3 +28,21 @@ function externalFormPost(action, params, method, target){
 	document.body.appendChild(f);
 	return document.getElementById(f.id).submit();
 }
+
+
+/* Reset a form to blank values */
+function blankForm (f){
+	for (var i = 0; i < f.elements.length; i++){
+		var field = f.elements[i];
+		switch (field.tagName.toLowerCase()){
+		  case "select": f.elements[i].selectedIndex=0; break;
+		  case "input":
+			if (field.type == "text"){
+				field.value = "";
+			}
+			break;
+		  // Unsupported form element type
+		  default : break;
+		}
+	}
+}

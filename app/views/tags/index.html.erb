@@ -52,7 +52,9 @@
 	    <%= radio_button_tag "include_disabled", "", @include_disabled.blank?%>No
 	</li>
 
-	<li><%= liftium_submit "Filter Tags"%></li>
+	<li><%= liftium_submit "Filter Tags"%>
+	    <%= liftium_reset %>
+        </li>
   </ul>
   <% end %>
 </div>

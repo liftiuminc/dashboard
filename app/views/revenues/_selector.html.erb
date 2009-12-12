@@ -37,7 +37,9 @@
             <%= radio_button_tag "only_empty", "true", @only_empty == "true"%>Yes
         </li>
         
-        <li><%= liftium_submit "Refresh List"%></li>
+        <li><%= liftium_submit "Filter List"%>
+            <%= liftium_reset %>
+        </li>
     </ul>
   </form>
 </div>
