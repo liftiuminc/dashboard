@@ -65,7 +65,7 @@ total_clicks = 0
           <%= fill_stat.tag.tag_name %>
         <% end %>  
         </td>
-      <td class="record_column"><%= fill_stat.tag.size%></a></td>
+      <td class="record_column" title="<%=h fill_stat.tag.verbose_size %>"><%= fill_stat.tag.size%></a></td>
       <td class="record_column"><%=fill_stat.time%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>

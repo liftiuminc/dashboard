@@ -85,6 +85,11 @@ class Tag < ActiveRecord::Base
     "width:#{width}px;height:#{height}px;"
   end
 
+  def verbose_size
+    s = AdFormat.find_by_size(size)
+    "#{s.ad_format_name} (#{size})"
+  end
+
   def preview_url
      env = Rails.configuration.environment
      if env == "development" || env == "dev_mysql"

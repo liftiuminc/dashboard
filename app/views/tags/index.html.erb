@@ -109,7 +109,7 @@
 	    <%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %><br />
         <span style="font-size: smaller">
         #<%= tag.id %>
-        <%= tag.size %>
+        <span title="<%=h tag.verbose_size %>"><%= tag.size %></span>
         <%= tag.sample_rate ? "- sampled #{tag.sample_rate}%" : "" %>
         <br />Created <%= tag.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         </span>

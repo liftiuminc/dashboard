@@ -34,7 +34,7 @@
         <tr class="record_row_<%= cycle("odd", "even")%>">
           <td class="record_column"><%= link_to rev.tag.network.network_name, rev.tag.network %></td>
           <td class="record_column"><%= link_to rev.tag.publisher.site_name, rev.tag.publisher %></td>
-          <td class="record_column" title="<%=h tag.inspect %>"><%= link_to tag.size, tag, :action => :show %><br><span class="hint"><%=h tag.tag_name %></span></td>
+          <td class="record_column"><span title="<%=h tag.verbose_size%>"><%= link_to tag.size, tag, :action => :show %></span><br><span title="<%=h tag.inspect %>" class="hint"><%=h tag.tag_name %></span></td>
           <td class="record_column" nowrap="true"><%= rev.day.strftime('%m/%d/%Y')%></td>
           <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][attempts]"%>" value="<%=h rev.impressions %>"/></td>
           <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][clicks]"%>" value="<%=h rev.clicks %>"/></td>
