@@ -72,6 +72,7 @@
     <th>Tag</th>
     <th>Tier</th>
     <th>Value</th>
+    <th>Floor</th>
     <th>Always Fill</th>
     <th>Criteria</th>
     <th>Actions</th>
@@ -144,6 +145,13 @@
 	    <br />
             <span class="hint" style="<%=style %>">Last: $<%= last_ecpm.ecpm.to_f.round(2) %></span>
          <%-end %>
+      </td>
+      <td class="record_column_number" nowrap="true">
+	<%-if tag.network.supports_threshold %>
+	  $<input type="text" style="width:35px" name="<%="tags[][floor]"%>" value="<%=h tag.floor %>"/>
+	<%-else %>
+	  --
+	<%-end %>
       </td>
       <td class="record_column_number" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>"><%= tag.always_fill ? "Yes" : "No" %></td>
       <td class="record_column" style="font-size:smaller; width:150px">

@@ -26,6 +26,7 @@ class Tag < ActiveRecord::Base
   validates_numericality_of :frequency_cap, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000, :allow_nil => true
   validates_numericality_of :rejection_time, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1440, :allow_nil => true
   validates_numericality_of :value, :greater_than_or_equal_to => 0, :less_than => 100
+  validates_numericality_of :floor, :greater_than_or_equal_to => 0, :less_than => 100, :allow_nil => true
 
   ### From FB 16: Tags page should not allow "Always fill" with a rejection
   ### time limit set
@@ -54,7 +55,11 @@ class Tag < ActiveRecord::Base
 
   # db returns 0.1. we want this to be 0.10
   def value_s
-    sprintf( "%.2f", value)
+    sprintf( "%.2f", value.to_f)
+  end
+
+  def floor_s
+    sprintf( "%.2f", floor.to_f)
   end
 
   def html

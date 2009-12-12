@@ -47,7 +47,11 @@ function confirmForm(f){
   </div>
   <div class="fieldset">
     <%= f.label :value, "Value*", :class => "left_label" %>
-    $<%= f.text_field :value, :class => "input_for_number" %>
+    $<%= f.text_field :value, :class => "input_for_number" %> <span class="hint">Price to sort the chain by</span>
+  </div>
+  <div class="fieldset">
+    <%= f.label :floor, "Floor", :class => "left_label" %>
+    $<%= f.text_field :floor, :class => "input_for_number" %> <span class="hint">Price floor set at Ad Network</span>
   </div>
   <div class="fieldset">
     <%= f.label :enabled, nil, :class => "left_label"%>
