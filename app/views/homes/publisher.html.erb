@@ -113,7 +113,9 @@ window.onload=function(){
 	}
 	</script>
 	<%=h params[:date_select] %> : <%= number_with_delimiter(@impressions) %>
+	<!--
 	<%= percentage_difference(@previous_impressions, @impressions) %>
+	-->
     </td>
 <%- if @show_revenue  %>
     <td width="33%">
@@ -133,7 +135,9 @@ window.onload=function(){
 	</script>
 
 	<%=h params[:date_select] %> : $<%= number_with_delimiter(@revenue.round(2)) %>
+	<!--
 	<%= percentage_difference(@previous_revenue, @revenue) %>
+	-->
     </td>
     <td width="33%">
 	<div id="ecpm_chart" class="publisher_chart">Loading...</div>
@@ -152,7 +156,9 @@ window.onload=function(){
 	</script>
 
 	<%=h params[:date_select] %> : $<%= @ecpm.round(2) %>
+	<!--
 	<%= percentage_difference(@previous_ecpm, @ecpm) %>
+	-->
     </td>
   <%- end %><!-- show revenue -->
   </tr>
