@@ -51,11 +51,11 @@ class DateRangeHelper
         dates[2] = (now - 1.day).strftime('%Y-%m-%d 00:00:00')
       when "yesterday"
         dates[0] = (now - 1.day).strftime('%Y-%m-%d 00:00:00')
-        dates[0] = (now - 1.day).strftime('%Y-%m-%d 23:59:59')
+        dates[1] = now.strftime('%Y-%m-%d 00:00:00')
         dates[2] = (now - 2.days).strftime('%Y-%m-%d 00:00:00')
       when "last 7 days" || "last week"
         dates[0] = (now - 7.days).strftime('%Y-%m-%d 00:00:00')
-        dates[0] = (now - 1.day).strftime('%Y-%m-%d 23:59:59')
+        dates[1] = now.strftime('%Y-%m-%d 00:00:00')
         dates[2] = (now - 14.days).strftime('%Y-%m-%d 00:00:00')
       when "this month" || "month to date"
         dates[0] = now.strftime('%Y-%m-01 00:00:00')
