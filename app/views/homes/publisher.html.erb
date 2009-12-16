@@ -185,11 +185,13 @@ window.onload=function(){
     <th>Revenue</th>
     <th>eCPM</th>
   </tr>
- <% daily_imp = 0
-    daily_revenue = 0.0
+ <% daily_imp = size_imp = 0
+    daily_revenue = size_revenue = 0.0
   @revenue_reports.each_with_index {|ar,i|
 	daily_imp += ar.attempts.to_i
 	daily_revenue += ar.revenue.to_f
+	size_imp += ar.attempts.to_i
+	size_revenue += ar.revenue.to_f
   %>
     <tr class="record_row_<%= cycle("odd", "even")%>">
       <td class="record_column"><%=h ar.day.strftime('%m/%d/%Y')%></td>
@@ -200,9 +202,21 @@ window.onload=function(){
       <td class="record_action">$<%= ar.ecpm.to_f.round(2) %></td>
     </tr>
 
-   <%-if i == @revenue_reports.length-1 or @revenue_reports[i+1].size != ar.size %>
+  <%-if i == @revenue_reports.length-1 or @revenue_reports[i+1].size != ar.size or @revenue_reports[i+1].day != ar.day %>
     <tr class="record_row_<%= cycle("odd", "even")%>" style="background-color: #e1e5f8">
       <td class="record_column" colspan="3" style="text-align:right">Totals for <%=h ar.day.strftime('%m/%d/%Y') %>, <%= ar.size %></td>
+      <td class="record_column"><b><%= number_with_delimiter(size_imp)%></b></td>
+      <td class="record_column"><b>$<%= number_with_delimiter(size_revenue.round(2))%></b></td>
+      <td class="record_action"><b>$<%= Revenue.calculate_ecpm(size_imp, size_revenue).round(2) %></b></td>
+    </tr>
+    <% size_imp = 0
+      size_revenue = 0.0
+    %>
+   <%- end %>
+
+   <%-if i == @revenue_reports.length-1 or @revenue_reports[i+1].day != ar.day %>
+    <tr class="record_row_<%= cycle("odd", "even")%>" style="background-color: #99FFAA">
+      <td class="record_column" colspan="3" style="text-align:right">Totals for all sizes on <%=h ar.day.strftime('%m/%d/%Y') %></td>
       <td class="record_column"><b><%= number_with_delimiter(daily_imp)%></b></td>
       <td class="record_column"><b>$<%= number_with_delimiter(daily_revenue.round(2))%></b></td>
       <td class="record_action"><b>$<%= Revenue.calculate_ecpm(daily_imp, daily_revenue).round(2) %></b></td>
@@ -212,6 +226,7 @@ window.onload=function(){
     %>
    <%- end %>
 
+   
   <%- } %>
 
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold; background-color: #a2aad0">
