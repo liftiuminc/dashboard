@@ -39,14 +39,14 @@ class Tag < ActiveRecord::Base
 
   validate :floor_higher_than_value
   def floor_higher_than_value
-    if floor && floor.to_f > 0 && value.to_f < floor.to_f
+    if floor && floor.to_f > 0.0 && value.to_f < floor.to_f
       errors.add_to_base "Value cannot be lower then floor"
     end
   end
 
   validate :floor_with_always_fill
   def floor_with_always_fill
-    if floor && floor.to_f > 0 && always_fill
+    if floor && floor.to_f > 0.0 && always_fill
       errors.add_to_base "Always Fill cannot be set with a floor"
     end
   end
