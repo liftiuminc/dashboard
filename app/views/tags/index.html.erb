@@ -116,7 +116,7 @@
         <span style="font-size: smaller">
         #<%= tag.id %>
         <span title="<%=h tag.verbose_size %>"><%= tag.size %></span>
-        <%= tag.sample_rate ? "- sampled #{tag.sample_rate}%" : "" %>
+        <%= tag.sample_rate ? "<b>- sampled #{tag.sample_rate}%</b>" : "" %>
         <br />Created <%= tag.created_at.strftime('%Y-%m-%d %H:%M') %></td>
         </span>
       </td>
