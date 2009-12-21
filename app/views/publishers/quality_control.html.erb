@@ -21,7 +21,7 @@
 <br />
 More revenue
 <% for num in (1..10) %>
-<%= radio_button_tag name="publisher[brand_safety_level]", num, @publisher.brand_safety_level == num %>&nbsp;
+<%= radio_button_tag name="publisher[brand_safety_level]", num, @publisher.brand_safety_level == num, :title => num %>&nbsp;
 <% end %>
 Higher Quality Ads
 <br />
@@ -42,7 +42,7 @@ Higher Quality Ads
 More revenue
 <% 
 for num in 9.downto(0) %>
-<%= radio_button_tag name="publisher[hoptime]", num*300, @publisher.hoptime == num*300 %>&nbsp;
+<%= radio_button_tag name="publisher[hoptime]", num*300, @publisher.hoptime == num*300, :title => (num*300).to_s + "ms" %>&nbsp;
 <% end %>
 Faster Ads
 <br />
