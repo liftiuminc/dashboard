@@ -131,6 +131,9 @@ class PublishersController < ApplicationController
     else 
       @publisher = Publisher.first :order => "site_name"
     end
+    @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN
+		(SELECT DISTINCT network_id from tags where tags.publisher_id = ? )
+		ORDER BY brand_safety_level DESC", @publisher.id])
   end
 
   def site_info 

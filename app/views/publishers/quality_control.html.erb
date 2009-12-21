@@ -16,7 +16,7 @@
   <%= f.error_messages %>
 <br />
 <br />
-<b>Ad Quality</b> <span class="hint">Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium let's you choose.</span>
+<b>Ad Quality</b> <span class="hint">Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium lets you choose.</span>
 <br />
 <br />
 More revenue
@@ -26,7 +26,13 @@ More revenue
 Higher Quality Ads
 <br />
 <br />
-
+<b>Networks</b>
+<ul>
+<%-for network in @networks %>
+  <li title="Network disabled due to quality settings" style="<%= network.brand_safety_level.to_i < @publisher.brand_safety_level.to_i ? "text-decoration:line-through" : ""%>"><%= network.network_name + " - " + network.brand_safety_level.to_s %></li>
+<%- end %>
+</ul>
+<hr />
 <b>Ad Speed</b> <span class="hint">More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue.</span>
 <br />
 <br />
