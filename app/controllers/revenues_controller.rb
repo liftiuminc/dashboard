@@ -20,6 +20,10 @@ class RevenuesController < ApplicationController
 	  @start_date = 7.days.ago
         end
 
+        if !current_user.is_admin?
+          params[:publisher_id] = current_user.publisher_id
+        end
+
 	where = ""
         if params["publisher_id"] && params["publisher_id"].to_i > 0
           where += " AND tags.publisher_id = " + params["publisher_id"].to_i.to_s
