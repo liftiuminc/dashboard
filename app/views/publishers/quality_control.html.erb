@@ -9,14 +9,14 @@
 
 <% title "Ad Quality Control Settings for " + @publisher.site_name %>
 
-<h2>How aggressive are you about revenue?</h2>
 <% form_for @publisher, :url => { :action => "save_quality_control" } do |f| %>
   <%= hidden_field_tag "publisher_id", @publisher.id %>
   <%= hidden_field_tag "redirect_back", "1"%>
   <%= f.error_messages %>
 <br />
 <br />
-<b>Ad Quality</b> <span class="hint">Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium lets you choose.</span>
+<h2>Ad Quality</h2>
+<span class="hint">Some publishers want to earn more money, some publishers want to have better ads appear on their site. Liftium lets you choose.</span>
 <br />
 <br />
 More revenue
@@ -26,14 +26,17 @@ More revenue
 Higher Quality Ads
 <br />
 <br />
-<b>Networks</b>
+<div style="margin-left:50px;">
+<h3>Available Networks</h3>
 <ul>
 <%-for network in @networks %>
   <li title="Network disabled due to quality settings" style="<%= network.brand_safety_level.to_i < @publisher.brand_safety_level.to_i ? "text-decoration:line-through" : ""%>"><%= network.network_name + " - " + network.brand_safety_level.to_s %></li>
 <%- end %>
 </ul>
+</div>
 <hr />
-<b>Ad Speed</b> <span class="hint">More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue.</span>
+<h2>Ad Speed</h2>
+ <span class="hint">More revenue can be earned by allowing for more Ad Networks to be polled. You can either choose to have ads load as fast as possible, or have Liftium work harder to earn more revenue.</span>
 <br />
 <br />
 More revenue
