@@ -1,37 +1,33 @@
-<% username     = pnl ? pnl.username : network.liftium_username %>
-<% password     = pnl ? pnl.password : network.liftium_password %>    
-<% show_hint    = show_hint || nil %>
-<% config       = network.network_config( 
-                    :username => username, :password => password ) %>
-<%# we get nil class exceptions in production when there's no entry in
-    the config. Not in development though. So be uber paranoid %>
-<% action       = (config and config["action"] and !config["action"].empty? ) ? config["action"] : nil %>
-<% url          = (config and config["url"]    and !config["url"].empty?    ) ? config["url"]    : action %>
+<% username     = pnl ? pnl.username : network.liftium_username 
+ password     = pnl ? pnl.password : network.liftium_password 
+ show_hint    = show_hint || nil 
+ config       = network.network_config( 
+                    :username => username, :password => password ) 
+# we get nil class exceptions in production when there's no entry in the config. Not in development though. So be uber paranoid 
+ action       = (config and config["action"] and !config["action"].empty? ) ? config["action"] : nil 
+ url          = (config and config["url"]    and !config["url"].empty?    ) ? config["url"]    : action %>
 
-<%# no login unless we have a username & password %>
-<% if username and !username.empty? and password and !password.empty? %>
-  <% if action %>
+<%-# no login unless we have a username & password %>
+<%- if username and !username.empty? and password and !password.empty? %>
+  <%- if action %>
     <%# automated login %>
-    <% if params = config["params"] %>
-      <%= external_form_post "Login", action, params %>          
-    <%# login link %>
-    <% else %>
-      <%= link_to "Login", url, :popup => true %>
-      <% if show_hint %>
+    <%- if params = config["params"] %>
+      <%- if jsform %>
+         <%= external_form_post_js "Login", action, params %>          
+      <%- else %>
+         <%= external_form_post "Login", action, params %>          
+      <%- end %>
+    <%-# login link %>
+    <%- else %>
+      [ <%= link_to "Login", url, :popup => true %> ]
+      <%- if show_hint %>
         <br /><span class="hint"><%= "#{username}/#{password}" %></span>
-      <% end %>        
-    <% end %>
-  <%# we got nothing %>  
-  <% else %>
-    N/A
-  <% end %>
-<%# no username/password but a link %>  
-<% elsif url %>
-  <%= link_to "Login", url, :popup => true %>
-  <% if show_hint %>
-    <br /><span class="hint"><%= "No Info" %></span>
-  <% end %>    
-<%# we got nothing %>
-<% else %>
-  N/A
-<% end %> 
+      <%- end %>        
+    <%- end %>
+  <%-# we got nothing %>  
+  <%- end %>
+<%-# no username/password but a link %>  
+<%- elsif url %>
+  [ <%= link_to "Login", url, :popup => true %> ]
+<%-# we got nothing %>
+<%- end %> 

@@ -14,17 +14,26 @@
             <option value="">
             <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
           </select>
+          <%= link_to_remote "Filter Networks by Publisher", :update => "network_dd_html",
+                  :url => {:controller => "networks", :action => "dropdown" },
+                  :before => "$('network_dd_html').html = 'Laoding...'",
+                  :with => "'publisher_id=' + $('publisherDD').value"%>
+
         </li>
       <% end %>
 
     <li>
       <%= label_tag :network %>
+      <span id="network_dd_html">
       <select name="network_id" id="networkDD">
         <option value="">
         <%= options_from_collection_for_select @networks, :id, :network_name_and_id, params[:network_id].to_i %>
       </select>
+      </span>
     </li>
-    <li><%= liftium_submit "Filter Credentials"%></li>
+    <li><%= liftium_submit "Filter Credentials"%>
+        <%= liftium_reset %>
+    </li>
   </form>
 </div>
 
@@ -110,7 +119,7 @@
 
           <td class="record_column">
             <%= render :partial => "shared/publisher_network_login_button", 
-                       :locals  => { :pnl => pnl, :network => network } %>
+                       :locals  => { :pnl => pnl, :network => network, :jsform => false } %>
           </td>         
         </tr>
       <% end %>

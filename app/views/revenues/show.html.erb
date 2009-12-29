@@ -2,11 +2,11 @@
 
 <p>
   <strong>Tag:</strong>
-  <%= link_to "#{@tag.tag_name} - #{@tag.size} (#{@tag.id})", @tag %>
+  <%= link_to "#{@revenue.tag.tag_name} - #{@revenue.tag.verbose_size} (#{@revenue.tag.id})", @tag %>
 </p>
 <p>
   <strong>Network:</strong>
-  <%= link_to "#{@tag.network.network_name} - #{@tag.network.pay_type}", @tag.network %>
+  <%= link_to "#{@revenue.tag.network.network_name} - #{@revenue.tag.network.pay_type}", @revenue.tag.network %>
 </p>
 <p>
   <strong>Day:</strong>

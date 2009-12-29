@@ -4,18 +4,27 @@ module ApplicationHelper
   def liftium_submit(text="Submit")
 	submit_tag text
   end
+
+  def liftium_reset(text="Clear Form")
+	"<input type='button' onClick='blankForm(this.form)' value='#{text}'/>"
+  end
   
   def external_form_post( label = "Submit", action = '', params = {} )
     form = "<form action='#{action}' method='post' target='_blank'>"
 
     params.each do|k, v|
-      form += "<input type='hidden' name='#{k}' value='#{v}'>"
+      form += hidden_field_tag k, v
     end
     
     form += "<input type='submit' value='#{label}'>"
     form += "</form>"
     
     return form
+  end
+
+  # alternate version of the above that uses javascript form instead of inline form (handy if you are already in a form)
+  def external_form_post_js( label = "Submit", action = '', params = {} )
+    return "<input type='button' value='#{label}' onClick='externalFormPost(" + action.to_json + "," +  params.to_json + ")'/>"
   end
 
   #http://transfs.com/devblog/2009/06/26/nested-forms-with-rails-2-3-helpers-and-javascript-tricks/

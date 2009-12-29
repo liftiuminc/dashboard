@@ -12,6 +12,9 @@ function confirmForm(f){
 	if (parseInt($("tag_sample_rate").value, 10) > 10){ 
 		msgs.push("Sample rate is over 10% (usually sampling is is less than 2%)");
  	}
+	if ($("tag_tag").value.match(/%%/)){
+		msgs.push("'%%' found in the tag. Left over macro from Google Ad Manager?");
+	}
 
 	if (msgs.length > 0){
 		return confirm("The following looks fishy. Are you sure?\n* " + msgs.join("\n* "));
@@ -44,7 +47,11 @@ function confirmForm(f){
   </div>
   <div class="fieldset">
     <%= f.label :value, "Value*", :class => "left_label" %>
-    $<%= f.text_field :value, :class => "input_for_number" %>
+    $<%= f.text_field :value, :class => "input_for_number" %> <span class="hint">Price to sort the chain by</span>
+  </div>
+  <div class="fieldset">
+    <%= f.label :floor, "Floor", :class => "left_label" %>
+    $<%= f.text_field :floor, :class => "input_for_number" %> <span class="hint">Price floor set at Ad Network</span>
   </div>
   <div class="fieldset">
     <%= f.label :enabled, nil, :class => "left_label"%>
@@ -139,7 +146,12 @@ function confirmForm(f){
   <div id="template_tag_block">
 
   <div class="fieldset" id="tag_template_fieldset">
-    <%= f.label :tag_template %><br />
+    <%= f.label :tag_template %>
+    <% if current_user.is_admin? %>
+      <%= link_to("Edit Network Template", {:action => "edit", :controller=>"networks", :id => @tag.network_id, :anchor => "tag_template"})%>
+    <% end %>
+    <br />
+
     <%= pretty_tag @tag.network.tag_template %>
 
   </div>

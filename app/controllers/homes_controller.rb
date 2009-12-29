@@ -127,20 +127,41 @@ class HomesController < ApplicationController
     @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)
     @previous_ecpm = Revenue.calculate_ecpm(@previous_impressions, @previous_revenue)
 
+# Went in a different direction 
+#    sql = "SELECT revenues.id, revenues.tag_id, tags.size, tags.network_id, " + 
+#	" COALESCE(SUM(attempts), 0) AS attempts," +
+#	" COALESCE(SUM(rejects), 0) AS rejects," + 
+#	" COALESCE(SUM(clicks), 0) AS clicks," +
+#	" COALESCE(SUM(revenue), 0) AS revenue, day, MAX(day) AS max_day FROM revenues" +
+#	" INNER JOIN tags on revenues.tag_id = tags.id" + 
+#	" AND tags.publisher_id = ?" + 
+#	" WHERE day >= ? AND day <= ?" + 
+#	" GROUP BY "
 
-    sql = "SELECT revenues.id, revenues.tag_id, tags.size, tags.network_id, " + 
-	" COALESCE(SUM(attempts), 0) AS attempts," +
-	" COALESCE(SUM(rejects), 0) AS rejects," + 
-	" COALESCE(SUM(clicks), 0) AS clicks," +
-	" COALESCE(SUM(revenue), 0) AS revenue, day, MAX(day) AS max_day FROM revenues" +
-	" INNER JOIN tags on revenues.tag_id = tags.id" + 
-	" AND tags.publisher_id = ?" + 
-	" WHERE day >= ? AND day <= ?" + 
-	" GROUP BY "
+#    @ad_network_revenues = Revenue.find_by_sql [sql + "tags.network_id  ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
 
-    @ad_network_revenues = Revenue.find_by_sql [sql + "tags.network_id  ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
+#    @ad_size_revenues = Revenue.find_by_sql [sql + "tags.size ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
 
-    @ad_size_revenues = Revenue.find_by_sql [sql + "tags.size ORDER BY revenue DESC", @publisher.id, @dates[0], @dates[1]]
+     sql = "SELECT revenues.id, tags.size, networks.network_name, " + 
+		" COALESCE(attempts, 0) AS attempts," +
+		" COALESCE(rejects, 0) AS rejects," + 
+		" COALESCE(clicks, 0) AS clicks," +
+		" COALESCE(ecpm, 0.0) AS ecpm," +
+		" COALESCE(revenue, 0.0) AS revenue, day FROM revenues" +
+		" INNER JOIN tags ON revenues.tag_id = tags.id" + 
+		" INNER JOIN networks ON tags.network_id = networks.id" 
+
+     if params["us_only"]
+	sql += " INNER JOIN tag_targets ON tags.id = tag_targets.tag_id" + 
+		" AND tag_targets.key_name = 'country' AND key_value LIKE '%us%'"
+     end
+      
+     sql += " WHERE tags.publisher_id = ?" +
+		" AND day >= ? AND day <= ?" +
+		" GROUP BY revenues.day, tags.size, network_name" + 
+		" ORDER BY day, size, ecpm DESC"; 
+
+     @revenue_reports = Revenue.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
 
   end
 

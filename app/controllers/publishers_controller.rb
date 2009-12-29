@@ -1,6 +1,6 @@
 class PublishersController < ApplicationController
   before_filter :require_user
-  before_filter :require_admin, :except => [:show, :ad_preview, :ad_formats, :quality_control, :site_info]
+  before_filter :require_admin, :only => [ :index, :create, :new, :edit ]
   before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats, :quality_control, :site_info]
 
   def index
@@ -11,7 +11,7 @@ class PublishersController < ApplicationController
     id = !current_user.is_admin? ? current_publisher.id : params[:id]
     @publisher = Publisher.find( id )
   end
-  
+
   def new
     @publisher = Publisher.new
   end
@@ -131,6 +131,9 @@ class PublishersController < ApplicationController
     else 
       @publisher = Publisher.first :order => "site_name"
     end
+    @networks = Network.find_by_sql(["SELECT * FROM networks WHERE id IN
+		(SELECT DISTINCT network_id from tags where tags.publisher_id = ? )
+		ORDER BY brand_safety_level DESC", @publisher.id])
   end
 
   def site_info 

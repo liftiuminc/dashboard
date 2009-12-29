@@ -1,43 +1,45 @@
-<!-- XXX FIXME heavily borrowed from data export -->
-
 <%= calendar_date_select_includes "silver" %>
 <div class="filter_form" id="tag_filter_form">
-  <form action="<%= revenues_url%>">
+  <form>
      <ul>
-        <li><%= label_tag :network %>
-            <select name="network_id" id="networkDD">
-              <option value="">
-              <%= options_from_collection_for_select @networks, :id, :network_name, params[:network_id].to_i %>
-            </select>
-        </li>
-        <li><b>-OR-</b></li>
-        <li><%= label_tag :publisher %>
+	<li><%= label_tag :publisher %>
             <select name="publisher_id" id="publisherDD">
               <option value="">
-              <%= options_from_collection_for_select @publishers, :id, :site_name, params[:publisher_id].to_i %>
+              <%= options_from_collection_for_select @publishers, :id, :site_name, @publisher_id.to_i %>
             </select>
+	    <%= link_to_remote "Filter Networks by Publisher", :update => "network_dd_html",
+		  :url => {:controller => "networks", :action => "dropdown" },
+		  :before => "$('network_dd_html').html = 'Laoding...'",
+		  :with => "'publisher_id=' + $('publisherDD').value"%>
         </li>
-<!--
-        <li><b>-AND-</b></li>
+	<li><%= label_tag :network %>
+	    <span id="network_dd_html">
+            <select name="network_id" id="networkDD">
+              <option value="">
+              <%= options_from_collection_for_select @networks, :id, :network_name, @network_id.to_i %>
+            </select>
+	    </span>
+        </li>
+	<li><%= label_tag :size %>
+            <select name="size" id="sizeDD">
+              <option value="">
+	     <%= options_from_collection_for_select @adformats, :size, :name_with_size, @size  %>
+	    </select>
+        </li>
         <li>
           <%= label_tag :date %>
-          <% s = !params[:day].blank? ? params[:day].to_s : "" %>
-          <%= calendar_date_select_tag "day", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>            
+          <%= calendar_date_select_tag "start_date", @start_date %>            
+	  TO
+          <%= calendar_date_select_tag "end_date", @end_date %>            
         </li>
--->
+        <li id="hide_filled_in"><%= label_tag :include_disabled, "Hide Filled-In Entries"%>
+            <%= radio_button_tag "only_empty", "", @only_empty || @only_empty.blank?%>No
+            <%= radio_button_tag "only_empty", "true", @only_empty == "true"%>Yes
+        </li>
         
-        <li><%= liftium_submit "Submit"%></li>
+        <li><%= liftium_submit "Filter List"%>
+            <%= liftium_reset %>
+        </li>
     </ul>
   </form>
 </div>
-<script>
-function dateSelect(select){
-    if (select.selectedIndex > 7) {
-        $("interval_day").checked = true;
-    }
-    if (select.selectedIndex > 0){
-        $("start_date").value = "";
-        $("end_date").value = "";
-    }
-}
-</script>

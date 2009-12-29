@@ -61,17 +61,6 @@ jennie:
   perishable_token: cDLW_OVbwuprn5li-xBN
   created_at: 2009-10-16 15:55:28
 
-veronica:
-  id: 48
-  email: veronica@liftium.com
-  admin: 1
-  crypted_password: 6628f62aa35ede056653adffbae5c55a4489408dac987e6ff5e83fd843d98be8beacab7486985576001a1656ef513135ac868438fb334d7d9ac29727923eb842
-  password_salt: nFo-gPcedo8xdrMG0AvQ
-  persistence_token: ee5f25041323d73f2a00306389bc8e0e91f7ee4266dc63aa5c44dd69fe280489c23be885256e15748ac12f288e97c50c1d7207c12f3beba1a0419560bc51bafa
-  single_access_token: bRGQ52JwyaHvNfj8u-aQ
-  perishable_token: FqEK8cPTwFQQ_jXhJNpa
-  created_at: 2009-10-16 15:55:49
-
 unit_test_publisher:
   id: 49
   email: unit_test_publisher@liftium.com

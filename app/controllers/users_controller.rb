@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 
   def change_password
     unless @user.valid_password?(params[:old_password])
-      flash[:error] = "Your current password was not correct."
+      flash.now[:error] = "Your current password was not correct."
       render :action => :new_change_password
       return
     end
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Your password has been successfully changed."
       redirect_to user_path(@user)
     else
-      flash[:error] = "Your new passwords did not match."
+      flash.now[:error] = "Your new passwords did not match."
       render :action => :new_change_password
       return
     end

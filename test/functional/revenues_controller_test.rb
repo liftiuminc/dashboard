@@ -13,8 +13,16 @@ class RevenuesControllerTest < ActionController::TestCase
   context "index action" do
     should "render index template" do
       login_as_admin
-      get :index
+      get :index, :commit => 1
       assert_template 'index'
+    end
+  end
+
+  context "index_results action" do
+    should "render index_results template" do
+      login_as_admin
+      get :index_results, :commit => 1
+      assert_template 'revenues/_results.html.erb'
     end
   end
   
@@ -34,23 +42,14 @@ class RevenuesControllerTest < ActionController::TestCase
     end
   end
   
-# FIXME -- these tests won't work without a 'tag' being provided
-#  context "create action" do
-#    should "render new template when model is invalid" do
-#      login_as_admin
-#      Revenue.any_instance.stubs(:valid?).returns(false)
-#      post :create
-#      assert_template 'new'
-#    end
-#    
-#    should "redirect when model is valid" do
-#      login_as_admin
-#      Revenue.any_instance.stubs(:valid?).returns(true)
-#      post :create
-#      assert_redirected_to revenue_url(assigns(:revenue))
-#    end
-# end
-  
+  context "discrepancies action" do 
+    should "render discrepancies template" do
+      login_as_admin
+      get :discrepancies
+      assert_template 'discrepancies'
+    end
+  end 
+
   context "edit action" do
     should "render edit template" do
       login_as_admin
@@ -59,7 +58,6 @@ class RevenuesControllerTest < ActionController::TestCase
     end
   end
   
-#FIXME
  context "update action" do
    should "render edit template when model is invalid" do
      login_as_admin

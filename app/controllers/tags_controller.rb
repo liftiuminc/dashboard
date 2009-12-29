@@ -36,8 +36,31 @@ class TagsController < ApplicationController
       @tags = filtered_tags
     end
 
-    flash[:warning] = "No matching tags found" if @tags.empty?
+    flash.now[:warning] = "No matching tags found" if @tags.empty?
   end
+
+  def bulk_update
+      saved = 0
+
+      tags = params[:tags]
+      for tag in tags do
+
+	# Update existing entry
+	@tag        = Tag.find(tag["id"])
+	@tag.attributes = tag
+	if @tag.changed?
+	   if @tag.save
+	     saved += 1
+	   else
+	     render :action => 'edit' and return
+	   end
+	end
+
+      end
+      flash[:notice] = "Updated " + saved.to_s + " tags."
+      redirect_to tags_url
+  end
+
 
   def show
     @tag = Tag.find(params[:id])
@@ -196,7 +219,7 @@ class TagsController < ApplicationController
 
   private
   def debug_sql
-    flash[:notice] = "<span style='font-size:smaller'>SQL: #{Tag.new.search_sql(params).inspect}</span>" if params[:debug]
+    flash.now[:notice] = "<span style='font-size:smaller'>SQL: #{Tag.new.search_sql(params).inspect}</span>" if params[:debug]
   end
 
   def save_filter_fields
@@ -222,7 +245,7 @@ class TagsController < ApplicationController
       # This will already fail for other reasons
       return
     elsif (tag.tag =~ /iframe/i or (tag.tag.empty? and tag.network.tag_template =~ /iframe/i)) and tag.publisher.xdm_iframe_path.blank? and !tag.always_fill
-      flash[:warning] = "Since the publisher's 'cross domain iframe path' is not set, this tag will not fill for HTML 4 browsers (IE 6/7)"
+      flash.now[:warning] = "Since the publisher's 'cross domain iframe path' is not set, this tag will not fill for HTML 4 browsers (IE 6/7)"
     end
   end
 

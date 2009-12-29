@@ -100,7 +100,7 @@ class ApplicationController < ActionController::Base
   ### break the tests in homes_controller verifying 403s. Mystery! Adding
   ### the #{RAILS_ROOT} here works for both tests. --Jos
   def permission_denied (msg)
-    flash[:notice] = msg
+    flash.now[:notice] = msg
     render(:file => "#{RAILS_ROOT}/public/403.html", :status => :forbidden)
   end
 
@@ -128,12 +128,12 @@ class ApplicationController < ActionController::Base
     if !current_user.is_admin?
       if current_publisher
         ### XXX FIXME there is probably a more ActiveRecordy way to handle this
-        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ? ORDER BY ad_format_name ASC)", current_publisher.id, 1])
+        @adformats = AdFormat.find_by_sql(["SELECT * FROM ad_formats WHERE size IN (SELECT size FROM tags where publisher_id = ? AND enabled = ?)", current_publisher.id, 1])
       else
         require_admin
       end
     else
-      @adformats = AdFormat.all :order => "ad_format_name ASC"
+      @adformats = AdFormat.all 
     end
 
   end

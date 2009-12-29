@@ -545,3 +545,89 @@ domain_2:
   value: 0.75
   size: "180x150"
   tag: 'This is a fill from Tag #101'
+
+exclude_tags1:
+  id: 110
+  publisher_id: 1042
+  tag_name: "Test: exclude tags 2"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 4
+  value: 1.00
+  size: "125x125"
+  tag: 'This is a fill from Tag #110'
+
+exclude_tags2:
+  id: 111
+  publisher_id: 1042
+  tag_name: "Test: exclude tags 2"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 5
+  value: 0.75
+  size: "125x125"
+  tag: 'This is a fill from Tag #111'
+
+# Chain for testing adjustedValue
+adjusted_value1:
+  id: 120
+  publisher_id: 1043
+  tag_name: "Test: adjusted value 1"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 1.00
+  size: "125x125"
+  tag: 'This is a fill from Tag #120'
+
+adjusted_value2:
+  id: 121
+  publisher_id: 1043
+  tag_name: "Test: adjusted value 2"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 0.90
+  size: "125x125"
+  tag: 'This is a fill from Tag #121'
+
+adjusted_value3:
+  id: 122
+  publisher_id: 1043
+  tag_name: "Test: adjusted value 3"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 0.80
+  size: "125x125"
+  tag: 'This is a fill from Tag #122'
+
+adjusted_value4:
+  id: 123
+  publisher_id: 1043
+  tag_name: "Test: adjusted value 4"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 5
+  value: 0.70
+  size: "125x125"
+  tag: 'This is a fill from Tag #123'
+
+adjusted_value5:
+  id: 124
+  publisher_id: 1043
+  tag_name: "Test: adjusted value 5"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 5
+  value: 0.25
+  size: "125x125"
+  tag: 'This is a always fill from Tag #124'
+

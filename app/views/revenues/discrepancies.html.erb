@@ -1,0 +1,96 @@
+<% title("Revenue Discrepancy Report") %>
+
+<%= render :partial => 'selector', :locals => { :show_submit => true } %>
+<script>$("hide_filled_in").hide()</script>
+
+Liftium loads <b>higher</b> than ad network, by # of <b>impressions</b>
+
+<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Network</th>
+    <th>Tag</th>
+    <th>Liftium Impressions</th>
+    <th>Network Impressions</th>
+    <th># difference</th>
+  </tr>
+  <% for revenue in @revenues_imp_higher do
+    tag = revenue.tag%>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+        <td class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
+        <td class="record_column"><%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.liftium_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.network_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.diff) %></td>
+    </tr>
+  <% end %>
+</table>
+<br />
+Liftium loads <b>higher</b> than ad network, by percentage <b>difference</b>
+
+<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Network</th>
+    <th>Tag</th>
+    <th>Liftium Impressions</th>
+    <th>Network Impressions</th>
+    <th>% difference</th>
+  </tr>
+  <% for revenue in @revenues_pct_higher do
+    tag = revenue.tag%>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+        <td class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
+        <td class="record_column"><%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.liftium_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.network_loads) %></td>
+        <td class="record_column"><%= (revenue.diff.to_f * 100).round(1) %>%</td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+Liftium loads <b>lower</b> than ad network, by # of <b>impressions</b>
+
+<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Network</th>
+    <th>Tag</th>
+    <th>Liftium Impressions</th>
+    <th>Network Impressions</th>
+    <th># difference</th>
+  </tr>
+  <% for revenue in @revenues_imp_lower do
+    tag = revenue.tag%>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+        <td class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
+        <td class="record_column"><%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.liftium_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.network_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.diff) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br />
+Liftium loads <b>lower</b> than ad network, by <b>percentage</b>
+
+<table class="record_listing" width="800" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Network</th>
+    <th>Tag</th>
+    <th>Liftium Impressions</th>
+    <th>Network Impressions</th>
+    <th>% difference</th>
+  </tr>
+  <% for revenue in @revenues_pct_lower do
+    tag = revenue.tag%>
+    <tr class="record_row_<%= cycle("odd", "even")%>">
+        <td class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %></td>
+        <td class="record_column"><%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.liftium_loads) %></td>
+        <td class="record_column"><%= number_with_delimiter(revenue.network_loads) %></td>
+        <td class="record_column"><%= (revenue.diff.to_f * 100).round(1) %>%</td>
+    </tr>
+  <% end %>
+</table>
+
+

@@ -1,4 +1,6 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <title><%= h(yield(:title) || "") %> - Liftium.com</title>
     <%= stylesheet_link_tag 'http://www.liftium.com/css/reset-min.css' %>
@@ -7,6 +9,7 @@
     <%= javascript_include_tag "prototype" %>
     <%= javascript_include_tag 'fastinit' %>
     <%= javascript_include_tag 'tablesort' %>
+    <%= javascript_include_tag "application" %>
     <%= feedback_includes %>
     <%= yield(:head) %>
   </head>
@@ -51,6 +54,7 @@
           <% if current_user.is_power_user? %>
             <li><%= link_to "Javascript Errors", javascript_errors_url %>	
             <li><%= link_to "Chain/Tag Mgmt", tags_url %>	          
+            <li><%= link_to "Discrepancy Report", "/revenues/discrepancies" %>
           <% end %>
 	  </ul>
        </div>

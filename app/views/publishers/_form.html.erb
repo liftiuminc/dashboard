@@ -46,7 +46,7 @@
     <div class="fieldset" id="publisher_notes">
       <%= f.label :publisher_notes %> 
       <span class="hint">additional notes for this publisher. Ex. "Call Bob for permission"</span><br />
-      <input type="text" size="30" name="note[publisher]" value="<%=h !@publisher.comments.empty? ? "#{@publisher.comments[0].comment}" : "" %>" />
+      <textarea rows="5" cols="60" name="note[publisher]"><%=h !@publisher.comments.empty? ? "#{@publisher.comments[0].comment}" : "" %></textarea>
     </div>
   <% end %>
   

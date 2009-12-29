@@ -81,4 +81,20 @@ class NetworksControllerTest < ActionController::TestCase
       assert !Network.exists?(network.id)
     end
   end
+
+  context "dropdown action with publisher_id" do
+    should "render dropdown template" do
+      login_as_admin
+      get :dropdown, :publisher_id => Publisher.first
+      assert_template 'networks/_dropdown.html.erb'
+    end
+  end
+
+  context "dropdown action withOUT publisher_id" do
+    should "render dropdown template" do
+      login_as_admin
+      get :dropdown
+      assert_template 'networks/_dropdown.html.erb'
+    end
+  end
 end

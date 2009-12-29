@@ -2,55 +2,6 @@
 
 <%= render :partial => 'selector', :locals => { :show_submit => true } %>
 
-<% if @tags %>
-    <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/padding added for IE 6 -->
-      <tr class="record_listing_header">
-        <th>Network</th>
-        <th>Publisher</th>
-        <th>Login</th>
-        <th>Size</th>
-        <th>Impressions</th>
-        <th>Clicks</th>
-        <th>Revenue</th>
-        <th>Ecpm</th>
-        <th colspan="3">Actions</th>
-        <th>Howto</th>
-      </tr>
-      <% for tag in @tags %>
-        <% pnl = PublisherNetworkLogin.first( :conditions => { 
-                    :publisher_id   => tag.publisher_id,
-                    :network_id     => tag.network_id } )
-                    
-           rev = Revenue.first( :conditions => { :tag_id   => tag.id  } )
-        %>                    
-
-        <tr class="record_row_<%= cycle("odd", "even")%>">
-          <td class="record_column"><%= link_to tag.network.network_name, tag.network %></td>
-
-          <td class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
-          <td class="record_column">
-            <%= render :partial => "shared/publisher_network_login_button", 
-                       :locals  => { :pnl => pnl, :network => tag.network, :show_hint => 1 } %>
-          </td>
-          <td class="record_column"><%= link_to tag.size, tag, :action => :show %><br><span class="hint"><%=h tag.tag_name %></span></td>
-          <td class="record_column"><%=h rev ? rev.attempts : "?"  %></td>
-          <td class="record_column"><%=h rev ? rev.clicks   : "?"  %></td>
-          <td class="record_column"><%=h rev ? rev.revenue  : "?"  %></td>          
-          <td class="record_column"><%=h rev ? rev.ecpm     : "?"  %></td>          
- 
-          <% if rev %>
-              <td class="record_column"><%= link_to "View", rev, :action => :show, :popup => true %>
-              <td class="record_action"><%= link_to "Edit", edit_revenue_path(rev), :popup => true %>
-              <td class="record_action"><%= link_to "Delete", rev, :confirm => 'Are you sure?', :method => "delete" %></td>
-          <% else %>
-            <td class="record_action">
-            <%= '<a href="' + new_revenue_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create", new_revenue_path(:tag_id => tag.id, :day => @day.to_s ), :popup => true ) %></td>
-             <td class="record_action"></td>
-             <td class="record_action"></td>             
-          <% end %>
-          <td class="record_column"><%= tag.network.scraping_instructions %></td>          
-        </tr>
-      <% end %>
-    </table>
+<% if @revenues && @revenues.length > 0%>
+  <%= render :partial => 'results' %>
 <% end %>
-

@@ -30,7 +30,7 @@
 <div id="wrapper">
 <div id="tag_details">
 
-<iframe id="tag_preview" src="<%= @tag.preview_url %>" style="<%=@tag.css_size%>;border:1px dashed #660099" marginheight="0" marginwidth="0" frameborder="0" scrolling="auto"></iframe>
+<iframe id="tag_preview" src="<%= @tag.preview_url %>" style="<%=@tag.css_size%>;border:1px dashed #660099" marginheight="0" marginwidth="0" frameborder="0" scrolling="no"></iframe>
 <p>
   <strong>Network:</strong>
   <%= current_user.is_admin? ? link_to( @tag.network.network_name, @tag.network) : @tag.network.network_name %>
@@ -41,11 +41,15 @@
 </p>
 <p>
   <strong>Size:</strong>
-  <%=h @tag.size %>
+  <%=h @tag.verbose_size %>
 </p>
 <p>
   <strong>Value:</strong>
   $<%=h @tag.value_s %>
+</p>
+<p>
+  <strong>Floor:</strong>
+  $<%=h @tag.floor_s %>
 </p>
 <p>
   <strong>Enabled:</strong>

@@ -1,0 +1,4 @@
+<select name="network_id" id="networkDD">
+<option value="">
+<%= options_from_collection_for_select @networks, :id, :network_name, @network_id.to_i %>
+</select>

@@ -1,26 +1,29 @@
 <%= calendar_date_select_includes "silver" %>
 
+<%- if @revenue.tag %>
 <p>
   <strong>Tag:</strong>
-  <%= link_to "#{@tag.tag_name} - #{@tag.size} (#{@tag.id})", @tag %>
+  <%= link_to "#{@revenue.tag.tag_name} - #{@revenue.tag.verbose_size} (#{@revenue.tag.id})", @revenue.tag %>
 </p>
 <p>
   <strong>Network:</strong>
-  <%= link_to "#{@tag.network.network_name} - #{@tag.network.pay_type}", @tag.network %>
+  <%= link_to "#{@revenue.tag.network.network_name} - #{@revenue.tag.network.pay_type}", @revenue.tag.network %>
 </p>
 
-<% if @tag.auto_update_ecpm %>
+<% if @revenue.tag.auto_update_ecpm %>
   <p style="color:orange">
     <strong>NOTE:</strong>
     <strong>Tag value is set to be updated automatically!</strong>
   </p>    
 <% end %>
 
+<%- end %>
+
 <% form_for @revenue do |f| %>
   <%= f.error_messages %>
 
   <!-- rails can't do this on it's own it seems, so we have to write it out -jos -->
-  <input type="hidden" id="revenue_tag_id" name="revenue[tag_id]" value="<%= @tag.id %>" />
+  <input type="hidden" id="revenue_tag_id" name="revenue[tag_id]" value="<%= @revenue.tag %>" />
 
   <div class="fieldset">
     <%= f.label :day %><br />
@@ -48,7 +51,7 @@
   <div class="fieldset">
     <%= f.label :rejects %>
     <span class="hint">Automatically set to 0 for 'Pay per Click'</span><br />
-    <% if @tag.network.pay_type == 'Per Click' %>
+    <% if @revenue.tag && @revenue.tag.network.pay_type == 'Per Click' %>
       <strong>0</strong>
     <% else %>
       <%= f.text_field :rejects %>

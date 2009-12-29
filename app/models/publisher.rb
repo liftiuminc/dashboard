@@ -40,21 +40,7 @@ class Publisher < ActiveRecord::Base
    end
    
    def active_networks( limit=0 )
-       i = limit ? limit.to_i : 0
-       
-       ### is there not 'grep'? :(
-       networks = self.tags.map { |tag| 
-                    if i > 0
-                      tag.network.id == i ? tag.network : nil
-                    else 
-                      tag.network
-                    end  
-                  }      
-
-       ### remove 'nil' with compact   
-       networks.compact!
-       networks.uniq!
-       return networks
+      Network.find_by_sql(["SELECT networks.* from networks WHERE enabled = ? AND id IN (SELECT DISTINCT network_id from tags where publisher_id = ?) ORDER BY network_name", 1, id])
    end
 
 end

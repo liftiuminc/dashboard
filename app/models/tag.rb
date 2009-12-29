@@ -26,6 +26,7 @@ class Tag < ActiveRecord::Base
   validates_numericality_of :frequency_cap, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1000, :allow_nil => true
   validates_numericality_of :rejection_time, :only_integer => true, :greater_than_or_equal_to => 0, :less_than => 1440, :allow_nil => true
   validates_numericality_of :value, :greater_than_or_equal_to => 0, :less_than => 100
+  validates_numericality_of :floor, :greater_than_or_equal_to => 0, :less_than => 100, :allow_nil => true
 
   ### From FB 16: Tags page should not allow "Always fill" with a rejection
   ### time limit set
@@ -33,6 +34,20 @@ class Tag < ActiveRecord::Base
   def always_fill_with_rejection_time
     if always_fill && rejection_time.to_i > 0
       errors.add_to_base "Always fill can not be true if rejection time is set"
+    end
+  end
+
+  validate :floor_higher_than_value
+  def floor_higher_than_value
+    if floor && floor.to_f > 0.0 && value.to_f < floor.to_f
+      errors.add_to_base "Value cannot be lower then floor"
+    end
+  end
+
+  validate :floor_with_always_fill
+  def floor_with_always_fill
+    if floor && floor.to_f > 0.0 && always_fill
+      errors.add_to_base "Always Fill cannot be set with a floor"
     end
   end
 
@@ -54,7 +69,11 @@ class Tag < ActiveRecord::Base
 
   # db returns 0.1. we want this to be 0.10
   def value_s
-    sprintf( "%.2f", value)
+    sprintf( "%.2f", value.to_f)
+  end
+
+  def floor_s
+    sprintf( "%.2f", floor.to_f)
   end
 
   def html
@@ -80,12 +99,17 @@ class Tag < ActiveRecord::Base
     "width:#{width}px;height:#{height}px;"
   end
 
+  def verbose_size
+    s = AdFormat.find_by_size(size)
+    "#{s.ad_format_name} (#{size})"
+  end
+
   def preview_url
      env = Rails.configuration.environment
      if env == "development" || env == "dev_mysql"
-	"http://delivery.dev.liftium.com/tag?tag_id=#{id}"
+	"http://delivery.dev.liftium.com/tag?tag_id=#{id}&cb=" + rand(9999999).to_s
      else
-	"http://delivery.liftium.com/tag?tag_id=#{id}"
+	"http://delivery.liftium.com/tag?tag_id=#{id}&cb="+ rand(9999999).to_s
      end
   end
 

@@ -73,4 +73,56 @@ class Revenue < ActiveRecord::Base
 
         return ( r / i ) * 1000
     end
+
+
+   def self.revenues_table (criteria)
+	query = ["SELECT revenues.id, COALESCE(revenues.tag_id, fills_day.tag_id) AS tag_id," + 
+		" revenues.user_id, revenues.attempts AS impressions, revenues.rejects," + 
+		" revenues.clicks, revenues.revenue, revenues.ecpm, " + 
+		" COALESCE(revenues.day, fills_day.day) AS day, fills_day.attempts AS liftium_attempts," +
+		" fills_day.rejects AS liftium_rejects, fills_day.loads AS liftium_loads" +
+		" FROM fills_day" + 
+		" LEFT OUTER JOIN revenues ON fills_day.tag_id = revenues.tag_id AND revenues.day = fills_day.day" + 
+		" INNER JOIN tags ON tags.id = fills_day.tag_id" +
+		" WHERE fills_day.attempts > 50 "]
+
+	if criteria["publisher_id"] && criteria["publisher_id"].to_i > 0
+	  query[0] += " AND tags.publisher_id = ?"
+	  query.push(criteria["publisher_id"])
+        end
+
+	if criteria["size"] && !criteria["size"].blank?
+	  query[0] += " AND tags.size = ?"
+	  query.push(criteria["size"])
+        end
+
+	if criteria["network_id"] && criteria["network_id"].to_i > 0
+	  query[0] += " AND tags.network_id = ?"
+	  query.push(criteria["network_id"])
+        end
+
+	{   :start_date     => " AND fills_day.day  >= ?",
+	    :end_date       => " AND fills_day.day <= ?"
+	}.each do |param, condition|
+	  if !criteria[param].to_s.blank?
+	    query[0] += condition 
+	    query.push( criteria[param].to_time.to_s( :db ) )
+	  end
+	end
+
+	# Only show blank ones
+	if criteria["only_empty"] && !criteria["only_empty"].blank?
+	   query[0] += " AND revenues.revenue IS NULL"
+	end
+
+        query[0] += " ORDER BY tags.publisher_id, tags.network_id, tag_id, day DESC "
+
+	if !criteria["limit"]
+          query[0] += " LIMIT 100"
+        else 
+          query[0] += " LIMIT " + criteria["limit"].to_i.to_s
+	end
+
+	find_by_sql(query)
+   end
 end
