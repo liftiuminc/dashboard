@@ -36,8 +36,7 @@ class FillsBase < ActiveRecord::Base
     ### XXX FIXME this should probably be using sanitize_sql_hash_for_conditions
 
     ### dispatch table
-    {   :enabled        => "enabled",
-        :publisher_id   => "publisher_id",
+    {   :publisher_id   => "publisher_id",
         :network_id     => "network_id",
         :size           => "size",
         ### not used currently
