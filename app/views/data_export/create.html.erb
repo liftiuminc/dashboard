@@ -15,7 +15,7 @@ total_clicks = 0
     <th class"sortfirstdesc"><%= @fill_stats[0].time_name %></th>
     <th>Attempts</th>
     <th>Liftium Impressions</th>
-   <%- if params[:interval] == "day" %>
+   <%- if params[:interval] == "day" and current_user.admin? %>
     <th>Network Impressions</th>
    <%- end %>
     <th>Rejects</th>
@@ -69,7 +69,7 @@ total_clicks = 0
       <td class="record_column"><%=fill_stat.time%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
-    <%- if rev  %>
+    <%- if rev and current_user.admin? %>
       <td class="record_column"><%= number_with_delimiter( rev.attempts )%></td>
     <%- end %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
