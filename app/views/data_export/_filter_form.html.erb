@@ -35,10 +35,14 @@
 	    </select>
 	</li>
 
+      <%- if current_user.admin? %>
 	<li><%= label_tag :interval%>
 	    <%= radio_button_tag "interval", "day", params[:interval]=="day" || params[:interval].blank? %>Day <span class="hint">(include eCPM data)</span>
 	    <%= radio_button_tag "interval", "hour", params[:interval]=="hour"%>Hour
 	    <%= radio_button_tag "interval", "minute", params[:interval]=="minute" %>Minute
+      <%- else %>
+	    <%= hidden_field_tag "interval", "daily"%>
+      <%- end %>
 
 	<li><%= label_tag :format, "Ouptut to"%>
 	    <%= radio_button_tag "format", "html", params[:format]!="csv"%>Screen <span class="hint">(max <%= @limit %> results)</span>
