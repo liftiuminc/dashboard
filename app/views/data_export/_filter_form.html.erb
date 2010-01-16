@@ -61,7 +61,9 @@
 	    From <%= calendar_date_select_tag "start_date", s, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>
 	    To <%= calendar_date_select_tag "end_date", e, :time => "mixed", :onKeyDown=> "$('date_selectDD').selectedIndex=0" %>
         </li>
-	<li><%= liftium_submit "Retrieve Stats"%></li>
+	<li><%= liftium_submit "Retrieve Stats"%>
+            <%= liftium_reset %>
+	</li>
   </form>
 </div>
 <script>
