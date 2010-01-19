@@ -46,7 +46,7 @@ class HomesController < ApplicationController
     # FIXME move to model once Jos' is done refactoring
     # REALLYFIXME. What a mess.
     col = model.new.time_column
-    sql = "SELECT * FROM #{model.table_name}"+
+    sql = "SELECT SUM(loads) AS loads, #{col} FROM #{model.table_name}"+
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
         " AND #{col} >= ?  AND #{col} <= ? GROUP BY #{col} ORDER by #{col} DESC"
         
