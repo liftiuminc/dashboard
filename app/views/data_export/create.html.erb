@@ -1,6 +1,7 @@
 <% title "Reporting"
 total_ecpm = total_revenue = 0.00
 total_clicks = 0
+total_network_attempts = 0
  %>
 <%= render :partial => 'filter_form' %>
 
@@ -13,18 +14,15 @@ total_clicks = 0
     <th>Tag</th>
     <th>Size</th>
     <th class"sortfirstdesc"><%= @fill_stats[0].time_name %></th>
-    <th>Attempts</th>
+   <%- if current_user.admin? %>
+    <th>Liftium Attempts</th>
     <th>Liftium Impressions</th>
-   <%- if params[:interval] == "day" and current_user.admin? %>
-    <th>Network Impressions</th>
    <%- end %>
-    <th>Rejects</th>
    <%- if params[:interval] == "day" %>
+    <th>Network Impressions</th>
+    <th>Rejects</th>
     <th>Clicks</th>
    <%- end %>
-   <% if current_user.is_admin? %>
-    <th>Slip</th>
-   <% end %> 
     <th>Fill Rate</th>
    <%- if params[:interval] == "day" %>
     <th>Revenue</th>
@@ -67,24 +65,24 @@ total_clicks = 0
         </td>
       <td class="record_column" title="<%=h fill_stat.tag.verbose_size %>"><%= fill_stat.tag.size%></a></td>
       <td class="record_column"><%=fill_stat.time%></td>
+    <% if current_user.is_admin? %>
       <td class="record_column"><%= number_with_delimiter(fill_stat.attempts)%></td>
       <td class="record_column"><%= number_with_delimiter(fill_stat.loads)%></td>
-    <%- if rev and current_user.admin? %>
-      <td class="record_column"><%= number_with_delimiter( rev.attempts )%></td>
     <%- end %>
-      <td class="record_column"><%= number_with_delimiter(fill_stat.rejects)%></td>
-    <%- if rev  %>
-      <td class="record_column"><%= number_with_delimiter( rev.clicks )%></td>
+    <% if params[:interval] == "day" %> 
+      <td class="record_column"><%= rev ? number_with_delimiter( rev.attempts ) : "0" %></td>
+      <td class="record_column"><%= number_with_delimiter(fill_stat.rejects) %></td>
+      <td class="record_column"><%= rev ? number_with_delimiter( rev.clicks ) : "0" %></td>
     <%- end %>
-      <td class="record_column"><%= number_with_delimiter(fill_stat.slip)%></td>
       <td class="record_column">
-        <% if current_user.is_admin? %>
+        <% if current_user.power_user? %>
           <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => fill_stat.tag.id %>"><%= fill_stat.fill_rate%>%</a>
         <% else %>
           <%= fill_stat.fill_rate %>%
         <% end %>
       </td>
     <%- if rev
+	total_network_attempts += rev.attempts.to_i
 	total_revenue += rev.revenue.to_f
 	total_ecpm += rev.ecpm.to_f
 	total_clicks += rev.clicks.to_i
@@ -98,13 +96,15 @@ total_clicks = 0
   <tfoot>
     <tr class="record_row_<%= cycle("odd", "even")%>" style="font-weight: bold">
       <td class="record_column" colspan="5">Totals</td>
+    <% if current_user.is_admin? %>
       <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:attempts))%></td>
       <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:loads))%></td>
-      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:rejects))%></td>
+    <%- end %>
     <%- if params[:interval] == "day" %>
+      <td class="record_column"><%= number_with_delimiter(total_network_attempts)%></td>
+      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:rejects))%></td>
       <td class="record_column"><%= number_with_delimiter(total_clicks)%></td>
     <%- end %>
-      <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:attempts) - (@fill_stats.sum(&:loads) + @fill_stats.sum(&:rejects)))%></td>
       <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(@fill_stats.sum(&:loads), @fill_stats.sum(&:attempts)).to_s + "%": "-" %></td>
     <%- if params[:interval] == "day" %>
       <td class="record_column">$<%= total_revenue.round(2)%></td>

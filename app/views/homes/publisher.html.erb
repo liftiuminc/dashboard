@@ -26,6 +26,8 @@ ecpm graph data: <%= debug(@ecpm_graph_data) %><hr />
 revenues <%= debug(@revenues) %>
 revenue <%= debug(@revenue) %><hr />
 revenue_reports <%= debug(@revenue_reports) %>
+revenues_impressions = <%= @revenues.sum(&:attempts) %>
+revenues_total =  <%= @revenues.sum(&:revenue) %>
 <% @show_revenue = true %>
 <% end %>
 
@@ -99,6 +101,7 @@ window.onload=function(){
 <!-- I know the cool kids use CSS and tableless layout. I'm not cool. -->
 <table id="publisher_home_charts">
   <tr>
+<%- if current_user.admin?  %>
     <td width="33%">
 	<div id="impressions_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
@@ -117,7 +120,7 @@ window.onload=function(){
 	<%= percentage_difference(@previous_impressions, @impressions) %>
 	-->
     </td>
-<%- if @show_revenue  %>
+  <%- end %>
     <td width="33%">
 	<div id="revenue_chart" class="publisher_chart">Loading chart...</div>
 	<script type="text/javascript">
@@ -160,7 +163,6 @@ window.onload=function(){
 	<%= percentage_difference(@previous_ecpm, @ecpm) %>
 	-->
     </td>
-  <%- end %><!-- show revenue -->
   </tr>
 </table>
 

@@ -124,7 +124,7 @@ class HomesController < ApplicationController
       end
     end
 
-    @ecpm = Revenue.calculate_ecpm(@impressions, @revenue)
+    @ecpm = Revenue.calculate_ecpm(@revenues.sum(&:attempts), @revenue)
     @previous_ecpm = Revenue.calculate_ecpm(@previous_impressions, @previous_revenue)
 
 # Went in a different direction 
