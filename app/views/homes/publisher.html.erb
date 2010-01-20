@@ -176,6 +176,8 @@ window.onload=function(){
   US Only |
   <a href="/homes/publisher?&publisher_id=<%=@publisher.id%>">All Traffic</a> 
 <%- end %>
+| <a href="#" onClick="javascript:$$('.revenue_row').each(Element.toggle)">Toggle Networks</a>
+
 <br />
 <br />
 <table class="record_listing" width="100%">
@@ -195,7 +197,7 @@ window.onload=function(){
 	size_imp += ar.attempts.to_i
 	size_revenue += ar.revenue.to_f
   %>
-    <tr class="record_row_<%= cycle("odd", "even")%>">
+    <tr class="record_row_<%= cycle("odd", "even")%> revenue_row">
       <td class="record_column"><%=h ar.day.strftime('%m/%d/%Y')%></td>
       <td class="record_column"><%=h ar.size%></td>
       <td class="record_column" style="width:200px"><%=h ar.network_name%></td>
