@@ -1,17 +1,22 @@
-<%= render :partial => 'shared/select_timeframe' %>
+<%
+@title_bar_right_text = "<form id='publisher_home_form'>" + date_range_dropdown("Select Timeframe...")
 
-<% if current_user.is_admin? %>
-  <% @show_revenue = true %>
+if current_user.admin?
+	@title_bar_right_text += publisher_dropdown("Select a Publisher...") 
+end
 
-  <% @title_bar_right_text += publisher_dropdown "Select a Publisher..."%>
-  <script>
-  function publisherSelect(dd){
-          window.location.href = window.location.pathname + '?publisher_id=' + escape(dd.options[dd.selectedIndex].value);
-  }
-  </script>
-<% end %>
+@title_bar_right_text += '</form>' 
 
-<% title @publisher.site_name %>
+@range = date_range_to_graph_range(params[:date_select]) 
+title @publisher.site_name 
+%>
+<script>
+function dateSelect(dd){
+	$("publisher_home_form").submit();
+}
+publisherSelect = dateSelect;
+</script>
+
 <%= javascript_include_tag "jscharts" %>
 
 <% if params[:debug] %>
@@ -28,7 +33,6 @@ revenue <%= debug(@revenue) %><hr />
 revenue_reports <%= debug(@revenue_reports) %>
 revenues_impressions = <%= @revenues.sum(&:attempts) %>
 revenues_total =  <%= @revenues.sum(&:revenue) %>
-<% @show_revenue = true %>
 <% end %>
 
 <style type="text/css">

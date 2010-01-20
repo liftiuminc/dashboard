@@ -31,7 +31,7 @@ module LayoutHelper
 	publishers = @publishers || Publisher.all(:order => "site_name")
 	out = '<select name="publisher_id" id="publisher_selectDD" onChange="window.publisherSelect && publisherSelect(this)">
 		<option value="">' + firstOption +
-		options_from_collection_for_select(publishers, "id", "site_name", params[:publisher_id]) +
+		options_from_collection_for_select(publishers, "id", "site_name", @publisher.id || params[:publisher_id]) +
               '</select>'
   end
 

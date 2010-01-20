@@ -22,6 +22,7 @@ class HomesController < ApplicationController
 	  @publisher = Publisher.find(params[:publisher_id])
         else 
 	  @publisher = Publisher.first;
+          params[:publisher_id] = @publisher.id
         end
     else 
 	@publisher = current_user.publisher
