@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   before_filter :allowed_publishers
 
   def index
-    @users = User.all
+    @users = User.all(:order => "email");
   end
 
   def show
