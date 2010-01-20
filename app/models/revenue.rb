@@ -54,15 +54,15 @@ class Revenue < ActiveRecord::Base
     }
     
     ### update ecpm if the tag's setup to do so
-    after_save { |r|
-      tag = r.tag
-      if tag.auto_update_ecpm
-        if rev = tag.most_recent_ecpm
-          tag.value = rev.ecpm
-          tag.save
-        end
-      end
-    }
+#    after_save { |r|
+#      tag = r.tag
+#      if tag.auto_update_ecpm
+#        if rev = tag.most_recent_ecpm
+#          tag.value = rev.ecpm
+#          tag.save
+#        end
+#      end
+#    }
 
     def self.calculate_ecpm (impressions, revenue)
         i = impressions.to_i
