@@ -29,7 +29,7 @@ Last 100
       <td class="record_column"><a target="_blank" title="<%=h javascript_error.url %>" href="<%=h javascript_error.url %>"><%=h truncate(javascript_error.url, :length => 50) %></a><br />
 	Line #<%=h javascript_error.line %></td>
       <td class="record_column"><span title="<%=h javascript_error.message %>"><%=h truncate(javascript_error.message, :length => 75) %></span></td>
-      <td nowrap="true" class="record_column"><%= time_ago_in_words(javascript_error.created_at) %></td>
+      <td nowrap="true" class="record_column"><%= javascript_error.created_at %></td>
       <td class="record_action"><%= link_to "View", javascript_error, :action=> :show %></td>
     </tr>
   <% end %>
