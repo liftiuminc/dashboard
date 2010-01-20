@@ -17,17 +17,17 @@
     <%= f.text_field :site_keywords %>
   </div>
   <div class="fieldset">
-    <%= f.label :category %><br />
-    <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
-  </div>
-  <div class="fieldset">
     <%= f.label :privacy_policy, "Site has a Privacy Policy", :class => "left_label"%>
     <%= radio_button "publisher", "privacy_policy", "true"%>Yes
     <%= radio_button "publisher", "privacy_policy", "false"%>No
   </div>
   <div class="fieldset">
-    <%= f.label :brand_safety_level %><br />
-    <%= f.text_field :brand_safety_level %>
+    <%= f.label :category %><br />
+    <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :brand_safety_level %> <span class="hint">1=janky, 10=Text</span><br />
+    <%= select("publisher", "brand_safety_level", [1,2,3,4,5,6,7,8,9,10], {:include_blank => true}) %>
   </div>
   <div class="fieldset">
     <%= f.label :hoptime, "Hop Time" %><br />
