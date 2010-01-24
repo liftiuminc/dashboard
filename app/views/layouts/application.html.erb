@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <title><%= h(yield(:title) || "") %> - Liftium.com</title>
-    <%= stylesheet_link_tag 'http://www.liftium.com/css/reset-min.css' %>
     <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css?1' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
@@ -51,6 +50,7 @@
           <li><%= link_to "Ad Quality Settings", :controller=> "publishers", :action => "quality_control" %>	
           <li><%= link_to "Reporting", data_export_url %>	
           <li><%= link_to "Tag Generator", tag_generator_url %>	
+          <li><%= link_to "Terms & Conditions", :controller=> "publishers", :action => "terms_and_conditions"  %>	
           <% if current_user.is_power_user? %>
             <li><%= link_to "Javascript Errors", javascript_errors_url %>	
             <li><%= link_to "Chain/Tag Mgmt", tags_url %>	          

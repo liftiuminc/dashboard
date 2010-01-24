@@ -1,5 +1,5 @@
 class PublishersController < ApplicationController
-  before_filter :require_user
+  before_filter :require_user, :except => [ :terms_and_conditions ]
   before_filter :require_admin, :only => [ :index, :create, :new, :edit ]
   before_filter :allowed_publishers, :only => [:ad_preview, :ad_formats, :quality_control, :site_info]
 
@@ -143,6 +143,12 @@ class PublishersController < ApplicationController
       @publisher = current_user.publisher
     else 
       @publisher = Publisher.first :order => "site_name"
+    end
+  end
+
+  def terms_and_conditions 
+    if params[:nolayout]
+	render :layout => false
     end
   end
 

@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :movers
   map.network_dropdown "networks/dropdown", :controller => "networks", :action => "dropdown"
   map.resources :networks, :has_many => :network_tag_options
+  map.publisher_terms_and_conditions 'publishers/terms_and_conditions', :controller => 'publishers', :action => 'terms_and_conditions'
   map.publisher_ad_formats 'publishers/ad_formats', :controller => 'publishers', :action => 'ad_formats'
   map.publisher_save_ad_formats 'publishers/save_ad_formats', :controller => 'publishers', :action => 'save_ad_formats'
   map.publisher_quality_control 'publishers/quality_control', :controller => 'publishers', :action => 'quality_control'
