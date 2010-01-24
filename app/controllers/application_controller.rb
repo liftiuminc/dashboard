@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_acts_as_changelogable_current_user
   before_filter :set_time_zone
+  before_filter :require_tac, :except => [:publishers]
 
   private
 
@@ -155,4 +156,19 @@ class ApplicationController < ActionController::Base
       find_all_publishers
     end
   end
+
+  def require_tac 
+     if params[:controller] == "publishers"
+	# Avoid recursion and allow basic editing of the account without TOC
+	return
+     end
+        
+     # FIXME properly test the require_tac functionality with a unit test
+     if ENV['RAILS_ENV'] != 'test' and current_user and current_user.publisher and current_user.publisher.accepted_tac.nil?
+      store_location
+      flash[:notice] = "It looks like you have yet to accept the Liftium Terms & Conditions. Please accept the terms and conditions to continue"
+      redirect_to :controller => :publishers, :action => "terms_and_conditions"
+     end
+  end
+
 end
