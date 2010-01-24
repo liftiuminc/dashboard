@@ -44,7 +44,7 @@ class Publisher < ActiveRecord::Base
    end
 
    def accepted_tac_s
-      accepted_tac ? "Yes" : "No"
+      accepted_tac ? accepted_tac : "No"
    end
 
 end
