@@ -43,4 +43,8 @@ class Publisher < ActiveRecord::Base
       Network.find_by_sql(["SELECT networks.* from networks WHERE enabled = ? AND id IN (SELECT DISTINCT network_id from tags where publisher_id = ?) ORDER BY network_name", 1, id])
    end
 
+   def accepted_tac_s
+      accepted_tac ? "Yes" : "No"
+   end
+
 end

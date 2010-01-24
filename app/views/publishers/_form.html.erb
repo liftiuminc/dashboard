@@ -22,6 +22,11 @@
     <%= radio_button "publisher", "privacy_policy", "false"%>No
   </div>
   <div class="fieldset">
+    <%= f.label :accepted_tac, "Has accepted T&C", :class => "left_label"%>
+    <%= radio_button "publisher", "accepted_tac", "true"%>Yes
+    <%= radio_button "publisher", "accepted_tac", "false"%>No
+  </div>
+  <div class="fieldset">
     <%= f.label :category %><br />
     <%= select("publisher", "category", Publisher::CATEGORIES, {:include_blank => true}) %>
   </div>

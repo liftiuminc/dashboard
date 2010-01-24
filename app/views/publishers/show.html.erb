@@ -44,6 +44,10 @@
     <strong>Note:</strong>
     <%=h !@publisher.comments.empty? ? "#{@publisher.comments[0].comment}" : "-"%> 
   </p>
+  <p>
+    <strong>Has accepted <%= link_to "Terms & Conditions", :controller=> "publishers", :action => "terms_and_conditions"  %></strong>
+    <%=h @publisher.privacy_policy_s %>
+  </p>
 <% end %>
 
 <p>

@@ -2,7 +2,8 @@
   <% title "Liftium Terms and Conditions"%>
   <a href="?nolayout=1" target="_blank">Printable</a>
   <p>
-<% else %>
+  <div id="terms_and_conditions" style="overflow:auto; height: 450px">
+<%- else %>
   <h2 style="padding-left:0px;">Liftium Terms and Conditions</h2>
 <%-end %>
 
@@ -177,3 +178,17 @@ foregoing, Liftium may assign this Agreement to any third-party at any time with
 
 <p align='justify'>The Liftium name and logo, and all related product and service names, design marks and slogans are the trademarks or registered trademarks of Liftium, Inc. All other product and service marks contained herein are the trademarks of their respective owners. You may not use any Liftium trademarks or logos without the prior written consent of Liftium.</p>
 
+<%-if !params[:nolayout] %>
+  </div><!-- id=terms_and_conditions -->
+  <hr />
+  <form>
+  <%-if current_user.publisher.accepted_tac.nil? %>
+     <input type="submit" name="accept" value="I accept"/>
+  <%-else %>
+    Accepted on <%= current_user.publisher.accepted_tac %>
+    <%- if current_user.admin? %>
+      <input type="submit" name="revoke" value="Revoke"/>
+    <%-end %>
+  <%-end %>
+  </form>
+<%- end %>

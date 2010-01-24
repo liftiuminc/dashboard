@@ -8,6 +8,7 @@
     <th>Brand Safety Level</th>
     <th>Hop Time</th>
     <th>Category</th>
+    <th>T&amp;C</th>
     <th>Preview</th>
     <th colspan="4">Actions</th>
   </tr>
@@ -23,6 +24,7 @@
       <td class="record_column"><%=h publisher.brand_safety_level ? publisher.brand_safety_level : "-" %></td>
       <td class="record_column"><%=h publisher.hoptime ? number_with_delimiter(publisher.hoptime) : "-"%></td>
       <td class="record_column"><%=h publisher.category ? publisher.category : "-"%></td>
+      <td class="record_column"><%= publisher.accepted_tac ? image_tag("/images/icons/tick.png") : image_tag("/images/icons/cross.png") %></td>
       <td class="record_column"><%= link_to publisher.tags.length.to_s + " ads", :controller => "publishers", :action => :ad_preview, :id => publisher %></td>
       <td class="record_action"><%= link_to "View", publisher, :action=> :show %></td>
       <td class="record_action"><%= link_to "Edit", edit_publisher_path(publisher) %></td>

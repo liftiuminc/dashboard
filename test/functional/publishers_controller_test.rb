@@ -140,4 +140,12 @@ class PublishersControllerTest < ActionController::TestCase
     end
   end
 
+  context "terms_and_conditions as publisher" do
+    should "render terms_and_conditions template" do
+      login_as_publisher
+      get "terms_and_conditions"
+      assert_template 'terms_and_conditions'
+    end
+  end
+
 end

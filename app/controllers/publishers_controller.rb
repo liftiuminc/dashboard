@@ -147,8 +147,22 @@ class PublishersController < ApplicationController
   end
 
   def terms_and_conditions 
+    if params[:accept] 
+      @publisher = current_user.publisher
+      @publisher.accepted_tac = Time.now
+      if @publisher.save
+        flash[:notice] = "Terms and Conditions accepted";
+      end
+    elsif params[:revoke] 
+      @publisher = current_user.publisher
+      @publisher.accepted_tac = nil
+      if @publisher.save
+        flash[:notice] = "Terms and Conditions revoked";
+      end
+    end
+
     if params[:nolayout]
-	render :layout => false
+	render :layout => "bare"
     end
   end
 
