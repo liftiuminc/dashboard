@@ -1,3 +1,6 @@
+<% if !current_user 
+  params[:nolayout]=1
+end %>
 <%-if !params[:nolayout] %>
   <% title "Liftium Terms and Conditions"%>
   <a href="?nolayout=1" target="_blank">Printable</a>
