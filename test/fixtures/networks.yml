@@ -15,6 +15,7 @@ google_ad_width = %@width@%;
 google_ad_height = %@height@%;
 </script>
 <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>'
+  brand_safety_level: 10
 
 tf:
   id: 2
@@ -23,6 +24,7 @@ tf:
   supports_threshold: true
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 5
 
 Ad:
   id: 3
@@ -31,6 +33,7 @@ Ad:
   supports_threshold: true
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 5
 
 AdBrite:
   id: 4
@@ -39,6 +42,7 @@ AdBrite:
   supports_threshold: true
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 5
 
 ContextWeb:
   id: 5
@@ -47,6 +51,7 @@ ContextWeb:
   supports_threshold: true
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 5
 
 GAO:
   id: 6
@@ -55,6 +60,7 @@ GAO:
   supports_threshold: false
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 4
 
 test:
   id: 42
@@ -63,6 +69,7 @@ test:
   supports_threshold: true
   pay_type: "Per Impression"
   default_always_fill: false
+  brand_safety_level: 4
 
 test_us_only:
   id: 43
@@ -72,4 +79,5 @@ test_us_only:
   pay_type: "Per Impression"
   default_always_fill: false
   us_only: true
+  brand_safety_level: 4
 
