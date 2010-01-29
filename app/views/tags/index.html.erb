@@ -198,7 +198,6 @@
       <% end %>
 	<% fill_stats = tag.get_fill_stats("last 60 minutes")%>
 	<%- if fill_stats[:attempts] > 0 %>
-<%= tag.floor %>
 
 	  <%= number_with_delimiter(fill_stats[:attempts]).to_s + " attempts "%><br />
 	  <%- if fill_stats[:fill_rate].to_i < 15 %>
