@@ -105,7 +105,7 @@
    <%-else%>
     <tr class="record_row_<%= cycle("odd", "even")%>">
    <%-end%>
-      <td nowrap="true" class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
+      <td class="record_column"><%= link_to tag.publisher.site_name, tag.publisher %></td>
       <td class="record_column"><%= current_user.is_admin? ? link_to( tag.network.network_name, tag.network) : tag.network.network_name %>
 	<br />
         <%- pnl = PublisherNetworkLogin.first( :conditions => { :publisher_id => tag.publisher_id, :network_id => tag.network_id }) %>
@@ -198,8 +198,15 @@
       <% end %>
 	<% fill_stats = tag.get_fill_stats("last 60 minutes")%>
 	<%- if fill_stats[:attempts] > 0 %>
+
 	  <%= number_with_delimiter(fill_stats[:attempts]).to_s + " attempts "%><br />
-	  <span style="<%= fill_stats[:fill_rate].to_i < 15 ? "color:red" : "" %>">
+	  <%- if fill_stats[:fill_rate].to_i < 15 %>
+	     <span style="color:red" title="Fill rate is very low. Better geo targeting? Rejection time?"> 
+	  <%- elsif fill_stats[:fill_rate].to_i == 100 && !tag.floor.nil? %>
+	     <span style="background-color:#FF9999; color:black; weight:bold" title="Fill rate is 100%, but a floor is set. This usually indicates that the backup tag is not set up correctly">
+	  <%- elsif fill_stats[:fill_rate].to_i > 85 && !tag.floor.nil? %>
+	     <span style="color:red" title="Fill rate is very high. Is the floor too low?">
+	  <%-end %>
 	  <%= number_with_delimiter(fill_stats[:fill_rate]).to_s + "% filled" %>
 	  </span>
 	<%- else %>
