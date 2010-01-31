@@ -1,4 +1,3 @@
-
 "Ad.com":
     action: ""
     url: ""    
@@ -12,6 +11,12 @@
     params: 
       username: <%= user %>
       pword:    <%= pass %>
+
+"Advertise Your Game"
+    action: "http://advertiseyourgame.com/index.php?view=login"
+    params: 
+      l_email: <%= user %>
+      l_pass: <%= pass %>
 
 "Burst Media":
     action: "https://www.burstmedia.com/PUBLISHERS/login.aspx"
@@ -64,6 +69,13 @@
 #     params: 
 #       username: <%= user %>
 #       password: <%= pass %>
+
+"Gorilla Nation":
+    action: "https://pubops.gorillanation.com/pubops_account/login"
+    params:
+      login: <%= user %>
+      password: <%= pass %>
+      commit: "Log in"
 
 
 "Kitara":
