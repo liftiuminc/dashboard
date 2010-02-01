@@ -12,7 +12,7 @@ class TagsController < ApplicationController
     conditions = session[:tag_params] || {}
 
     ### arbitrary 50 record limit in the model code
-    conditions[:limit] = 250
+    conditions[:limit] = 100
   
     ### you can only find things for YOUR publisher
     if !current_user.is_admin?
