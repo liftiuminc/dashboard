@@ -1,18 +1,28 @@
-"Ad.com":
-    action: ""
-    url: ""    
-    params: 
-      username: <%= user %>
-      password: <%= pass %>
-
-
 "AdBrite":
     action: "https://www.adbrite.com/mb/commerce/login.php"
     params: 
       username: <%= user %>
       pword:    <%= pass %>
 
-"Advertise Your Game"
+"AdFunky":
+    action: "https://my.yieldmanager.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+"AdNet":
+    action: "https://my.yieldmanager.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+"Adtegrity.com":
+    action: "https://my.yieldmanager.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
+"Advertise Your Game":
     action: "http://advertiseyourgame.com/index.php?view=login"
     params: 
       l_email: <%= user %>
@@ -84,6 +94,14 @@
       'signin[username]': <%= user %>
       'signin[password]': <%= pass %>
 
+"Mediosone":
+    action: "http://my.mediosone.com"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+      Login: "LOGIN"
+
+
 "Microsoft PubCenter":
     action: "https://beta.pubcenter.microsoft.com/"
     url: "https://beta.pubcenter.microsoft.com/"
@@ -114,6 +132,10 @@
       username:         <%= user %>
       password:         <%= pass %>
       'method:login':   'Sign in'
+
+# They have a captcha
+"Pulse 360":
+     action: "https://ads.pulse360.com/login.html"
 
 "RealTechNetwork":
     action: "http://publisher.contextualmarketplace.com/checklogin.php"
@@ -173,6 +195,13 @@
       user_name:    <%= user %>
       password:     <%= pass %>
 
+"Vibrant":
+    action: "https://www.vibrantmedia.com/login.asp"
+    params: 
+      userName: <%= user %>
+      password: <%= pass %>
+      login_button: "Login"
+
 
 "VideoEgg":
     action: "https://partners.videoegg.com/p/eap/h/1"
@@ -189,3 +218,10 @@
       password: <%= pass %>
       action:   call
       formName: login
+
+"Xtend Media":
+    action: "https://my.yieldmanager.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
