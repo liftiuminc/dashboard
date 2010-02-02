@@ -116,7 +116,7 @@ class FillsBase < ActiveRecord::Base
 
     @outfile = "fills_" + time_name + "_" + Time.now.strftime("%m-%d-%Y") + ".csv"
     
-    total_attempts = total_loads = total_rejects = total_slip = 0
+    total_attempts = total_loads = total_rejects = total_slip = total_network_imp = 0
 
     csv_data = FasterCSV.generate do |csv|
       csv << [
@@ -165,7 +165,7 @@ class FillsBase < ActiveRecord::Base
 	total_loads,
 	total_rejects,
 	total_slip,
-        FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%"
+	"-"
       ] 
 
     end
@@ -178,7 +178,7 @@ class FillsBase < ActiveRecord::Base
 
     @outfile = "fills_" + time_name + "_" + Time.now.strftime("%m-%d-%Y") + ".csv"
     
-    total_attempts = total_loads = total_rejects = total_slip = total_clicks = 0
+    total_attempts = total_loads = total_rejects = total_slip = total_clicks = total_network_imp = 0
     total_revenue = total_ecpm = 0.00
 
     csv_data = FasterCSV.generate do |csv|
@@ -232,12 +232,13 @@ class FillsBase < ActiveRecord::Base
           total_clicks  += rev.clicks.to_i
           total_revenue += rev.revenue.to_f
           total_ecpm    += rev.ecpm.to_f
+          total_network_imp += rev.attempts.to_i
         end
       end
 
       # Total line
       if fill_stats.length > 0
-	total_avg_ecpm = '$' + ((total_revenue/total_loads).round(2) * 1000).to_s
+	total_avg_ecpm = Revenue.calculate_ecpm(total_network_imp, total_revenue).round(3).to_s
       else
 	total_avg_ecpm = "-"
       end
@@ -254,9 +255,9 @@ class FillsBase < ActiveRecord::Base
 	total_rejects,
 	total_clicks,
 	total_slip,
-        FillsBase.calculate_fill_rate(total_loads, total_attempts).to_s + "%",
+	"-",
 	'$' + total_revenue.to_f.round(2).to_s,
-	total_avg_ecpm
+	'$' + total_avg_ecpm
       ] 
 
     end

@@ -1,5 +1,5 @@
 <% title "Reporting"
-total_ecpm = total_revenue = 0.00
+total_revenue = 0.00
 total_clicks = 0
 total_network_attempts = 0
  %>
@@ -84,7 +84,6 @@ total_network_attempts = 0
     <%- if rev
 	total_network_attempts += rev.attempts.to_i
 	total_revenue += rev.revenue.to_f
-	total_ecpm += rev.ecpm.to_f
 	total_clicks += rev.clicks.to_i
     %>
       <td class="record_column">$<%= rev.revenue.to_f.round(2) %></td>
@@ -105,10 +104,10 @@ total_network_attempts = 0
       <td class="record_column"><%= number_with_delimiter(@fill_stats.sum(&:rejects))%></td>
       <td class="record_column"><%= number_with_delimiter(total_clicks)%></td>
     <%- end %>
-      <td class="record_column"><%= @fill_stats.length > 0 ? FillsBase.calculate_fill_rate(@fill_stats.sum(&:loads), @fill_stats.sum(&:attempts)).to_s + "%": "-" %></td>
+      <td class="record_column">-</td>
     <%- if params[:interval] == "day" %>
       <td class="record_column">$<%= total_revenue.round(2)%></td>
-      <td class="record_column">$<%= Revenue.calculate_ecpm(@fill_stats.sum(&:loads), total_revenue).round(3)%></td>
+      <td class="record_column">$<%= Revenue.calculate_ecpm(total_network_attempts, total_revenue).round(3)%></td>
     <%- end %>
     </tr>
   </tfoot>  
