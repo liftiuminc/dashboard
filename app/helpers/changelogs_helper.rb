@@ -38,6 +38,13 @@ module ChangelogsHelper
     results.collect{|u|[u.email, u.id]}.unshift(["none"])
   end
 
+  def changelog_link(object, text="Log")
+    if object.nil?
+       return ""
+    end
+    link_to text, :controller=> "changelogs", :record_id => object.id, :record_type => object.class.to_s
+  end 
+
   private
 
   def changed_txt(attribute, original_value, new_value, truncate = false)

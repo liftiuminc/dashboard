@@ -4,7 +4,7 @@ class ChangelogsController < ApplicationController
   def index
     @entries = "all"
     @excluded_user_id = "none"
-    @changelogs = Changelog.find(:all, build_find_args(params), :limit => 150)
+    @changelogs = Changelog.find(:all, build_find_args(params))
   end
 
   def show
@@ -19,7 +19,11 @@ class ChangelogsController < ApplicationController
     args[:conditions] = ["user_id = ?", params[:user_id]] if params[:user_id]
     args[:conditions] = ["user_id <> ?", @excluded_user_id = params[:excluded_user_id]] if params[:excluded_user_id]
     args[:order] = "created_at DESC"
-    args[:limit] = @entries = params[:entries].to_i if params[:entries] && params[:entries] != "all"
+    if (params[:entries].to_i == 0)
+      args[:limit] = 150
+    else
+      args[:limit] = params[:entries]
+    end
     args
   end
 end
