@@ -4,7 +4,7 @@ class ChangelogsController < ApplicationController
   def index
     @entries = "all"
     @excluded_user_id = "none"
-    @changelogs = Changelog.find(:all, build_find_args(params))
+    @changelogs = Changelog.find(:all, build_find_args(params), :limit => 150)
   end
 
   def show
