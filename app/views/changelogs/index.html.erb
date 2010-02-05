@@ -1,18 +1,31 @@
-<h1 align="center"><%= changelogs_title(params) %></h1>
+<% title changelogs_title(params) %>
 
-<% form_tag changelogs_path, :method => :get do -%>
-  Limit Number of Entries: <%= select_tag "entries", options_for_select([10, 25, 50, 100, "all"], @entries) %>
-  Exclude User: <%= select_tag "excluded_user_id",
-                               options_for_select(distinct_changelog_users_for_select, @excluded_user_id.to_i) %>
-  <%= submit_tag "Filter" %>
-<% end %>
+<div class="filter_form" id="tag_filter_form">
+ <% form_tag changelogs_path, :method => :get do -%>
+     <ul>
+	<li><%= label_tag "record_type" %> <%= select_tag "record_type", options_for_select(["", "Tag", "Publisher", "Network"]) %>
+	</li>
+
+        <li><%= label_tag "record_id" %>
+            <%= text_field_tag :record_id, params[:record_id] %>
+        </li>
+        <li><%= label_tag "user_id" %>
+            <%= text_field_tag :user_id, params[:user_id] %>
+        </li>
+
+	<li><%= label_tag "limit" %> <%= select_tag "entries", options_for_select([10, 25, 50, 100], params[:entries]) %></li>
+
+
+	<%= submit_tag "Filter" %>
+     </ul>
+ <% end %>
+</div>
 <table class="record_listing" with="100%">
   <tr class="record_listing_header">
     <th>Change</th>
     <th>Operation</th>
-    <th width="40%">Field Changes</th>
+    <th>Field Changes</th>
     <th>User</th>
-    <th>Date</th>
   </tr>
   <%= render :partial => "changelog", :collection => @changelogs %>
 </table>
