@@ -58,5 +58,6 @@
     <%= link_to "Preview " + @publisher.tags.length.to_s + " ads", :controller => "publishers", :action => :ad_preview, :id => @publisher %> |
     <%= link_to "Network Logins", :controller => "publisher_network_logins", :publisher_id => @publisher.id %> |
     <%= link_to "Tags", :controller=> "tags", :publisher_id => @publisher.id %> 
+    <%= changelog_link(@publisher)%>
   <%- end %>
 </p>
