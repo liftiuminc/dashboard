@@ -98,7 +98,6 @@
   <strong>Note:</strong>
   <%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "-"%> 
 </p>
-</div>
 <strong>Tag:</strong><br />
 <%if @tag.tag.blank? -%>
   <i>Using <%= @tag.network.network_name %> template</i>. 
@@ -120,4 +119,5 @@
   <a href="<%=h url_for( :controller => 'charts', :action => 'tag', :id => @tag.id ) %>"><img src="<%= tag_sparkline_url @tag, "1h"%>" width="50" height="25"/></a>
 <%- end %>
 
+</div>
 </div>
