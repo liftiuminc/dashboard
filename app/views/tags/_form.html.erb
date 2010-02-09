@@ -96,22 +96,27 @@ function confirmForm(f){
   <!-- This style will allow for arbitrary key values later -->
     <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""},
 	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
 	     {"id"=> "", "key_name" => "", "key_value" => ""}]  %>
     <%  # Assure there is a properly constructed array with the things in the right order.
 	# http://ewwwabandaid.ytmnd.com/
 	for tag_target in @tag.tag_targets do 
 	  if (tag_target.key_name == "country")
 		tt[0]["id"] = tag_target.id
-		tt[0]["key_name"] = "country"
+		tt[0]["key_name"] = tag_target.key_name
 		tt[0]["key_value"] = tag_target.key_value
 	  elsif (tag_target.key_name == "browser")
 		tt[1]["id"] = tag_target.id
-		tt[1]["key_name"] = "browser"
+		tt[1]["key_name"] = tag_target.key_name
 		tt[1]["key_value"] = tag_target.key_value
 	  elsif (tag_target.key_name == "domain")
 		tt[2]["id"] = tag_target.id
-		tt[2]["key_name"] = "domain"
+		tt[2]["key_name"] = tag_target.key_name
 		tt[2]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "placement")
+		tt[3]["id"] = tag_target.id
+		tt[3]["key_name"] = tag_target.key_name
+		tt[3]["key_value"] = tag_target.key_value
           end
 	end
     %>
@@ -133,6 +138,13 @@ function confirmForm(f){
     <%= f.label :domain %> <span class="hint">Ex. subdomain.yoursite.com</span><br />
     <input type="text" size="31" name="tag[tag_targets_attributes][2][key_value]" value="<%=h tt[2]["key_value"] %>"/>
   </div>
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][3][id]" type="hidden" value="<%= tt[3]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][3][key_name]" value="placement" />
+    <%= f.label :placement %> <span class="hint">Specified with LiftiumOptions.placement in the ad tag. Ex. ATF, BTF.</span><br />
+    <input type="text" size="31" name="tag[tag_targets_attributes][3][key_value]" value="<%=h tt[3]["key_value"] %>"/>
+  </div>
+
   <div class="fieldset" id="tag_template_notes">
     <%= f.label :tag_notes %> 
     <span class="hint">additional notes for this tag. Ex. "Stick to tier 10"</span><br />
