@@ -634,7 +634,7 @@ adjusted_value5:
 
 zone_target_1:
   id: 130
-  publisher_id: 1043
+  publisher_id: 1048
   tag_name: "Test: Zone Targeting. slot1"
   network_id: 42
   enabled: true
@@ -646,7 +646,7 @@ zone_target_1:
 
 zone_target_2:
   id: 131
-  publisher_id: 1043
+  publisher_id: 1048
   tag_name: "Test: Zone Targeting. No slot"
   network_id: 42
   enabled: true
