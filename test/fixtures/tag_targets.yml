@@ -28,3 +28,9 @@ domain2:
   tag_id: 101
   key_name: domain
   key_value: delivery.dev.liftium.com
+
+zone1:
+  id: 6
+  tag_id: 130
+  key_name: zone
+  key_value: slot1
