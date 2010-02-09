@@ -1,5 +1,6 @@
-<% title "Ad Format" %>
+<% @title_bar_right_text = '<a href="' + new_ad_format_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Ad Format", new_ad_format_path) %>
 
+<% title "Ad Format" %>
 <p>
   <strong>Ad Format Name:</strong>
   <%=h @ad_format.ad_format_name %>
