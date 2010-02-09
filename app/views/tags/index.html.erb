@@ -188,6 +188,7 @@
 	<%- else %>
 	   Network Disabled
 	<%-end %>
+        <%= changelog_link(tag) %>
       </td>
     <% else %>
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>

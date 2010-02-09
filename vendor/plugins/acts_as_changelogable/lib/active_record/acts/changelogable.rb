@@ -39,11 +39,11 @@ module ActiveRecord
 
         def operated_at
           if respond_to?(:updated_at)
-            self.updated_at
+            self.updated_at.strftime('%Y-%m-%d %H:%M')
           elsif respond_to?(:updated_at)
-            self.created_at
+            self.created_at.strftime('%Y-%m-%d %H:%M')
           else
-            Time.now
+            Time.now.strftime('%Y-%m-%d %H:%M')
           end
         end
 

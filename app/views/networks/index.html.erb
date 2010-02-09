@@ -11,7 +11,7 @@
     <th>US Only</th>
     <th>Brand Safety</th>
     <th>Preview</th>
-    <th colspan="4">Actions</th>
+    <th colspan="5">Actions</th>
   </tr>
   <% for network in @networks %>
 
@@ -32,6 +32,7 @@
       <td class="record_action"><%= link_to "Edit", edit_network_path(network) %></td>
       <td class="record_action"><%= link_to "Delete", network, :confirm => 'Are you sure?', :method => "delete" %></td>
       <td class="record_action"><%= link_to "Logins", :controller => "publisher_network_logins", :network_id => network.id %></td>
+      <td class="record_action"><%= changelog_link(network)%></td>
     </tr>
   <% end %>
 </table>

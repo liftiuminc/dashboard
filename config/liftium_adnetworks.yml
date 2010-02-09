@@ -28,6 +28,12 @@
       l_email: <%= user %>
       l_pass: <%= pass %>
 
+"BannerConnect":
+    action: "https://my.yieldmanager.com/index.php"
+    params: 
+      username: <%= user %>
+      password: <%= pass %>
+
 "Burst Media":
     action: "https://www.burstmedia.com/PUBLISHERS/login.aspx"
     url: "http://www.burstmedia.com"
@@ -65,11 +71,10 @@
 
 
 "Game Advertising Online":
-    action: ""
-    url: ""    
+    action: "https://www.game-advertising-online.com/?section=user&action=login"
     params: 
-      username: <%= user %>
-      password: <%= pass %>
+      'f[email]': <%= user %>
+      'f[password]': <%= pass %>
 
 
 "Google AdSense":

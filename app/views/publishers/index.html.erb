@@ -10,7 +10,7 @@
     <th>Category</th>
     <th>T&amp;C</th>
     <th>Preview</th>
-    <th colspan="4">Actions</th>
+    <th colspan="5">Actions</th>
   </tr>
   <% for publisher in @publishers %>
   
@@ -30,6 +30,7 @@
       <td class="record_action"><%= link_to "Edit", edit_publisher_path(publisher) %></td>
       <td class="record_action"><%= link_to "Delete", publisher, :confirm => 'Are you sure?', :method => "delete" %></td>
       <td class="record_action"><%= link_to "Logins", :controller => "publisher_network_logins", :publisher_id => publisher.id %>
+      <td class="record_action"><%= changelog_link(publisher)%></td>
     </tr>
   <% end %>
 </table>
