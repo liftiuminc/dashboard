@@ -116,7 +116,9 @@
 		(<%= link_to tag.publisher.brand_safety_level || "None", :controller=> "publishers", :action => "quality_control", :publisher_id => tag.publisher_id %>)
 	<%- end %>
       <td class="record_column" style="width:200px">
+	<span title="<%=h !tag.comments.empty? ? tag.comments[0].comment : "" %>">
 	    <%= link_to truncate(tag.tag_name, :length=> 40), tag, :action=> :show %><br />
+	</span>
         <span style="font-size: smaller">
         #<%= tag.id %>
         <span title="<%=h tag.verbose_size %>"><%= tag.size %></span>
