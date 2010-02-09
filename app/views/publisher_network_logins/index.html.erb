@@ -54,14 +54,13 @@
   <% if !networks.empty? %>
   
     <h2><%= link_to publisher.site_name, publisher_path( publisher ) %></h2>
-    <table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+    <table class="record_listing" width="100%" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
       <tr class="record_listing_header">
         <th>Network</th>
         <th>Username</th>
         <th>Password</th>
-        <th colspan="3">Actions</th>
-        <th nowrap="true">Scraping instructions</th>
-        <th>Login</th>
+        <th>Actions</th>
+        <th>Instructions</th>
       </tr>
 
       <% for network in networks %>
@@ -75,7 +74,7 @@
       
         <tr class="record_row_<%= cycle("odd", "even")%>">
 
-          <td class="record_column">
+          <td class="record_column" width="175">
             <% if current_user.is_admin? %>
               <%= link_to network.network_name_and_id, network_path( network ) %>
             <% else %>
@@ -86,10 +85,11 @@
           <% if pnl %>
             <td class="record_column"><%=h pnl.username %></td>
             <td class="record_column"><%=h current_user.is_admin? ? pnl.password : '*****' %></td>
-            <%# view/edit/delete %>    
-            <td class="record_action"><%= link_to "View", pnl, :action=> :show %></td>
-            <td class="record_action"><%= link_to "Edit", edit_publisher_network_login_path(pnl) %></td>
-            <td class="record_column"><%= link_to "Delete", pnl, :confirm => 'Are you sure?', :method => "delete" %></td>
+            <td class="record_column">
+		<%= link_to "View", pnl, :action=> :show %>
+		<%= link_to "Edit", edit_publisher_network_login_path(pnl) %>
+		<%= link_to "Delete", pnl, :confirm => 'Are you sure?', :method => "delete" %>
+	    </td>
             
           <% else %>  
             <td class="record_column">
@@ -106,18 +106,17 @@
                 N/A
               <% end %>            
             </td>
-            <td class="record_action"><%= link_to "Create", new_publisher_network_login_path( :publisher_id => publisher.id, :network_id => network.id ) %></td>
-            <td class="record_column"></td>
-            <td class="record_column"></td>
+            <td class="record_column"><%= link_to "Create", new_publisher_network_login_path( :publisher_id => publisher.id, :network_id => network.id ) %></td>
           <% end %>
           
-          <td class="record_column">
+          <td class="record_column" width="350">
             <span class="comments" style="font-size:smaller">
-              <%=h network.scraping_instructions %>
+	      <%- if !network.reporting_url.blank? %>
+	         <%= link_to(truncate(network.reporting_url, :length=>50), network.reporting_url) %><br />
+	      <%-end %>
+	
+             <span title="<%=h network.scraping_instructions %>" class="comments" style="font-size:smaller"><%=h truncate(network.scraping_instructions, :length=> 250) %></span>
             </span>
-          </td>
-
-          <td class="record_column">
             <%= render :partial => "shared/publisher_network_login_button", 
                        :locals  => { :pnl => pnl, :network => network, :jsform => false } %>
           </td>         
