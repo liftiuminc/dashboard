@@ -632,26 +632,26 @@ adjusted_value5:
   tag: 'This is a always fill from Tag #124'
 
 
-zone_target_1:
+placement_target_1:
   id: 130
   publisher_id: 1048
-  tag_name: "Test: Zone Targeting. slot1"
+  tag_name: "Test: Placement Targeting. placement1"
   network_id: 42
   enabled: true
   always_fill: true
   tier: 4
   value: 1.00
   size: "234x60"
-  tag: 'This is a fill from tag 130, Targetted to slot1'
+  tag: 'This is a fill from tag 130, Targetted to placement1'
 
-zone_target_2:
+placement_target_2:
   id: 131
   publisher_id: 1048
-  tag_name: "Test: Zone Targeting. No slot"
+  tag_name: "Test: Placement Targeting. No placement"
   network_id: 42
   enabled: true
   always_fill: true
   tier: 5
   value: 0.75
   size: "234x60"
-  tag: 'This is a fill from tag 131, NOT targetted to a slot'
+  tag: 'This is a fill from tag 131, NOT targetted to a placement'

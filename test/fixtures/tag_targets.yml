@@ -32,5 +32,5 @@ domain2:
 zone1:
   id: 6
   tag_id: 130
-  key_name: slot
-  key_value: slot1
+  key_name: placement
+  key_value: placement1
