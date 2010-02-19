@@ -655,3 +655,27 @@ placement_target_2:
   value: 0.75
   size: "234x60"
   tag: 'This is a fill from tag 131, NOT targetted to a placement'
+
+hophtmltest1:
+  id: 140
+  publisher_id: 1047
+  tag_name: "Test: 0% fill, iframe hop"
+  network_id: 42
+  enabled: true
+  always_fill: false
+  tier: 1
+  value: 0.05
+  size: "160x600"
+  tag: '<iframe src="/js/hop.html" width="160" height="600"></iframe>'
+
+hophtmltest2:
+  id: 141
+  publisher_id: 1047
+  tag_name: "Test: 100% fill"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 2
+  value: 0.05
+  size: "160x600"
+  tag: 'This is a fill from tag #141.<script>top.LiftiumTest.testPassed()</script>' 
