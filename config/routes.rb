@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
 
+
+
   map.feedback 'feedbacks', :controller => 'feedbacks', :action => 'create'
   map.new_feedback 'feedbacks/new', :controller => 'feedbacks', :action => 'new'
 
@@ -7,6 +9,10 @@ ActionController::Routing::Routes.draw do |map|
   #
   map.resource :account, :controller => "users"
   map.resources :ad_formats
+  map.beacon_aggs_fill_rate_by_country 'beacon_aggs/fill_rate_by_country', :controller => 'beacon_aggs', :action => 'fill_rate_by_country'
+  map.beacon_aggs_fill_rate_by_hour 'beacon_aggs/fill_rate_by_hour', :controller => 'beacon_aggs', :action => 'fill_rate_by_hour'
+  map.beacon_aggs_fill_rate_by_previous_attempts 'beacon_aggs/fill_rate_by_previous_attempts', :controller => 'beacon_aggs', :action => 'fill_rate_by_previous_attempts'
+  map.resources :beacon_aggs
   map.resources :changelogs
   map.resources :comments
   map.javascript_errors_by 'javascript_errors/grouped_by/:field', :controller => 'javascript_errors', :action => 'grouped_by'

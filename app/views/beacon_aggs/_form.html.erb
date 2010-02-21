@@ -1,0 +1,20 @@
+<% form_for @beacon_agg do |f| %>
+  <%= f.error_messages %>
+  <div class="fieldset">
+    <%= f.label :hour %><br />
+    <%= f.datetime_select :hour %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :previous_attempts %><br />
+    <%= f.text_field :previous_attempts %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :country %><br />
+    <%= f.text_field :country %>
+  </div>
+  <div class="fieldset">
+    <%= f.label :loads %><br />
+    <%= f.text_field :loads %>
+  </div>
+  <p><%= liftium_submit "Save Changes" %></p>
+<% end %>

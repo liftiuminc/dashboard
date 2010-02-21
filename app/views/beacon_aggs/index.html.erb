@@ -1,0 +1,11 @@
+<!-- % @title_bar_right_text = '<a href="' + new_beacon_agg_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Beacon Agg", new_beacon_agg_path) % -->
+
+<% title "Beacon Aggs" %>
+
+<p><%= link_to "Fill rate by country by network", :controller=> "beacon_aggs", :action=> "fill_rate_by_country" %></p>
+<p><%= link_to "Fill rate by hour of day by network", :controller=> "beacon_aggs", :action=> "fill_rate_by_hour" %></p>
+<p><%= link_to "Fill rate by previous number of attempts per network ", :controller=> "beacon_aggs", :action=> "fill_rate_by_previous_attempts" %></p>
+
+
+</table>
+

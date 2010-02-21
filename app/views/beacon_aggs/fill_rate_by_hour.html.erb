@@ -1,0 +1,24 @@
+<!-- % @title_bar_right_text = '<a href="' + new_beacon_agg_path + '"><img alt="" src="/images/icons/add.png"></a> ' + (link_to "Create New Beacon Agg", new_beacon_agg_path) % -->
+
+<% title "Beacon Aggs: Fill rate by hour of day" %>
+
+<table class="record_listing" width="500" cellspacing="0" cellpadding="0"><!-- Cellspacing/paddding added for IE 6 -->
+  <tr class="record_listing_header">
+    <th>Network name</th>
+    <th>Hour of day</th>
+    <th>Loads</th>
+    <th>Rejects</th>
+    <th>Fill rate</th>
+    <!-- th colspan="3">Actions</th -->
+  </tr>
+  <% for beacon_agg in @beacon_aggs %>
+  <tr class="record_row_<%= cycle("odd", "even")%>">
+    <td class="record_column"><%=h beacon_agg.network_name %></td>
+    <td class="record_column"><%=h beacon_agg.hour_of_day %></td>
+    <td class="record_column"><%=h beacon_agg.loads %></td>
+    <td class="record_column"><%=h beacon_agg.rejects %></td>
+    <td class="record_column"><%=h beacon_agg.fillrate %></td>
+  </tr>
+  <% end %>
+</table>
+

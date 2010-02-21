@@ -1,0 +1,24 @@
+<% title "Beacon Agg" %>
+
+<p>
+  <strong>Hour:</strong>
+  <%=h @beacon_agg.hour %>
+</p>
+<p>
+  <strong>Previous Attempts:</strong>
+  <%=h @beacon_agg.previous_attempts %>
+</p>
+<p>
+  <strong>Country:</strong>
+  <%=h @beacon_agg.country %>
+</p>
+<p>
+  <strong>Loads:</strong>
+  <%=h @beacon_agg.loads %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_beacon_agg_path(@beacon_agg) %> |
+  <%= link_to "Delete", @beacon_agg, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
+  <%= link_to "View All", beacon_aggs_path %>
+</p>
