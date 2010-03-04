@@ -3,7 +3,11 @@
 <div class="filter_form" id="tag_filter_form">
  <% form_tag changelogs_path, :method => :get do -%>
      <ul>
-	<li><%= label_tag "record_type" %> <%= select_tag "record_type", options_for_select(["", "Tag", "Publisher", "Network"]) %>
+	<li><%= label_tag "record_type" %>
+		<select name="record_type" id="record_type">
+		<option value="">
+		<%= options_for_select(@record_types, params[:record_type]) %>
+		</select>
 	</li>
 
         <li><%= label_tag "record_id" %>

@@ -3,6 +3,7 @@ class ChangelogsController < ApplicationController
 
   def index
     @changelogs = Changelog.find(:all, build_find_args(params))
+    @record_types = Changelog.find( :all, :select => 'DISTINCT record_type' ).map{ |i| i.record_type }
   end
 
   def show

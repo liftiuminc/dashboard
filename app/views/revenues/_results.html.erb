@@ -39,7 +39,7 @@
           <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][attempts]"%>" value="<%=h rev.impressions %>"/></td>
           <td class="record_column" style="<%= rowstyle %>"><input type="text" class="record_input_field" name="<%="revenues[][clicks]"%>" value="<%=h rev.clicks %>"/></td>
           <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][revenue]"%>" value="<%=h rev.revenue %>"/>
-          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][ecpm]"%>" value="<%=h rev.ecpm ? rev.ecpm.to_f.round(3) : "" %>"/></td>          
+          <td class="record_column" style="<%= rowstyle %>" nowrap="true">$<input type="text" class="record_input_field" name="<%="revenues[][ecpm]"%>" value="<%=h rev.ecpm ? rev.ecpm : "" %>"/></td>          
           <td class="record_column">
               <%- if !tag.network.reporting_url.blank? %>
                  <%= link_to(truncate(tag.network.reporting_url, :length=>50), tag.network.reporting_url) %><br />

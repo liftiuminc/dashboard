@@ -2,6 +2,8 @@ class Revenue < ActiveRecord::Base
     belongs_to :tag
     belongs_to :user
 
+    acts_as_changelogable
+
     validates_uniqueness_of :day, :scope => :tag_id
 
     ### ints
