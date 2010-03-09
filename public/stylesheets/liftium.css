@@ -195,6 +195,12 @@ ul {
 
 /*** Record Listings ***/
 
+.table_form_header {
+	background-color:#CCC;
+	margin-top: 5px;
+	padding:5px;
+}
+
 .record_column {
 	border-right:1px solid #CCC;
 }

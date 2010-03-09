@@ -49,6 +49,27 @@ module ChartsHelper
 
   end
 
+  def date_select_to_graph_range (date_select) 
+    matches = date_select.to_s.match(/([0-9]+) (Minute|Hour|Day|Month|Year)s/)
+    if matches.nil?
+      return "59m" # error, default
+    elsif matches[2] == "Minute"
+      return matches[1] + "m"
+    elsif matches[2] == "Hour"
+      return matches[1] + "h"
+    elsif matches[2] == "Day"
+      return matches[1] + "d"
+    elsif matches[2] == "Week"
+      return matches[1] + "w"
+    elsif matches[2] == "Month"
+      return matches[1] + "month"
+    elsif matches[2] == "Year"
+      return matches[1] + "y"
+    else 
+      return "58m" # error, default
+    end
+  end
+
   def misc_stat_humanize (stat)
      if stat[-1,1] == "s"
 	stat.tableize.humanize.titleize 
