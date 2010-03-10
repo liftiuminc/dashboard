@@ -84,6 +84,10 @@
   <strong>Rejection Time:</strong>
   <%=h @tag.rejection_time ? "#{@tag.rejection_time} minutes" : "-"%>
 </p>
+<p>
+  <strong>Max Daily Impressions:</strong>
+  <%=h @tag.max_daily_impressions ? number_with_delimiter(@tag.max_daily_impressions) : "-"%>
+</p>
 
 <p>
   <strong>Created at:</strong>

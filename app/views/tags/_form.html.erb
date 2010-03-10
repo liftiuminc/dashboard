@@ -86,12 +86,17 @@ function confirmForm(f){
   <div class="fieldset">
     <%= f.label :frequency_cap, nil, :class => "left_label" %>
     <%= f.text_field :frequency_cap, :class => "input_for_number" %>
-    <span class="hint">Max number of times this ad will be loaded within 24 hours. Ex. 3</span>
+    <span class="hint">Max number of times this ad will be loaded per user within 24 hours. Ex. 3</span>
   </div>
   <div class="fieldset">
     <%= f.label :rejection_time, nil, :class => "left_label" %>
     <%= f.text_field :rejection_time, :class => "input_for_number" %>
     <span class="hint">Wait this many minutes before trying again after a rejection. Ex. 45</span>
+  </div>
+  <div class="fieldset">
+    <%= f.label :max_daily_impressions, nil, :class => "left_label" %>
+    <%= f.text_field :max_daily_impressions, :class => "input_for_number" %>
+    <span class="hint">Max number of times this ad will be called for all users per day</span>
   </div>
   <!-- This style will allow for arbitrary key values later -->
     <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""},
