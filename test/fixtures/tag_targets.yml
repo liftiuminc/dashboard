@@ -29,8 +29,14 @@ domain2:
   key_name: domain
   key_value: delivery.dev.liftium.com
 
-zone1:
+placement1:
   id: 6
   tag_id: 130
   key_name: placement
   key_value: placement1
+
+kv1:
+  id: 7
+  tag_id: 150
+  key_name: hub
+  key_value: gaming

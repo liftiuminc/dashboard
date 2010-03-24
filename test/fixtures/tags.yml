@@ -679,3 +679,29 @@ hophtmltest2:
   value: 0.05
   size: "160x600"
   tag: 'This is a fill from tag #141.<script>top.LiftiumTest.testPassed()</script>' 
+
+
+kv_target_1:
+  id: 150
+  publisher_id: 1048
+  tag_name: "Test: Key Value targeting Targeting. hub=gaming"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 4
+  value: 1.00
+  size: "300x250"
+  tag: 'This is a fill from tag 150, Targetted to hub=gaming'
+
+kv_target_2:
+  id: 151
+  publisher_id: 1048
+  tag_name: "Test: Placement Targeting. No key value"
+  network_id: 42
+  enabled: true
+  always_fill: true
+  tier: 5
+  value: 0.75
+  size: "300x250"
+  tag: 'This is a fill from tag 151, NOT targetted to a key value'
+
