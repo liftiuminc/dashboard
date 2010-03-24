@@ -38,5 +38,5 @@ placement1:
 kv1:
   id: 7
   tag_id: 150
-  key_name: hub
+  key_name: kv_hub
   key_value: gaming
