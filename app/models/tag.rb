@@ -208,23 +208,24 @@ class Tag < ActiveRecord::Base
   end
 
   def get_fill_stats (range)
-    conditions = ["tag_id = ?", id]
+    sql = "SELECT SUM(attempts) AS attempts, 
+                SUM(loads) as loads, SUM(rejects) AS rejects 
+                FROM fills_minute WHERE 
+                tag_id = " + id.to_s
+
     dates = DateRangeHelper.get_date_range(range)
     if dates[0]
-      conditions[0] += " AND minute >= ?"
-      conditions.push(dates[0])
+      sql += " AND minute >= '" + dates[0] + "'"
     end
     if dates[1]
-      conditions[0] += " AND minute <= ?"
-      conditions.push(dates[1])
+      sql += " AND minute <= '" + dates[1] + "'"
     end
+    
+    stats = FillsMinute.find_by_sql(sql)
+    stat = stats[0]
 
-    loads = FillsMinute.sum("loads", :conditions => conditions)
-    attempts = FillsMinute.sum("attempts", :conditions => conditions)
-    rejects = FillsMinute.sum("rejects", :conditions => conditions)
-
-    fill_rate = FillsBase.calculate_fill_rate(loads, attempts)
-    return {:loads => loads, :attempts => attempts, :rejects => rejects, :fill_rate => fill_rate}
+    fill_rate = FillsBase.calculate_fill_rate(stat.loads, stat.attempts)
+    return {:loads => stat.loads.to_i, :attempts => stat.attempts.to_i, :rejects => stat.rejects.to_i, :fill_rate => fill_rate}
   end
 
 end
