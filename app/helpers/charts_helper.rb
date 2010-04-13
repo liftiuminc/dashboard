@@ -10,7 +10,7 @@ module ChartsHelper
 		:height => height,
 	}
 
-	"http://rgraph.liftium.com/sparkline?" + data.to_query
+	Conf.rgraph_base_url + "sparkline?" + data.to_query
   end
 
   def tag_fillrate_url(tag, range="1h", width=600, height=250) 
@@ -26,7 +26,7 @@ module ChartsHelper
 		:height => height,
 	}
 
-	"http://rgraph.liftium.com/chart?" + data.to_query
+	Conf.rgraph_base_url + "chart?" + data.to_query
   end
 
   def misc_stat_types 
@@ -45,8 +45,7 @@ module ChartsHelper
 		:height => height
 	}
 
-	"http://rgraph.liftium.com/misc?" + data.to_query
-
+	Conf.rgraph_base_url + "misc?" + data.to_query
   end
 
   def date_select_to_graph_range (date_select) 

@@ -1,0 +1,6 @@
+common:
+  rgraph_base_url: "http://rgraph.liftium.com/"
+  delivery_base_url: "http://delivery.liftium.com/"
+
+development:
+  delivery_base_url: "http://delivery.dev.liftium.com/"

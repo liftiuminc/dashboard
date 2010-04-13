@@ -105,12 +105,7 @@ class Tag < ActiveRecord::Base
   end
 
   def preview_url
-     env = Rails.configuration.environment
-     if env == "development" || env == "dev_mysql"
-	"http://delivery.dev.liftium.com/tag?tag_id=#{id}&cb=" + rand(9999999).to_s
-     else
-	"http://delivery.liftium.com/tag?tag_id=#{id}&cb="+ rand(9999999).to_s
-     end
+     Conf.delivery_base_url + "tag?tag_id=#{id}&cb=" + rand(9999999).to_s
   end
 
   def search_sql (params)
