@@ -105,7 +105,7 @@ class Tag < ActiveRecord::Base
   end
 
   def preview_url
-     Conf.delivery_base_url + "tag?tag_id=#{id}&cb=" + rand(9999999).to_s
+     Conf.delivery_base_url + "tag?tag_id=#{id}&action=purge&cb=" + rand(9999999).to_s
   end
 
   def search_sql (params)
