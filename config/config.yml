@@ -1,3 +1,8 @@
+# DON'T CHANGE THIS FILE for local copies. defaults go here.
+# TO change this config, create a file in this directory named
+# config.local.yml
+# structure it just like this one
+# http://www.taknado.com/2007/7/25/custom-configuration-info-in-rails/
 common:
   rgraph_base_url: "http://rgraph.liftium.com/"
   delivery_base_url: "http://delivery.liftium.com/"
