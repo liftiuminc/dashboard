@@ -21,6 +21,7 @@ class TagsController < ApplicationController
     end
     
     @countries  = TagTarget.new.all_countries
+    @placements = TagTarget.new.all_placements
     @tags       = Tag.new.search( conditions )
 
     ### should we limit the output by country? See FB 153
@@ -31,6 +32,19 @@ class TagsController < ApplicationController
         tt = TagTarget.find( :first, :conditions => [
                             "tag_id = ? and key_name = ? and key_value like ?",
                             t.id, 'country', "%#{params[:country]}%" ] )
+        
+        filtered_tags.push t if tt
+      end
+      @tags = filtered_tags
+    end
+
+    ### Logic somewhat complicated by a non-normalized DB
+    if !params[:placement].blank?
+      filtered_tags = []
+      @tags.map do |t|
+        tt = TagTarget.find( :first, :conditions => [
+                            "tag_id = ? and key_name = ? and key_value like ?",
+                            t.id, 'placement', "%#{params[:placement]}%" ] )
         
         filtered_tags.push t if tt
       end

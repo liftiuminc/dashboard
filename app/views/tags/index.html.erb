@@ -44,6 +44,13 @@
 	    </select>
 	</li>
 
+	<li><%= label_tag :placement %>
+	    <select name="placement" id="placementDD">
+	      <option value="">
+	      <%= options_for_select @placements, params[:placement] %>
+	    </select>
+	</li>
+
 	<li><%= label_tag "Tag name or ID" %>
 	    <%= text_field_tag :name_search, @name_search %>
 	</li>

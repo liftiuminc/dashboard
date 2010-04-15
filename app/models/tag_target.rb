@@ -23,6 +23,20 @@ class TagTarget < ActiveRecord::Base
     return countries
   end
 
+  def all_placements 
+    placements = []
+
+    TagTarget.find( :all, :conditions => { :key_name => "placement" } ).map do |tt|
+      tt.key_value.split(/\s*,\s*/).map do |c|
+        placements.push c
+      end  
+    end
+    placements.uniq!
+    placements.sort!
+    
+    return placements
+  end
+
   def key_name_h 
     key_name.gsub(/^kv_/, '')
   end
