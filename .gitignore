@@ -9,3 +9,4 @@ log/*
 *.ipr
 *.iws
 *.swp
+config.local.yml
