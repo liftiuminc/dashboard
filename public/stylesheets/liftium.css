@@ -358,3 +358,17 @@ ul {
 	white-space: -o-pre-wrap; /* Opera 7 */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
 }
+
+/* Multiple select support */
+.multiple_select, .multiple_select ul {
+	list-style-type:none;
+	margin-left:0;
+}
+
+.multiple_select {
+	border:1px solid #AAA;
+	height:100px;
+	overflow:auto;
+	padding:2px;
+	width:325px;
+}

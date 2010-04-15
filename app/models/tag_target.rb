@@ -11,7 +11,7 @@ class TagTarget < ActiveRecord::Base
   def all_countries 
     countries = []
 
-    TagTarget.find( :all, :conditions => { :key_name => "country" } ).map do |tt|
+    TagTarget.find( :all, :select => 'DISTINCT key_value', :conditions => { :key_name => "country" } ).map do |tt|
       tt.key_value.split(/\s*,\s*/).map do |c|
         countries.push c.downcase
       end  
@@ -26,7 +26,7 @@ class TagTarget < ActiveRecord::Base
   def all_placements 
     placements = []
 
-    TagTarget.find( :all, :conditions => { :key_name => "placement" } ).map do |tt|
+    TagTarget.find( :all, :select => 'DISTINCT key_value' , :conditions => { :key_name => "placement" } ).map do |tt|
       tt.key_value.split(/\s*,\s*/).map do |c|
         placements.push c
       end  
@@ -40,5 +40,14 @@ class TagTarget < ActiveRecord::Base
   def key_name_h 
     key_name.gsub(/^kv_/, '')
   end
+
+   # Clean up values before saving
+   before_save { |r|
+	if r.key_value.is_a?(Array)
+	  r.key_value = r.key_value.join(',')
+        end
+
+	r.key_value = r.key_value.gsub(/ *, */, ',').strip
+   }
 
 end

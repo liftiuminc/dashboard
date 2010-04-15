@@ -22,6 +22,7 @@ class TagsController < ApplicationController
     
     @countries  = TagTarget.new.all_countries
     @placements = TagTarget.new.all_placements
+    
     @tags       = Tag.new.search( conditions )
 
     ### should we limit the output by country? See FB 153

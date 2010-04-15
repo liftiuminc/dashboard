@@ -1,3 +1,7 @@
+<% 
+@countries  = TagTarget.new.all_countries
+@placements = TagTarget.new.all_placements
+%>
 <script>
 <% # Some sanity checks for common mistakes. Note that these are technically valid, but we just want to confirm. 
 %>
@@ -146,8 +150,8 @@ function confirmForm(f){
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][3][id]" type="hidden" value="<%= tt[3]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][3][key_name]" value="placement" />
-    <%= f.label :placement %> <span class="hint">Specified with LiftiumOptions.placement in the ad tag. Ex. ATF, BTF.</span><br />
-    <input type="text" size="31" name="tag[tag_targets_attributes][3][key_value]" value="<%=h tt[3]["key_value"] %>"/>
+    <%= f.label :placements %> <span class="hint">Specified with <code>LiftiumOptions.placement</code> in the ad tag.</span><br />
+<%= multiple_select_tag "tag[tag_targets_attributes][3][key_value]", @placements, {:selected_items => tt[3]["key_value"].split(","), :outer_class => "multiple_select", :inner_class => "multiple_select_checkbox" } %>
   </div>
 
   <div class="fieldset" id="tag_template_notes">
