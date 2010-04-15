@@ -106,6 +106,10 @@ function confirmForm(f){
     <% tt = [{"id"=> "", "key_name" => "", "key_value" => ""},
 	     {"id"=> "", "key_name" => "", "key_value" => ""},
 	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
+	     {"id"=> "", "key_name" => "", "key_value" => ""},
 	     {"id"=> "", "key_name" => "", "key_value" => ""}]  %>
     <%  # Assure there is a properly constructed array with the things in the right order.
 	# http://ewwwabandaid.ytmnd.com/
@@ -126,9 +130,62 @@ function confirmForm(f){
 		tt[3]["id"] = tag_target.id
 		tt[3]["key_name"] = tag_target.key_name
 		tt[3]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "kv_wgDBname")
+		tt[4]["id"] = tag_target.id
+		tt[4]["key_name"] = tag_target.key_name
+		tt[4]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "kv_articleid")
+		tt[5]["id"] = tag_target.id
+		tt[5]["key_name"] = tag_target.key_name
+		tt[5]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "kv_hub")
+		tt[6]["id"] = tag_target.id
+		tt[6]["key_name"] = tag_target.key_name
+		tt[6]["key_value"] = tag_target.key_value
+	  elsif (tag_target.key_name == "kv_cont_lang")
+		tt[7]["id"] = tag_target.id
+		tt[7]["key_name"] = tag_target.key_name
+		tt[7]["key_value"] = tag_target.key_value
           end
 	end
     %>
+ <%- if @tag.publisher_id = 999 %> <!-- #Wikia only customizations -->
+ <% @wikia_hubs = ["Auto", "Creative", "Education", "Entertainment", "Finance",
+		"Gaming", "Green", "Humor", "Lifestyle", "Music", "Philosophy",
+		"Politics", "Science", "Sports", "Technology", "Toys", "Travel", "Wikia"]
+ %>
+ <div id="targeting_right" style="width:50%;float:right">
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][4][id]" type="hidden" value="<%=tt[4]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][4][key_name]" value="kv_wgDBname" />
+    <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wikis, comma separated.</span>
+    <input type="text" size="30" name="tag[tag_targets_attributes][4][key_value]" value="<%=h tt[4]["key_value"] %>"/>
+  </div>
+
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][7][id]" type="hidden" value="<%=tt[7]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][7][key_name]" value="kv_cont_lang" />
+    <%= f.label :cont_lang, "Language" %> <span class="hint">for targeting specific languages, comma separated. Ex: en,fr</span>
+    <input type="text" size="30" name="tag[tag_targets_attributes][7][key_value]" value="<%=h tt[7]["key_value"] %>"/>
+  </div>
+
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][5][id]" type="hidden" value="<%=tt[5]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][5][key_name]" value="kv_articleid" />
+    <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wikis, comma separated. Ex: starwars,muppet</span>
+    <input type="text" size="30" name="tag[tag_targets_attributes][5][key_value]" value="<%=h tt[5]["key_value"] %>"/>
+  </div>
+
+  <div class="fieldset">
+    <input type="hidden" name="tag[tag_targets_attributes][6[id]" type="hidden" value="<%= tt[6]["id"] %>" />
+    <input type="hidden" name="tag[tag_targets_attributes][6][key_name]" value="kv_hub" />
+    <%= f.label :hubs %><br /> 
+<%= multiple_select_tag "tag[tag_targets_attributes][6][key_value]", @wikia_hubs, {:selected_items => tt[6]["key_value"].split(","), :outer_class => "multiple_select", :inner_class => "multiple_select_checkbox" } %>
+  </div>
+ </div><!-- targeting_right -->
+<%- end %><!-- Wikia only if -->
+
+ <div id="targeting_left" style="width:50%;">
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][0][id]" type="hidden" value="<%=tt[0]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][0][key_name]" value="country" />
@@ -153,6 +210,7 @@ function confirmForm(f){
     <%= f.label :placements %> <span class="hint">Specified with <code>LiftiumOptions.placement</code> in the ad tag.</span><br />
 <%= multiple_select_tag "tag[tag_targets_attributes][3][key_value]", @placements, {:selected_items => tt[3]["key_value"].split(","), :outer_class => "multiple_select", :inner_class => "multiple_select_checkbox" } %>
   </div>
+ </div><!-- targeting_left -->
 
   <div class="fieldset" id="tag_template_notes">
     <%= f.label :tag_notes %> 
