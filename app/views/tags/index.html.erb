@@ -193,7 +193,8 @@
 	<%= tag.frequency_cap ? "Freq. cap - #{tag.frequency_cap}<br />" : ""%>
 	<%= tag.rejection_time ? "Rej. time  - #{tag.rejection_time}<br />" : ""%>
         <% for criteria in tag.tag_targets do -%>
-	  <%=h criteria.key_name_h + ": " + truncate(criteria.key_value, :length=> 20) %><br />
+	  <%= "<b>" + criteria.key_name_h + "</b>: " %>
+	  <span title="<%=h criteria.key_value %>"><%=h truncate(criteria.key_value, :length=> 20) %></span><br />
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
 
