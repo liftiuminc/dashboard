@@ -12,8 +12,8 @@ class TagsController < ApplicationController
     conditions = session[:tag_params] || {}
     params[:date_select] ||= "Last 60 Minutes"
 
-    ### arbitrary 50 record limit in the model code
-    conditions[:limit] = 100
+    ### arbitrary record limit in the model code
+    conditions[:limit] = 75
   
     ### you can only find things for YOUR publisher
     if !current_user.is_admin?
