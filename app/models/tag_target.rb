@@ -23,4 +23,8 @@ class TagTarget < ActiveRecord::Base
     return countries
   end
 
+  def key_name_h 
+    key_name.gsub(/^kv_/, '')
+  end
+
 end
