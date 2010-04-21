@@ -60,6 +60,13 @@
 	    <%= radio_button_tag "include_disabled", "", @include_disabled.blank?%>No
 	</li>
 
+<%- if current_user.publisher_id == 999 %>
+	<li><%= label_tag :exclude_target, "Exclude Site Specific Tags"%>
+	    <%= radio_button_tag "exclude_target", "kv_wgDBname", !@exclude_target.blank?%>Yes
+	    <%= radio_button_tag "exclude_target", "", @exclude_target.blank?%>No
+	</li>
+<%- end %>
+
 	<li><%= liftium_submit "Filter Tags"%>
 	    <%= liftium_reset %>
         </li>
