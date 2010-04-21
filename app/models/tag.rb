@@ -159,6 +159,12 @@ class Tag < ActiveRecord::Base
        query.push( params[:name_search] )
     end
 
+    ### exclude key certain key values 
+    if (! params[:exclude_target].blank?)
+       query[0] += " AND tags.id NOT IN (SELECT tag_id FROM tag_targets WHERE key_name = ?) "
+       query.push( params[:exclude_target] )
+    end
+
     ### we're not currently using ':order' anywhere, so the code is
     ### commented out. When we do use :order, we should probably
     ### delegate it to 'active_record_random' which takes care of

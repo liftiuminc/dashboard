@@ -253,6 +253,8 @@ class TagsController < ApplicationController
     @size = params[:size]
     @name_search = params[:name_search]
     @include_disabled = params[:include_disabled]
+    @exclude_target = params[:exclude_target]
+    @placement = params[:placement]
   end
 
   # Fogbugz 86
