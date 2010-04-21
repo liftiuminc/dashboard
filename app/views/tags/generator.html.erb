@@ -2,9 +2,7 @@
 
 <%= javascript_include_tag "TagGenerator" %>
 
-<%- if Rails.env == "development" %>
-  <script>TagGenerator.deliveryHost = "http://nick.dev.liftium.com";</script>
-<%- end %>
+<script>TagGenerator.deliveryHost = "<%=h Conf.delivery_base_url %>";</script>
 
 <form onSubmit="return TagGenerator.generateTag(this);">
  <%- if @publishers %>
@@ -53,5 +51,5 @@
 <hr />
 
 Backup/Default tag for Ad Networks:
-<xmp><script src="<%=h Conf.delivery_base_url %>/js/hop.js"></script></xmp>
+<xmp><script src="<%=h Conf.delivery_base_url %>js/hop.js"></script></xmp>
 

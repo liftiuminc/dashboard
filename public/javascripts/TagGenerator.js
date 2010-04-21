@@ -1,6 +1,6 @@
 var TagGenerator = {
 	dimRegexp : /^([0-9]{2,4})x([0-9]{2,4})/,
-	deliveryHost : "http://cdn.liftium.com"
+	deliveryHost : "http://cdn.liftium.com/" // default
 };
 
 TagGenerator.generateTag = function(f) {
@@ -47,7 +47,7 @@ TagGenerator.generateTag = function(f) {
 };
 
 TagGenerator.generateIframeTag = function(pubid, size, comments){
-	var url = TagGenerator.deliveryHost + "/tag_iframe?pubid=" + pubid + '&size=' + size;
+	var url = TagGenerator.deliveryHost + "tag_iframe?pubid=" + pubid + '&size=' + size;
 	var t = '';
 	if (comments){ t += '<!-- Begin Liftium Tag -->\n'; }
 
@@ -72,7 +72,7 @@ TagGenerator.generateScriptTag = function(pubid, size, comments){
         }
 
         t += '<script>LiftiumOptions = {pubid:' + pubid + '}<\/script>\n' +
-            '<script src="' + TagGenerator.deliveryHost + '/js/Liftium.js"><\/script>\n';
+            '<script src="' + TagGenerator.deliveryHost + 'js/Liftium.js"><\/script>\n';
 
         if (comments){ t += '<!-- End Liftium set up -->\n'; }
         if (comments){ t += '<!-- Display Tag. Put this in the exact place where you want the ad -->\n'; }
@@ -81,7 +81,7 @@ TagGenerator.generateScriptTag = function(pubid, size, comments){
 };
 
 TagGenerator.generateAdServerTag = function(pubid, size, comments){
-        var t = '<script src="' + TagGenerator.deliveryHost + '/callAd?pubid=' + pubid + '&slot=' + size + '"><\/script>';
+        var t = '<script src="' + TagGenerator.deliveryHost + 'callAd?pubid=' + pubid + '&slot=' + size + '"><\/script>';
         return t;
 };
 
