@@ -104,7 +104,6 @@
     <th>Tier</th>
     <th>Value</th>
     <th>Floor</th>
-    <th>Always Fill</th>
     <th>Criteria</th>
     <th>Actions</th>
     <th colspan="2" style="border-right:none">Fill Rate</th>
@@ -157,7 +156,7 @@
         </span>
       </td>
       <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><select name="tags[][tier]"><%= options_for_select([10,9,8,7,6,5,4,3,2,1], tag.tier)%></select></td>
-      <td class="record_column_number" nowrap="true">$<input type="text" style="width:35px" name="<%="tags[][value]"%>" value="<%=h tag.value %>"/>
+      <td class="record_column_number" nowrap="true">$<input type="text" style="width:25px" name="<%="tags[][value]"%>" value="<%=h tag.value %>"/>
          <% weekly_ecpm = Revenue.calculate(:avg, 'ecpm', 
 		{:conditions => ["tag_id = ? and day >= ?", tag.id, 7.days.ago.to_s(:db) ]}) %>
          <%- if weekly_ecpm %>
@@ -190,12 +189,11 @@
       </td>
       <td class="record_column_number" nowrap="true">
 	<%-if tag.network.supports_threshold %>
-	  $<input type="text" style="width:35px" name="<%="tags[][floor]"%>" value="<%=h tag.floor %>"/>
+	  $<input type="text" style="width:25px" name="<%="tags[][floor]"%>" value="<%=h tag.floor %>"/>
 	<%-else %>
 	  --
 	<%-end %>
       </td>
-      <td class="record_column_number" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>"><%= tag.always_fill ? "Yes" : "No" %></td>
       <td class="record_column" style="font-size:smaller; width:150px">
 	<%= tag.frequency_cap ? "Freq. cap - #{tag.frequency_cap}<br />" : ""%>
 	<%= tag.rejection_time ? "Rej. time  - #{tag.rejection_time}<br />" : ""%>
@@ -226,7 +224,7 @@
     <% else %>
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
     <% end %>      
-      <td class="record_action" style="font-size:smaller">
+      <td class="record_action" style="font-size:smaller" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>">
       <% if tag.enabled %>
 	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img title="Fill rate for last <%=h params[:date_select]%>, click for more detail" src="<%= tag_sparkline_url tag, date_select_to_graph_range(params[:date_select])%>" width="50" height="25"/></a>
       <% end %>
