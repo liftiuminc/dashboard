@@ -5,6 +5,7 @@ class ApiController < ApplicationController
       die_with_error("Must supply a tag id");
 
     else  
+      params[:id] ||= params[:tag_id] 
       @tag = Tag.find(params[:id])
       
       tagParams = {}
@@ -26,9 +27,9 @@ class ApiController < ApplicationController
 
   def die_with_error (msg)
     respond_to do |format|
-      format.html { render :text => msg.inspect, :status => 400, :content_type => "text/plain" }
-      format.json { render :json => msg.to_json, :status => 400 }
-      format.xml { render :xml => msg.to_xml, :status => 400 }
+      format.html { render :text => msg.inspect, :content_type => "text/plain" }
+      format.json { render :json => msg.to_json }
+      format.xml { render :xml => msg.to_xml }
     end  
   end
 
