@@ -1,16 +1,15 @@
 class ApiController < ApplicationController
 
   def update_tag 
-    if !params[:id] 
-      die_with_error("Must supply a tag id");
+    if !params[:tag_id] 
+      die_with_error("Must supply a tag_id");
 
     else  
-      params[:id] ||= params[:tag_id] 
-      @tag = Tag.find(params[:id])
+      @tag = Tag.find(params[:tag_id])
       
       tagParams = {}
       for key in @tag.attribute_names do
-        tagparams[key] = params[key] if params[key]
+        tagParams[key] = params[key] if params[key]
       end
 
       if @tag.update_attributes(tagParams)
@@ -26,10 +25,11 @@ class ApiController < ApplicationController
   end
 
   def die_with_error (msg)
+    amsg = {"error" => msg}
     respond_to do |format|
-      format.html { render :text => msg.inspect, :content_type => "text/plain" }
-      format.json { render :json => msg.to_json }
-      format.xml { render :xml => msg.to_xml }
+      format.html { render :text => amsg.inspect, :content_type => "text/plain" }
+      format.json { render :json => amsg.to_json }
+      format.xml { render :xml => amsg.to_xml }
     end  
   end
 
