@@ -229,4 +229,11 @@ class Tag < ActiveRecord::Base
     return {:loads => stat.loads.to_i, :attempts => stat.attempts.to_i, :rejects => stat.rejects.to_i, :fill_rate => fill_rate}
   end
 
+  # Hack to clean up empty targets and options
+  def after_save 
+    sql = ActiveRecord::Base.connection();
+    sql.execute("DELETE FROM tag_targets WHERE tag_id=" + id.to_s + " AND key_value=''");
+    sql.execute("DELETE FROM tag_options WHERE tag_id=" + id.to_s + " AND option_value=''");
+  end
+
 end
