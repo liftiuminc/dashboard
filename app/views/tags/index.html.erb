@@ -3,9 +3,10 @@
 <% title "Chain Management" %>
 <style type="text/css">
 .tag_target_block {
-	width: 160px;
-	height: 50px;
+	width: 180px;
+	max-height: 75px;
 	overflow: auto;
+	font-size: 7pt;
 }
 </style>
 
@@ -201,7 +202,7 @@
 	  --
 	<%-end %>
       </td>
-      <td class="record_column" style="font-size:smaller;">
+      <td class="record_column">
 	<div class="tag_target_block">
 	<%= tag.frequency_cap ? "Freq. cap - #{tag.frequency_cap}<br />" : ""%>
 	<%= tag.rejection_time ? "Rej. time  - #{tag.rejection_time}<br />" : ""%>
