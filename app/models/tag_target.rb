@@ -42,7 +42,7 @@ class TagTarget < ActiveRecord::Base
   end
 
   def key_value_h 
-    key_value.split(",").to_sentence()
+    key_value.gsub(/,/, ', ')
   end
 
 
