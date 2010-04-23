@@ -41,6 +41,11 @@ class TagTarget < ActiveRecord::Base
     key_name.gsub(/^kv_/, '')
   end
 
+  def key_value_h 
+    key_value.split(",").to_sentence()
+  end
+
+
    # Clean up values before saving
    before_save { |r|
 	if r.key_value.is_a?(Array)

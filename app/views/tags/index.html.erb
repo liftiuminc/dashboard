@@ -195,15 +195,16 @@
 	<%-end %>
       </td>
       <td class="record_column" style="font-size:smaller; width:150px">
+	<div style="width:150px; height:55px; overflow:auto">
 	<%= tag.frequency_cap ? "Freq. cap - #{tag.frequency_cap}<br />" : ""%>
 	<%= tag.rejection_time ? "Rej. time  - #{tag.rejection_time}<br />" : ""%>
         <% for criteria in tag.tag_targets do -%>
 	  <%= "<b>" + criteria.key_name_h + "</b>: " %>
-	  <span title="<%=h criteria.key_value %>"><%=h truncate(criteria.key_value, :length=> 20) %></span><br />
+	  <%=h criteria.key_value_h%><br />
 	<% end -%>
         &#160; <!-- So the border shows up when there is no criteria -->
-
-
+	</div>
+      </td>
     <% if current_user.is_power_user? %>
       <td class="record_column" style="text-align:center">
 	<nobr>
@@ -213,6 +214,8 @@
       <%= link_to "Delete", tag, :confirm => 'Are you sure?', :method => "delete" %>
     <% end %>  
 	</nobr>
+	<br />
+	<nobr>
          <%= link_to "Copy", "/tags/copy/#{tag.id}", :confirm => "Copy this tag?" %>
 	<%- if tag.network.enabled %>
 	  <%= link_to (tag.enabled ? "Disable" : "Enable"), "/tags/toggle/#{tag.id}" %>
@@ -220,6 +223,7 @@
 	   Network Disabled
 	<%-end %>
         <%= changelog_link(tag) %>
+	</nobr>
       </td>
     <% else %>
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
