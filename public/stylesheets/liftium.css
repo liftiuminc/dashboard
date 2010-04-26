@@ -204,11 +204,13 @@ ul {
 
 .record_column {
 	border-right:1px solid #CCC;
+	border-bottom:1px solid #CCC;
 }
 
 .record_action {
 	padding-left: 10px ;
 	padding-right: 10px ;
+	border-bottom:1px solid #CCC;
 }
 
 .record_listing { /* the table */
@@ -239,12 +241,10 @@ ul {
 
 .record_row_odd {
 	vertical-align: top;
-	border-bottom:1px solid #CCC;
 }
 
 .record_row_even {
 	background-color: #E3E3E3;
-	border-bottom:1px solid #CCC;
 	vertical-align: top;
 }
 
