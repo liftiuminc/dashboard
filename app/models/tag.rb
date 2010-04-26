@@ -15,7 +15,6 @@ class Tag < ActiveRecord::Base
   ### Requires db/migrate/20091013122159_add_tag_comments.rb
   accepts_nested_attributes_for :tag_options, :allow_destroy => true, :reject_if => proc { |a| a['option_name'].blank? || a['option_value'].blank? }
   accepts_nested_attributes_for :tag_targets, :allow_destroy => true, :reject_if => proc { |a| a['key_name'].blank? || a['key_value'].blank?}
-;cement
   validates_format_of :size, :with => /^[0-9]{1,3}x[0-9]{1,3}$/
   validates_uniqueness_of :tag_name, :scope => :publisher_id
   validates_presence_of :tag_name, :network, :size, :publisher
