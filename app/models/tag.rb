@@ -104,8 +104,18 @@ class Tag < ActiveRecord::Base
     "#{s.ad_format_name} (#{size})"
   end
 
+  def get_first_placement 
+    for target in tag_targets do
+      if target.key_name = 'placement' 
+        placements = target.key_value.split(',') 
+        return placements[0]
+      end
+    end
+    return ''
+  end
+
   def preview_url
-     Conf.delivery_base_url + "tag?tag_id=#{id}&action=purge&cb=" + rand(9999999).to_s
+     Conf.delivery_base_url + "tag?tag_id=#{id}&action=purge&cb=" + rand(9999999).to_s + "&placement=" + get_first_placement
   end
 
   def search_sql (params)
