@@ -277,7 +277,11 @@ function tagToggle(value){
 	  $("tag_toggle_override").checked = true;
 	}
 }
-<%= !@tag.tag.blank? ? 'tagToggle("override");' : 'tagToggle("template");' %>
+<%- if ! @tag.tag.blank? || @tag.network.tag_template.blank?  %>
+  tagToggle("override");
+<%- else %>
+  tagToggle("template");
+<%- end %>
 </script>
 
   <p><%= liftium_submit "Save Changes" %></p>

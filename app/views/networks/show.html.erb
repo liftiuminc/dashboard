@@ -69,7 +69,8 @@
   <%= link_to "Edit", edit_network_path(@network) %> |
   <%= link_to "Delete", @network, :confirm => 'Are you sure?', :method => :delete, :action => "destroy" %> |
   <%= changelog_link(@network)%> |
-  <%= link_to "View All", networks_path %> |
-  <%= link_to "View tags", :controller => "tags", :network_id => @network %></td>
+  <%= link_to "View All Networks", networks_path %><br />
+  <%= link_to "View tags", :controller => "tags", :network_id => @network %> |
+  <%= link_to "Create a new tag", :controller => "tags", :network_id => @network, :action => "new"  %> 
 
 </p>

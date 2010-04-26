@@ -95,6 +95,7 @@ class TagsController < ApplicationController
     else
       @tag = Tag.new
       @tag.network_id = params[:network_id]
+      @tag.publisher_id = current_user.publisher_id
       @tag.tag_options.build
       @tag.always_fill = @tag.network.default_always_fill
 
