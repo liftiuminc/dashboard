@@ -159,7 +159,7 @@ function confirmForm(f){
     <input type="hidden" name="tag[tag_targets_attributes][4][id]" type="hidden" value="<%=tt[4]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][4][key_name]" value="kv_wgDBname" />
     <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wikis, comma separated.</span>
-    <input type="text" size="30" name="tag[tag_targets_attributes][4][key_value]" value="<%=h tt[4]["key_value"] %>"/>
+    <textarea rows="4" name="tag[tag_targets_attributes][4][key_value]"><%=h tt[4]["key_value"] %></textarea>
   </div>
 
   <div class="fieldset">
@@ -172,7 +172,7 @@ function confirmForm(f){
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][5][id]" type="hidden" value="<%=tt[5]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][5][key_name]" value="kv_articleid" />
-    <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wikis, comma separated. Ex: starwars,muppet</span>
+    <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wiki articles, comma separated. Ex: 1319,4512</span>
     <input type="text" size="30" name="tag[tag_targets_attributes][5][key_value]" value="<%=h tt[5]["key_value"] %>"/>
   </div>
 
