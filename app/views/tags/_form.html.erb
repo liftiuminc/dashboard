@@ -134,7 +134,7 @@ function confirmForm(f){
 		tt[4]["id"] = tag_target.id
 		tt[4]["key_name"] = tag_target.key_name
 		tt[4]["key_value"] = tag_target.key_value_h
-	  elsif (tag_target.key_name == "kv_articleid")
+	  elsif (tag_target.key_name == "kv_article_id")
 		tt[5]["id"] = tag_target.id
 		tt[5]["key_name"] = tag_target.key_name
 		tt[5]["key_value"] = tag_target.key_value_h
@@ -171,7 +171,7 @@ function confirmForm(f){
 
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][5][id]" type="hidden" value="<%=tt[5]["id"] %>" />
-    <input type="hidden" name="tag[tag_targets_attributes][5][key_name]" value="kv_articleid" />
+    <input type="hidden" name="tag[tag_targets_attributes][5][key_name]" value="kv_article_id" />
     <%= f.label :article_id %> <span class="hint">for targeting specific wiki articles, comma separated. Ex: 1319,4512</span>
     <input type="text" size="30" name="tag[tag_targets_attributes][5][key_value]" value="<%=h tt[5]["key_value"] %>"/>
   </div>
