@@ -71,7 +71,9 @@ class HomesController < ApplicationController
     sql = "SELECT tags.network_id, COALESCE(SUM(loads), 0) AS loads, tag_id FROM #{model.table_name}"+
 	" INNER JOIN tags on #{model.table_name}.tag_id = tags.id " +
         " WHERE tag_id IN (SELECT id FROM tags where publisher_id = ?)" +
-        " AND #{col} >= ?  AND #{col} <= ? GROUP BY tags.network_id ORDER BY loads"
+        " AND #{col} >= ?  AND #{col} <= ? " +
+	" AND tags.network_id != 105 " + # exclude noad
+	" GROUP BY tags.network_id ORDER BY loads"
 
     @stats_by_network = model.find_by_sql [sql, @publisher.id, @dates[0], @dates[1]]
     @total_loads = @stats_by_network.sum(&:loads).to_f
