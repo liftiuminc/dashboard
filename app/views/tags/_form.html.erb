@@ -159,7 +159,7 @@ function confirmForm(f){
     <input type="hidden" name="tag[tag_targets_attributes][4][id]" type="hidden" value="<%=tt[4]["id"] %>" />
     <input type="hidden" name="tag[tag_targets_attributes][4][key_name]" value="kv_wgDBname" />
     <%= f.label :wgDBname, "wgDBname" %> <span class="hint">for targeting specific wikis, comma separated.</span>
-    <textarea rows="4" name="tag[tag_targets_attributes][4][key_value]"><%=h tt[4]["key_value"] %></textarea>
+    <textarea rows="2" style="width:325px" name="tag[tag_targets_attributes][4][key_value]"><%=h tt[4]["key_value"] %></textarea>
   </div>
 
   <div class="fieldset">
@@ -215,7 +215,7 @@ function confirmForm(f){
   <div class="fieldset" id="tag_template_notes">
     <%= f.label :tag_notes %> 
     <span class="hint">additional notes for this tag. Ex. "Stick to tier 10"</span><br />
-    <textarea name="note[tag]" rows="2" style="width:325px"><%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "" %></textarea>
+    <textarea name="note[tag]" rows="3" style="width:325px"><%=h !@tag.comments.empty? ? "#{@tag.comments[0].comment}" : "" %></textarea>
   </div>
 
 
