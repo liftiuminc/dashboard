@@ -254,6 +254,8 @@ class TagsController < ApplicationController
     @include_disabled = params[:include_disabled]
     @exclude_target = params[:exclude_target]
     @placement = params[:placement]
+    @tier = params[:tier]
+    @tier_clause = params[:tier_clause]
   end
 
 end

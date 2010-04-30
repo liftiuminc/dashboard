@@ -63,6 +63,13 @@
 	    <%= text_field_tag :name_search, @name_search %>
 	</li>
 
+	<li><%= label_tag "Tier" %>
+	    <%= select_tag "tier", options_for_select(["",1,2,3,4,5,6,7,8,9,10], @tier.to_i) %>
+	    <%= radio_button_tag "tier_clause", "higher", @tier_clause == "higher"%>Higher than
+	    <%= radio_button_tag "tier_clause", "lower", @tier_clause == "lower"%>Lower than
+	</li>
+	    
+
 	<li><%= label_tag :include_disabled, "Include Disabled Tags"%>
 	    <%= radio_button_tag "include_disabled", "true", !@include_disabled.blank?%>Yes
 	    <%= radio_button_tag "include_disabled", "", @include_disabled.blank?%>No

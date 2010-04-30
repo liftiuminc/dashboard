@@ -145,6 +145,19 @@ class Tag < ActiveRecord::Base
        query.push(params[:size])
     end
 
+    if (! params[:tier].blank?)
+       if params[:tier_clause] == "lower" 
+	 symbol = "<="
+       elsif params[:tier_clause] == "higher" 
+	 symbol = ">="
+       else
+	 symbol = "="
+       end
+
+       query[0] += " AND tier " + symbol + " ?"
+       query.push(params[:tier])
+    end
+
     ### created before a certain date?
     ### mysql will not truncate a date to the same amount of significance,
     ### so a tag created DURING '2009-10-10' is not returned for a query
