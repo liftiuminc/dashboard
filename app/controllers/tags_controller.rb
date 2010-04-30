@@ -161,7 +161,6 @@ class TagsController < ApplicationController
 
   def update
     @tag = Tag.find(params[:id])
-    iframe_with_always_fill_xdm_iframe_path(@tag)
     if @tag.update_attributes(params[:tag])
 
       ### any associated notes? See FB 24
