@@ -138,7 +138,7 @@ function confirmForm(f){
 		tt[5]["id"] = tag_target.id
 		tt[5]["key_name"] = tag_target.key_name
 		tt[5]["key_value"] = tag_target.key_value_h
-	  elsif (tag_target.key_name == "kv_hub")
+	  elsif (tag_target.key_name == "kv_Hub")
 		tt[6]["id"] = tag_target.id
 		tt[6]["key_name"] = tag_target.key_name
 		tt[6]["key_value"] = tag_target.key_value
@@ -178,7 +178,7 @@ function confirmForm(f){
 
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][6[id]" type="hidden" value="<%= tt[6]["id"] %>" />
-    <input type="hidden" name="tag[tag_targets_attributes][6][key_name]" value="kv_hub" />
+    <input type="hidden" name="tag[tag_targets_attributes][6][key_name]" value="kv_Hub" />
     <%= f.label :hubs %><br /> 
 <%= multiple_select_tag "tag[tag_targets_attributes][6][key_value]", @wikia_hubs, {:selected_items => tt[6]["key_value"].split(","), :outer_class => "multiple_select", :inner_class => "multiple_select_checkbox" } %>
   </div>
