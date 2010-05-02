@@ -1,6 +1,6 @@
 <% 
 @countries  = TagTarget.new.all_countries
-@placements = TagTarget.new.all_placements
+@placements = TagTarget.new.get_placement_options current_user.publisher_id;
 %>
 <script>
 <% # Some sanity checks for common mistakes. Note that these are technically valid, but we just want to confirm. 
