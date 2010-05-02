@@ -7,7 +7,8 @@
 %>
 function confirmForm(f){
 	var msgs = [];
-	if (parseInt($("tag_tier").value, 10) <= 8 && $("tag_always_fill_true").checked){
+	var tier = parseInt($("tag_tier").value, 10);
+	if (tier != 1 && tier <= 8 && $("tag_always_fill_true").checked){
 		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
  	}
 	if (parseFloat($("tag_value").value) > 10) {
