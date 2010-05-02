@@ -33,4 +33,20 @@ class ApiController < ApplicationController
     end  
   end
 
+  def tag_stats 
+    minutes_back = params[:minutes_back] || "60"
+    if !params[:tag_id]  
+      die_with_error("Must supply a tag_id");
+    else  
+      @tag = Tag.find(params[:tag_id])
+      @stats = @tag.get_fill_stats nil, minutes_back.to_i.minutes.ago.to_s
+      respond_to do |format|
+          format.html { render :text => @stats.inspect, :content_type => "text/plain" }
+          format.json { render :json => @stats.to_json }
+          format.xml { render :xml => @stats.to_xml }
+      end
+      
+    end
+  end
+
 end

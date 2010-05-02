@@ -2,6 +2,7 @@ ActionController::Routing::Routes.draw do |map|
 
 
   map.api_update_tag 'api/update_tag.:format', :controller => 'api', :action => 'update_tag'
+  map.api_update_tag 'api/tag_stats.:format', :controller => 'api', :action => 'tag_stats'
 
   map.feedback 'feedbacks', :controller => 'feedbacks', :action => 'create'
   map.new_feedback 'feedbacks/new', :controller => 'feedbacks', :action => 'new'

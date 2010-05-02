@@ -230,13 +230,18 @@ class Tag < ActiveRecord::Base
     self.revenues.find :first, :conditions => [ 'day >= ?', date ]
   end
 
-  def get_fill_stats (range)
+  def get_fill_stats (range, date0 = nil, date1 = nil)
     sql = "SELECT SUM(attempts) AS attempts, 
                 SUM(loads) as loads, SUM(rejects) AS rejects 
                 FROM fills_minute WHERE 
                 tag_id = " + id.to_s
 
-    dates = DateRangeHelper.get_date_range(range)
+    if date0 
+      dates = [date0, date1]
+    else 
+      dates = DateRangeHelper.get_date_range(range)
+    end
+
     if dates[0]
       sql += " AND minute >= '" + dates[0] + "'"
     end
