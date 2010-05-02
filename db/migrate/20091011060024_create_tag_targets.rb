@@ -6,7 +6,7 @@ class CreateTagTargets < ActiveRecord::Migration
       t.string :key_value
     end
    
-    add_index :tag_targets, [:tag_id, :key_name], {:unique => true }
+    add_index :tag_targets, [:tag_id, :key_name]
   end
   
   def self.down
