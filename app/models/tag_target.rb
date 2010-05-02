@@ -37,6 +37,53 @@ class TagTarget < ActiveRecord::Base
     return placements
   end
 
+  # TODO : Put this into a table
+  def get_placement_options (publisher_id)
+     if publisher_id == 999 
+	out = {  "0x0 INVISIBLE_2" => "INVISIBLE_2", 
+	   "0x0 HOME_INVISIBLE_TOP" => "HOME_INVISIBLE_TOP",                          
+	   "0x0 INVISIBLE_TOP" => "INVISIBLE_TOP",                                    
+	   "0x0 EXIT_STITIAL_INVISIBLE" => "EXIT_STITIAL_INVISIBLE",                  
+	   "0x0 INVISIBLE_1" => "INVISIBLE_1",                                        
+	   "120x600 RIGHT_SKYSCRAPER_1" => "RIGHT_SKYSCRAPER_1",                      
+	   "125x125 RIGHT_SPOTLIGHT_1" => "RIGHT_SPOTLIGHT_1",                        
+	   "125x125 LEFT_SPOTLIGHT_2" => "LEFT_SPOTLIGHT_2",                          
+	   "125x125 RIGHT_SPOTLIGHT_1" => "RIGHT_SPOTLIGHT_1",                        
+	   "125x125 RIGHT_SPOTLIGHT_2" => "RIGHT_SPOTLIGHT_2",                        
+	   "125x125 RIGHT_SPOTLIGHT_2" => "RIGHT_SPOTLIGHT_2",                        
+	   "160x600 LEFT_LOWER_SKYSCRAPERS" => "LEFT_LOWER_SKYSCRAPERS",              
+	   "160x600 HOME_LEFT_SKYSCRAPER_1" => "HOME_LEFT_SKYSCRAPER_1",              
+	   "160x600 LEFT_SKYSCRAPER_1" => "LEFT_SKYSCRAPER_1",                        
+	   "200x75 FOOTER_SPOTLIGHT_RIGHT" => "FOOTER_SPOTLIGHT_RIGHT",               
+	   "200x75 FOOTER_SPOTLIGHT_MIDDLE" => "FOOTER_SPOTLIGHT_MIDDLE",             
+	   "200x75 LEFT_SPOTLIGHT_1" => "LEFT_SPOTLIGHT_1",                           
+	   "200x75 FOOTER_SPOTLIGHT_LEFT" => "FOOTER_SPOTLIGHT_LEFT",                 
+	   "300x250 INCONTENT_BOXAD_1" => "INCONTENT_BOXAD_1",                        
+	   "300x250 EXIT_STITIAL_BOXAD_2" => "EXIT_STITIAL_BOXAD_2",                  
+	   "300x250 EXIT_STITIAL_BOXAD_1" => "EXIT_STITIAL_BOXAD_1",                  
+	   "300x250 SPECIAL_INTERSTITIAL_BOXAD_1" => "SPECIAL_INTERSTITIAL_BOXAD_1",  
+	   "300x250 HOME_TOP_RIGHT_BOXAD" => "HOME_TOP_RIGHT_BOXAD",                  
+	   "300x250 PREFOOTER_RIGHT_BOXAD" => "PREFOOTER_RIGHT_BOXAD",                
+	   "300x250 INCONTENT_BOXAD_2" => "INCONTENT_BOXAD_2",                        
+	   "300x250 TOP_RIGHT_BOXAD" => "TOP_RIGHT_BOXAD",                            
+	   "300x250 FOOTER_BOXAD" => "FOOTER_BOXAD",                                  
+	   "300x250 PREFOOTER_LEFT_BOXAD" => "PREFOOTER_LEFT_BOXAD",                  
+	   "300x250 TOP_RIGHT_BOXAD" => "TOP_RIGHT_BOXAD",                            
+	   "500x280 RICH_MEDIA_AD_TAG" => "RICH_MEDIA_AD_TAG",                        
+	   "600x250 PREFOOTER_BIG" => "PREFOOTER_BIG",                                
+	   "728x90 INCONTENT_LEADERBOARD_1" => "INCONTENT_LEADERBOARD_1",             
+	   "728x90 HOME_TOP_LEADERBOARD" => "HOME_TOP_LEADERBOARD",                   
+	   "728x90 TOP_LEADERBOARD" => "TOP_LEADERBOARD",                             
+	   "728x90 INCONTENT_LEADERBOARD_2" => "INCONTENT_LEADERBOARD_2"
+	}
+	# Odd rails bug
+	out.sort
+	
+     else
+	all_placements
+     end
+  end
+
   def key_name_h 
     key_name.gsub(/^kv_/, '')
   end
