@@ -13,7 +13,7 @@ class TagsController < ApplicationController
     params[:date_select] ||= "Last 60 Minutes"
 
     ### arbitrary record limit in the model code
-    conditions[:limit] = 150
+    conditions[:limit] = 75
   
     ### you can only find things for YOUR publisher
     if !current_user.is_admin?
