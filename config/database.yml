@@ -20,7 +20,7 @@
 
 development:
   adapter: mysql
-  database: liftiumdev
+  database: liftium_dev
   username: liftiumdev
   password: monkey
   host: localhost
@@ -28,15 +28,25 @@ development:
 
 dev_mysql:
   adapter: mysql
-  database: liftiumdev
+  database: liftium_dev
   username: liftiumdev
   password: monkey
   host: localhost
   encoding: utf8
 
+# This one has all the unit tests
 dev_delivery:
   adapter: mysql
   database: liftium_dev_delivery
+  username: liftiumdev
+  password: monkey
+  host: localhost
+  encoding: utf8
+
+# This one has a copy of wikia's db
+dev_wikia:
+  adapter: mysql
+  database: liftium_dev_wikia
   username: liftiumdev
   password: monkey
   host: localhost
