@@ -44,6 +44,10 @@
           <li><%= link_to "Chain/Tag Mgmt", tags_url %>	
           <li><%= link_to "Create New Tag", :controller => "tags", :action => "new" %>	
           <li><%= link_to "Tag Generator", tag_generator_url %>	
+	  <li><form onSubmit="window.location.href='/tags/' + document.getElementById('quick_tagid').value; return false;">
+		Tag #<input type="text" id="quick_tagid" style="width:25px"/>
+		<input type="submit" value="Go"/>
+	      </form>
 	  </ul>
        </div>
 
