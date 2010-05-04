@@ -1,0 +1,198 @@
+/*** Major elements ***/
+html {
+        background: #F2F2F2;
+        font-size: x-small;     
+}
+body {
+        color: #4d505d;
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 125%;
+        text-align:center;
+	margin: 0px;
+}
+h1 {
+        color: #62419a;
+        font-size: 14pt;
+        font-weight: bold;
+        margin-bottom: 20px;
+}
+h2 {
+        color: #94968a;
+        font-size: 12pt;
+        font-weight: bold;      
+}
+ul {
+        padding-left: 25px;
+}
+li {
+        list-style-type: circle;
+}
+/*** Homepage ***/
+#content {
+        margin: 0 auto;
+        text-align: left;
+}
+#header {
+	background: #64439c; 
+        border-bottom: 1px solid #64439c;
+        font-size: 120%;
+        margin-bottom: 1px;
+        padding-left: 25px;
+}
+#header .fixedwidth {
+        /* Taken out in favor of img so it can be clicked on 
+        * background: url(../images/logo.png) 0 5px no-repeat;
+        */
+        height: 52px;
+}
+
+#homepage_image {
+        background: url(../images/homepage_image.jpg);
+        height: 264px;
+        position: relative;
+        margin-bottom: 1px;
+        border-bottom: 1px solid #DEDEDE;
+}
+#homepage_image .orange_learn_more {
+        left: 60px;
+        position: absolute;
+        top: 200px;
+}
+#homepage_image .purple_login {
+        left: 272px;
+        position: absolute;
+        top: 200px;
+}
+#homepage_boxes {
+        margin: 30px 0;
+}
+.homepage_box {
+        float: left;
+        padding: 0 10px;
+        width: 252px;
+}
+.homepage_box_text {
+         height:106px;
+         min-height:106px; /* IE */
+}
+#homepage_box1 {
+        border-right: 1px solid #DEDEDE;
+}
+#homepage_box2 {
+        border-left: 1px solid #FFF;
+        border-right: 1px solid #DEDEDE;
+        width: 282px;
+}
+#homepage_box3 {
+        border-left: 1px solid #FFF;
+}
+.homepage_box p {
+        margin-bottom: 20px;
+}
+#email_field {
+                font-size: 90%;
+                padding: 6px 0 8px;
+                width: 150px;
+}
+#homepage_work_with {
+        margin: 30px 0 50px;
+}
+#homepage_work_with h2 {
+        margin-bottom: 20px;
+}
+
+#footer {
+        background: url(../images/footer_background.png);
+        font-size: 9pt;
+        height: 60px;
+        padding-top: 20px;
+}
+#copyright {
+        background: url(../images/logo_copyright.png) top right no-repeat;
+        color: #919191;
+        float: right;
+        padding-top: 32px;
+}
+
+/*** Navigation ***/
+#header .nav {
+        float: right;
+}
+#header .nav li {
+        float: left;
+        list-style-type: none;
+        line-height: 52px;
+        margin-left: 25px;
+}
+#header .nav a {
+        color: #FFF;
+        letter-spacing: .03em;
+        text-decoration: none;
+}
+#header .nav a:hover {
+        text-decoration: underline;
+}
+
+#footer .nav {
+        margin-left: -10px;
+}
+#footer .nav li {
+        border-right: 1px solid #919191;
+        float: left;
+        padding: 0 10px;
+        list-style-type: none;
+}
+#footer .nav a {
+        color: #b041ba;
+}
+/*** General classes ***/
+.fixedwidth {
+        margin: 0 auto;
+        text-align: left;
+        width: 850px;
+}
+.rule {
+        background: #FFF;
+        border-top: 1px solid #DEDEDE;
+        height: 1px;
+}
+.noborder { /* Please, IE, support CSS3 selctors! */
+        border: 0 !important;
+}
+.center {
+        text-align: center;
+}
+.clearfix:after {
+        content: ".";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+}
+
+.clearfix {display: inline-block;}  /* for IE/Mac */
+
+/*** Button styles ***/
+.button {
+        background: url(../images/buttons.png);
+        display: inline-block;
+        height: 36px;
+        vertical-align: middle;
+        width: 177px;
+}
+.button span {
+        display: none;
+}
+.purple_learn_more {
+        background-position: 0 -36px;
+}
+.purple_login {
+        background-position: 0 -72px;
+}
+.purple_signup {
+        background-position: 0 -108px;
+}
+.orange_notify_me {
+        background-position: 0 -144px;
+        width: 90px;
+}

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
     <title><%= h(yield(:title) || "") %> - Liftium.com</title>
-    <%= stylesheet_link_tag 'http://www.liftium.com/css/liftium.css?1' %>
+    <%= stylesheet_link_tag '/css/liftium.css' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
     <%= javascript_include_tag 'fastinit' %>
@@ -30,7 +30,7 @@
               <li><%= link_to "Login", new_user_session_path %>
             <% end %>
 		</ul>
-               <a href="http://www.liftium.com"><img alt="Ad Network Optimization by Liftium.com" title="Ad Network Optimization by Liftium.com" src="http://www.liftium.com/images/logo_white_purple.png" border="0"></a>
+               <a href="http://www.liftium.com"><img alt="Ad Network Optimization by Liftium.com" title="Ad Network Optimization by Liftium.com" src="/images/logo_white_purple.png" border="0"></a>
 	</div>
   </div>
 
@@ -127,8 +127,6 @@
 			<li><a href="http://www.liftium.com/publishers/success-stories">Success Stories</a></li>
 
 			<li><a href="http://www.liftium.com/about-us">About Us</a></li>
-                        <!-- <li><a href="http://www.liftium.com/about-us/our-team">Our Team</a></li> -->
-                        <!-- <li><a href="http://www.liftium.com/about-us/press">Press</a></li> -->
                         <li><a href="http://www.liftium.com/about-us/careers">Careers</a></li>
 			<li class="noborder"><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
 		</ul>
