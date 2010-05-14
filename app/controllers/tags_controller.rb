@@ -25,6 +25,11 @@ class TagsController < ApplicationController
     
     @tags       = Tag.new.search( conditions )
 
+    ### us and empty are the same, rt#48258
+    if params[:country] = "us"
+      params[:country] = ""
+    end
+
     ### should we limit the output by country? See FB 153
     ### Logic somewhat complicated by a non-normalized DB
     if !params[:country].blank?
