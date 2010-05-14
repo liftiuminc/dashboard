@@ -36,7 +36,12 @@ class ApplicationController < ActionController::Base
   end
 
   def set_time_zone
-    Time.zone = @current_user.time_zone if current_user
+    if current_user 
+      Time.zone = @current_user.time_zone
+    else 
+      #Default to GMT (mostly for API user)
+      Time.zone = `cat /etc/timezone`
+    end
   end  
 
   def require_user
