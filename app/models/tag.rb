@@ -230,6 +230,20 @@ class Tag < ActiveRecord::Base
     self.revenues.find :first, :conditions => [ 'day >= ?', date ]
   end
 
+  def get_fill_stats_minutes_back (minutes_back)
+    sql = "SELECT SUM(attempts) AS attempts, 
+                SUM(loads) as loads, SUM(rejects) AS rejects 
+                FROM fills_minute WHERE 
+                tag_id = " + id.to_s + "
+		AND DATE_SUB(NOW(), INTERVAL " + minutes_back.to_i.to_s + " MINUTE) <= minute"
+    
+    stats = FillsMinute.find_by_sql(sql)
+    stat = stats[0]
+
+    fill_rate = FillsBase.calculate_fill_rate(stat.loads, stat.attempts)
+    return {:loads => stat.loads.to_i, :attempts => stat.attempts.to_i, :rejects => stat.rejects.to_i, :fill_rate => fill_rate}
+  end
+
   def get_fill_stats (range, date0 = nil, date1 = nil)
     sql = "SELECT SUM(attempts) AS attempts, 
                 SUM(loads) as loads, SUM(rejects) AS rejects 

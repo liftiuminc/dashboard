@@ -39,7 +39,7 @@ class ApiController < ApplicationController
       die_with_error("Must supply a tag_id");
     else  
       @tag = Tag.find(params[:tag_id])
-      @stats = @tag.get_fill_stats nil, minutes_back.to_i.minutes.ago.to_s
+      @stats = @tag.get_fill_stats_minutes_back minutes_back
       respond_to do |format|
           format.html { render :text => @stats.inspect, :content_type => "text/plain" }
           format.json { render :json => @stats.to_json }
