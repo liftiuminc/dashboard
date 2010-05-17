@@ -202,19 +202,20 @@ class Tag < ActiveRecord::Base
 #
     query[0] += " ORDER BY tier ASC, value DESC"
 
-    if (! params[:limit].to_s.empty? && params[:limit].to_i < 300)
-       query[0] += " LIMIT ?"
-       query.push(params[:limit].to_i)
-    else
-       query[0] += " LIMIT 50"
-    end
-
-    if (! params[:offset].blank?)
-       query[0] += " OFFSET ? "
-       query.push(params[:offset].to_i)
-    else
-       query[0] += " OFFSET 0"
-    end
+    ### no paging - no limit
+#    if (! params[:limit].to_s.empty? && params[:limit].to_i < 300)
+#       query[0] += " LIMIT ?"
+#       query.push(params[:limit].to_i)
+#    else
+#       query[0] += " LIMIT 50"
+#    end
+#
+#    if (! params[:offset].blank?)
+#       query[0] += " OFFSET ? "
+#       query.push(params[:offset].to_i)
+#    else
+#       query[0] += " OFFSET 0"
+#    end
 
     return query
 
