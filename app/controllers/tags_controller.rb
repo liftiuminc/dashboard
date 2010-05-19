@@ -32,7 +32,7 @@ class TagsController < ApplicationController
       @tags.map do |t|
         tt = TagTarget.find( :first, :conditions => [
                             "tag_id = ? and key_name = ? and key_value like ?",
-                            t.id, 'country', "%#{params[:country]}%" ] )
+                            t.id, 'country', "%,#{params[:country]},%" ] )
         
         filtered_tags.push t if tt
       end
@@ -45,7 +45,7 @@ class TagsController < ApplicationController
       @tags.map do |t|
         tt = TagTarget.find( :first, :conditions => [
                             "tag_id = ? and key_name = ? and key_value like ?",
-                            t.id, 'placement', "%#{params[:placement]}%" ] )
+                            t.id, 'placement', "%,#{params[:placement]},%" ] )
         
         filtered_tags.push t if tt
       end
