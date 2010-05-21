@@ -34,7 +34,7 @@ class ApiController < ApplicationController
   end
 
   def tag_stats 
-    minutes_back = params[:minutes_back] || "60"
+    minutes_back = params[:minutes_back] || "15"
     if !params[:tag_id]  
       die_with_error("Must supply a tag_id");
     else  

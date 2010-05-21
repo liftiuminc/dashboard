@@ -105,7 +105,7 @@
 	</script>
 	<select name="date_select" id="date_selectDD" onChange="changeInterval(this)">
 	  <option value="">Fill Rate interval
-	  <%= options_for_select(["Last 60 Minutes", "Last 3 Hours", "Last 12 Hours", "Last 24 Hours"], params[:date_select])%>
+	  <%= options_for_select(["Last 2 Minutes", "Last 5 Minutes", "Last 15 Minutes", "Last 60 Minutes", "Last 3 Hours", "Last 12 Hours", "Last 24 Hours"], params[:date_select])%>
 	</select>
     </td>
   </tr>

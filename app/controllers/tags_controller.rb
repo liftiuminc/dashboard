@@ -10,7 +10,7 @@ class TagsController < ApplicationController
 
   def index
     conditions = session[:tag_params] || {}
-    params[:date_select] ||= "Last 60 Minutes"
+    params[:date_select] ||= "Last 15 Minutes"
 
     ### arbitrary record limit in the model code
     conditions[:limit] = 75
