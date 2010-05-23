@@ -78,7 +78,7 @@ class TagTarget < ActiveRecord::Base
   end
 
   def key_value_h 
-    key_value.gsub(/^,/, '').gsub(/,$/, '').gsub(/,/, ', ')
+    key_value.gsub(/^,+/, '').gsub(/,+$/, '').gsub(/,/, ', ')
   end
 
 
