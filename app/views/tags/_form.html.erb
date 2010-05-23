@@ -29,6 +29,8 @@ function confirmForm(f){
 }
 </script>
 
+<%= render :partial => "submit_combo" %>
+
 <% form_for @tag, :html => {"onSubmit" => "return confirmForm(this)"} do |f| %>
   <%= f.error_messages %>
   <% if @tag.network_id %>
@@ -285,6 +287,6 @@ function tagToggle(value){
 <%- end %>
 </script>
 
-  <p><%= liftium_submit "Save Changes" %></p>
+<%= render :partial => "submit_combo" %>
 
 <% end %><!-- form_for -->

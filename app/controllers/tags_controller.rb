@@ -206,7 +206,16 @@ class TagsController < ApplicationController
       end
 
       flash[:notice] = "Successfully updated tag."
+
+      case params[:commit]
+      when "Save and edit"
+        render :action => "edit"
+      when "Save and show"
+        render :action => "show"
+      #when params[:commit] == "Save"
+      else
       redirect_to tags_url
+      end
     else
       render :action => 'edit'
     end
