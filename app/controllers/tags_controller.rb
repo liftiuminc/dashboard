@@ -1,4 +1,8 @@
+### I'm sure there is a better place for this constant... 
+NOT_SET = "(not set)"
+
 class TagsController < ApplicationController
+
   before_filter :require_user
   before_filter :require_power_user, :except => [:index, :generator, :html_preview]
   before_filter :require_admin,      :only => [:destroy]
@@ -21,33 +25,55 @@ class TagsController < ApplicationController
     end
     
     @countries  = TagTarget.new.all_countries
+    @countries.unshift NOT_SET
     @placements = TagTarget.new.all_placements
+    @placements.push NOT_SET
     
     @tags       = Tag.new.search( conditions )
 
     ### should we limit the output by country? See FB 153
     ### Logic somewhat complicated by a non-normalized DB
     if !params[:country].blank?
+
+    if params[:country] == NOT_SET
+      value = "%"
+      blank_ok = true
+    else
+      value = "%,#{params[:country]},%"
+      blank_ok = false
+    end
+
       filtered_tags = []
       @tags.map do |t|
         tt = TagTarget.find( :first, :conditions => [
                             "tag_id = ? and key_name = ? and key_value like ?",
-                            t.id, 'country', "%,#{params[:country]},%" ] )
+                            t.id, 'country', value ] )
         
-        filtered_tags.push t if tt
+        ### ^ is xor, not xnor so I need to negate one of them )-:
+        filtered_tags.push t if ( tt.blank? ^ !blank_ok )
       end
       @tags = filtered_tags
     end
 
     ### Logic somewhat complicated by a non-normalized DB
     if !params[:placement].blank?
+
+    if params[:placement] == NOT_SET
+      value = "%"
+      blank_ok = true
+    else
+      value = "%,#{params[:placement]},%"
+      blank_ok = false
+    end
+
       filtered_tags = []
       @tags.map do |t|
         tt = TagTarget.find( :first, :conditions => [
                             "tag_id = ? and key_name = ? and key_value like ?",
-                            t.id, 'placement', "%,#{params[:placement]},%" ] )
+                            t.id, 'placement', value ] )
         
-        filtered_tags.push t if tt
+        ### ^ is xor, not xnor so I need to negate one of them )-:
+        filtered_tags.push t if ( tt.blank? ^ !blank_ok )
       end
       @tags = filtered_tags
     end
