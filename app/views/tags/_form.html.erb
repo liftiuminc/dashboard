@@ -29,9 +29,10 @@ function confirmForm(f){
 }
 </script>
 
+<% form_for @tag, :html => {"onSubmit" => "return confirmForm(this)"} do |f| %>
+
 <%= render :partial => "submit_combo" %>
 
-<% form_for @tag, :html => {"onSubmit" => "return confirmForm(this)"} do |f| %>
   <%= f.error_messages %>
   <% if @tag.network_id %>
      <%= hidden_field_tag "tag[network_id]", @tag.network_id%>
