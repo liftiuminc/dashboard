@@ -65,8 +65,9 @@
 
 	<li><%= label_tag "Tier" %>
 	    <%= select_tag "tier", options_for_select(["",1,2,3,4,5,6,7,8,9,10], @tier.to_i) %>
-	    <%= radio_button_tag "tier_clause", "higher", @tier_clause == "higher"%>Higher than
-	    <%= radio_button_tag "tier_clause", "lower", @tier_clause == "lower"%>Lower than
+	    and all tiers 
+	    <%= radio_button_tag "tier_clause", "higher", @tier_clause == "higher"%>up to 10
+	    <%= radio_button_tag "tier_clause", "lower", @tier_clause == "lower"%>down to 1
 	</li>
 	    
 
