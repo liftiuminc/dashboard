@@ -171,7 +171,10 @@
         <br />Created <%= tag.created_at.strftime('%Y-%m-%d %H:%M') %>
         </span>
       </td>
+<!--
       <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><select name="tags[][tier]"><%= options_for_select([10,9,8,7,6,5,4,3,2,1], tag.tier)%></select></td>
+-->
+      <td class="record_column_number" bgcolor="<%= "#{@tier_to_color[tag.tier]}" %>"><input type="text" style="width:25px" name="<%="tags[][tier]"%>" value="<%=h tag.tier %>"/></td>
       <td class="record_column_number" nowrap="true">$<input type="text" style="width:25px" name="<%="tags[][value]"%>" value="<%=h tag.value %>"/>
          <% weekly_ecpm = Revenue.calculate(:avg, 'ecpm', 
 		{:conditions => ["tag_id = ? and day >= ?", tag.id, 7.days.ago.to_s(:db) ]}) %>
