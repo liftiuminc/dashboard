@@ -708,12 +708,12 @@ kv_target_2:
 pacing_1:
   id: 160
   publisher_id: 1043
-  tag_name: "Test: Pacing (50%)"
+  tag_name: "Test: Pacing (30%)"
   network_id: 42
   enabled: true
   always_fill: true
   tier: 5
   value: 0.75
   size: "300x250"
-  pacing: 50
+  pacing: 30
   tag: 'This is a fill from tag 160'
