@@ -167,6 +167,7 @@
         #<%= tag.id %>
         <span title="<%=h tag.verbose_size %>"><%= tag.size %></span>
         <%= tag.sample_rate ? "<b>- sampled #{tag.sample_rate}%</b>" : "" %>
+        <%= tag.pacing ? "<b>- paced #{tag.pacing}%</b>" : "" %>
         <%= tag.max_daily_impressions ? "- limited to " + number_with_delimiter(tag.max_daily_impressions) + " per day" : "" %>
         <br />Created <%= tag.created_at.strftime('%Y-%m-%d %H:%M') %>
         </span>
