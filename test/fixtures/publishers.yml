@@ -18,7 +18,7 @@ slide:
    id: 1043
    site_name: "Slide"
    site_url: "http://www.slide.com"
-   brand_safety_level: 5
+   brand_safety_level: 1
 
 yes:
    id: 1044
