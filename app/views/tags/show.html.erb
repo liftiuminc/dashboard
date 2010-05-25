@@ -84,6 +84,10 @@ LiftiumOptions = {
   <%=h @tag.sample_rate ? "#{@tag.sample_rate}%" : "-" %>
 </p>
 <p>
+  <strong>Pacing Rate:</strong>
+  <%=h @tag.pacing ? "#{@tag.pacing}%" : "-" %>
+</p>
+<p>
   <strong>Tier:</strong>
   <%=h @tag.tier ? @tag.tier : 10%>
 </p>

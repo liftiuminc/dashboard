@@ -89,7 +89,12 @@ function confirmForm(f){
   <div class="fieldset">
     <%= f.label :sample_rate , nil, :class => "left_label"%>
     <%= f.text_field :sample_rate, :class => "input_for_number" %>
-    <span class="hint">% of time that the ad will appear. Ex. 0.5</span>
+    <span class="hint">% of time that the ad will be put at the top of the chain. Ex. 0.5</span>
+  </div>
+  <div class="fieldset">
+    <%= f.label :pacing , nil, :class => "left_label"%>
+    <%= f.text_field :pacing, :class => "input_for_number" %>
+    <span class="hint">% of time that the ad will appear if valid. nd Ex. 50. If empty, 100%</span>
   </div>
   <div class="fieldset">
     <%= f.label :frequency_cap, nil, :class => "left_label" %>
