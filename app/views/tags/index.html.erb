@@ -282,7 +282,7 @@
 </form>
 
 <script type="text/javascript">
-$(function() {
+jQuery(document).ready(function($) {
 
 // this is a hack but m and h appear only once in "last x minutes|hours"
 var range = $("#date_selectDD option:selected").attr("value").replace(/[^0-9mh]/ig, "");
