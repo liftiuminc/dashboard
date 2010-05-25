@@ -294,7 +294,7 @@ $(".sparklines").each(function() {
     dataType: "json",
     data: {"net": n_t[0], "range": range, "tag": n_t[1]},
     success: function(data) {
-      $("#" + id).sparkline(data); 
+      $("#" + id).sparkline(data, {height: "50px"}); 
     }
   });
 });
