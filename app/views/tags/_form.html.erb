@@ -6,13 +6,12 @@
 <% # Some sanity checks for common mistakes. Note that these are technically valid, but we just want to confirm. 
 %>
 function isOnePlacementSet() {
-	$$("li.multiple_select_checkbox input").find(function(s) {
+	return $$("li.multiple_select_checkbox input").find(function(s) {
 		// no easier way to distinguish between placements and hubs )-:
 		if (s.name == "tag[tag_targets_attributes][3][key_value][]") {
 			if (s.checked) return true;
 		}
 	});
-	return false;
 }
 
 function confirmForm(f){
