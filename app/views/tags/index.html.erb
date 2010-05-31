@@ -253,7 +253,7 @@
 <!--
 	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img title="Fill rate for last <%=h params[:date_select]%>, click for more detail" src="<%= tag_sparkline_url tag, date_select_to_graph_range(params[:date_select])%>" width="50" height="25"/></a><br />
 -->
-          <span class="sparklines" id="sparklines_<%= tag.network_id %>_<%= tag.id %>">Loading...</span><br />
+	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><span class="sparklines" id="sparklines_<%= tag.network_id %>_<%= tag.id %>">Loading...</span></a><br />
       <% end %>
 	<% fill_stats = tag.get_fill_stats(params[:date_select])%>
 	<%- if fill_stats[:attempts] > 0 %>
@@ -289,6 +289,7 @@ var range = $("#date_selectDD option:selected").attr("value").replace(/[^0-9mh]/
 if (range == "2M" || range == "5M") range = "6M"; // quick hack, waiting for backend fix
 
 $(".sparklines").each(function() {
+  $(this).parent("a").css("text-decoration", "none"); // safari looks ugly without it
   var id = $(this).attr("id");
   var n_t = id.replace(/^sparklines_/, "").split("_");
   $.ajax({
@@ -296,7 +297,7 @@ $(".sparklines").each(function() {
     dataType: "json",
     data: {"net": n_t[0], "range": range, "tag": n_t[1]},
     success: function(data) {
-      $("#" + id).sparkline(data, {height: "50px"}); 
+      $("#" + id).sparkline(data, {height: "75px", chartRangeMin: 0, chartRangeMax: 100}); 
     }
   });
 });
