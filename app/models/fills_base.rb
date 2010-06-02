@@ -59,7 +59,7 @@ class FillsBase < ActiveRecord::Base
 
     ### fix dates
     {   :start_date     => col + " >= ?",
-        :end_date       => col + " <= ?"
+        :end_date       => col + " < ?"
     }.each do |param, condition|        
       if !params[param].to_s.blank?
         con.push( condition )
