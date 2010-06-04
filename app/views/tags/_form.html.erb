@@ -13,13 +13,33 @@ function isOnePlacementSet() {
 		}
 	});
 }
+function doesTagSizePlacementSizeMatch() {
+	var tag_size = $("tag_size").getValue();
+
+	var placement_size = []
+	$$("li.multiple_select_checkbox").find(function(li) {
+		var s = li.select("input")[0];
+		// no easier way to distinguish between placements and hubs )-:
+		if (s.name == "tag[tag_targets_attributes][3][key_value][]") {
+			if (s.checked) {
+				// <label>000x000 ADSLOT</label>
+				placement_size.push(li.select("label")[0].innerHTML.replace(/ .*/, ""));
+			}
+		}
+	});
+
+	if (tag_size.length == 0 && placement_size.length == 0) return true;
+	if (tag_size.length == 0 || placement_size.length == 0) return false;
+
+	return placement_size.uniq().without(tag_size).length == 0;
+}
 
 function confirmForm(f){
 	var msgs = [];
 	var tier = parseInt($("tag_tier").value, 10);
-	if (tier != 1 && tier <= 8 && $("tag_always_fill_true").checked){
-		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
- 	}
+//	if (tier != 1 && tier <= 8 && $("tag_always_fill_true").checked){
+//		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
+// 	}
 	if (parseFloat($("tag_value").value) > 10) {
 		msgs.push("Value is over $10.00 (usually remnant ads are less than $5)");
  	}
@@ -31,6 +51,9 @@ function confirmForm(f){
 	}
 	if (!isOnePlacementSet()) {
 		msgs.push("No placement defined.");
+	}
+	if (!doesTagSizePlacementSizeMatch()) {
+		msgs.push("Tag size does not match the placement size.");
 	}
 
 	if (msgs.length > 0){

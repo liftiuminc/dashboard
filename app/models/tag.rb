@@ -27,14 +27,14 @@ class Tag < ActiveRecord::Base
   validates_numericality_of :value, :greater_than_or_equal_to => 0, :less_than => 100
   validates_numericality_of :floor, :greater_than_or_equal_to => 0, :less_than => 100, :allow_nil => true
 
-  ### From FB 16: Tags page should not allow "Always fill" with a rejection
-  ### time limit set
-  validate :always_fill_with_rejection_time
-  def always_fill_with_rejection_time
-    if always_fill && rejection_time.to_i > 0
-      errors.add_to_base "Always fill can not be true if rejection time is set"
-    end
-  end
+#  ### From FB 16: Tags page should not allow "Always fill" with a rejection
+#  ### time limit set
+#  validate :always_fill_with_rejection_time
+#  def always_fill_with_rejection_time
+#    if always_fill && rejection_time.to_i > 0
+#      errors.add_to_base "Always fill can not be true if rejection time is set"
+#    end
+#  end
 
   validate :floor_higher_than_value
   def floor_higher_than_value
