@@ -35,6 +35,10 @@
 	    </select>
 	</li>
 
+	<li><%= label_tag "Tag name or ID" %>
+	    <%= text_field_tag :name_search, params[:name_search] %>
+	</li>
+
       <%- if current_user.admin? %>
 	<li><%= label_tag :interval%>
 	    <%= radio_button_tag "interval", "day", params[:interval]=="day" || params[:interval].blank? %>Day <span class="hint">(include eCPM data)</span>

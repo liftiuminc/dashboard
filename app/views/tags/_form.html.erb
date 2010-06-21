@@ -5,12 +5,41 @@
 <script>
 <% # Some sanity checks for common mistakes. Note that these are technically valid, but we just want to confirm. 
 %>
+function isOnePlacementSet() {
+	return $$("li.multiple_select_checkbox input").find(function(s) {
+		// no easier way to distinguish between placements and hubs )-:
+		if (s.name == "tag[tag_targets_attributes][3][key_value][]") {
+			if (s.checked) return true;
+		}
+	});
+}
+function doesTagSizePlacementSizeMatch() {
+	var tag_size = $("tag_size").getValue();
+
+	var placement_size = []
+	$$("li.multiple_select_checkbox").find(function(li) {
+		var s = li.select("input")[0];
+		// no easier way to distinguish between placements and hubs )-:
+		if (s.name == "tag[tag_targets_attributes][3][key_value][]") {
+			if (s.checked) {
+				// <label>000x000 ADSLOT</label>
+				placement_size.push(li.select("label")[0].innerHTML.replace(/ .*/, ""));
+			}
+		}
+	});
+
+	if (tag_size.length == 0 && placement_size.length == 0) return true;
+	if (tag_size.length == 0 || placement_size.length == 0) return false;
+
+	return placement_size.uniq().without(tag_size).length == 0;
+}
+
 function confirmForm(f){
 	var msgs = [];
 	var tier = parseInt($("tag_tier").value, 10);
-	if (tier != 1 && tier <= 8 && $("tag_always_fill_true").checked){
-		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
- 	}
+//	if (tier != 1 && tier <= 8 && $("tag_always_fill_true").checked){
+//		msgs.push("Tier is above 8, and 'Always fill' is selected (ads in lower tiers won't be filled)"); 
+// 	}
 	if (parseFloat($("tag_value").value) > 10) {
 		msgs.push("Value is over $10.00 (usually remnant ads are less than $5)");
  	}
@@ -19,6 +48,12 @@ function confirmForm(f){
  	}
 	if ($("tag_tag").value.match(/%%/)){
 		msgs.push("'%%' found in the tag. Left over macro from Google Ad Manager?");
+	}
+	if (!isOnePlacementSet()) {
+		msgs.push("No placement defined.");
+	}
+	if (!doesTagSizePlacementSizeMatch()) {
+		msgs.push("Tag size does not match the placement size.");
 	}
 
 	if (msgs.length > 0){
@@ -209,7 +244,7 @@ function confirmForm(f){
   </div>
   <div class="fieldset">
     <input type="hidden" name="tag[tag_targets_attributes][2][id]" type="hidden" value="<%= tt[2]["id"] %>" />
-    <input type="hidden" name="tag[tag_targets_attributes][2][key_name]" value="browser" />
+    <input type="hidden" name="tag[tag_targets_attributes][2][key_name]" value="domain" />
     <%= f.label :domain %> <span class="hint">Ex. subdomain.yoursite.com</span><br />
     <input type="text" size="31" name="tag[tag_targets_attributes][2][key_value]" value="<%=h tt[2]["key_value"] %>"/>
   </div>

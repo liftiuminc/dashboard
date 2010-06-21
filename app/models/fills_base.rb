@@ -57,9 +57,15 @@ class FillsBase < ActiveRecord::Base
       end
     end
 
+    if (! params[:name_search].blank?)
+       con.push("(tag_name like ? OR tags.id = ?)")
+       var.push("%" + params[:name_search] + "%")
+       var.push(params[:name_search])
+    end
+
     ### fix dates
     {   :start_date     => col + " >= ?",
-        :end_date       => col + " <= ?"
+        :end_date       => col + " < ?"
     }.each do |param, condition|        
       if !params[param].to_s.blank?
         con.push( condition )
