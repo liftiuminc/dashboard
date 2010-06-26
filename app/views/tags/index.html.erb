@@ -249,12 +249,13 @@
       <td class="record_action"><%= link_to "HTML Preview", "/tags/html_preview/#{tag.id}", :popup => true %></td>
     <% end %>      
       <td class="record_action" style="font-size:smaller" bgcolor="<%= tag.always_fill ? '#E8FFB7' : '#FFEEEE' %>">
-      <% if tag.enabled %>
-<!--
-	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img title="Fill rate for last <%=h params[:date_select]%>, click for more detail" src="<%= tag_sparkline_url tag, date_select_to_graph_range(params[:date_select])%>" width="50" height="25"/></a><br />
--->
+      <%- if tag.enabled %>
+	<%- if tag.publisher.id == 999 %>
 	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><span class="sparklines" id="sparklines_<%= tag.network_id %>_<%= tag.id %>">Loading...</span></a><br />
-      <% end %>
+	<%- else %>
+	  <a href="<%=h url_for :controller => 'charts', :action => 'tag', :id => tag.id %>"><img title="Fill rate for last <%=h params[:date_select]%>, click for more detail" src="<%= tag_sparkline_url tag, date_select_to_graph_range(params[:date_select])%>" width="50" height="25"/></a><br />
+        <%- end %>
+      <%- end %>
 	<% fill_stats = tag.get_fill_stats(params[:date_select])%>
 	<%- if fill_stats[:attempts] > 0 %>
 
