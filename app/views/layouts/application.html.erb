@@ -2,7 +2,7 @@
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
-    <title><%= h(yield(:title) || "") %> - Liftium.com</title>
+    <title><%= h(yield(:title) || "") %> - Liftium</title>
     <%= stylesheet_link_tag '/css/liftium.css' %>
     <%= stylesheet_link_tag 'liftium' %>
     <%= javascript_include_tag "prototype" %>
@@ -12,7 +12,6 @@
     <%= javascript_include_tag "jquery-1.4.2.min" %>
     <%= javascript_include_tag "jquery.sparkline.min" %>
     <script type="text/javascript">$.noConflict();</script>
-    <%= feedback_includes %>
     <%= yield(:head) %>
   </head>
   <body<%= Rails.configuration.environment =~ /^dev/ && ' background="/images/dev_background.png"'%>>
@@ -25,7 +24,6 @@
   <div id="header">
 	<div class="fixedwidth">
 		<ul class="nav">
-			<li><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
             <% if current_user %>
               <li><%= link_to "My Account", account_path %>
               <li><%= link_to "Logout", user_session_path, :method => :delete %>
@@ -33,7 +31,7 @@
               <li><%= link_to "Login", new_user_session_path %>
             <% end %>
 		</ul>
-               <a href="http://www.liftium.com"><img alt="Ad Network Optimization by Liftium.com" title="Ad Network Optimization by Liftium.com" src="/images/logo_white_purple.png" border="0"></a>
+               <a href="/"><img alt="Ad Network Optimization by Liftium" src="/images/logo_white_purple.png" border="0"></a>
 	</div>
   </div>
 
@@ -70,7 +68,7 @@
           <li><%= link_to "Platform", :controller => "homes", :action => "admin" %>
           <li><%= link_to "Tag Stats", data_export_url %>	
           <li><%= link_to "Javascript Errors", javascript_errors_url %>	
-          <li><%= link_to "Discrepancy Report", "/revenues/discrepancies" %>
+          <!--<li><%= link_to "Discrepancy Report", "/revenues/discrepancies" %>-->
           <li><%= link_to "Big Movers", movers_url %>
           <li><%= link_to "Data Entry", revenues_url %>
 	  </ul>
@@ -125,20 +123,7 @@
 
   <div id="footer">
      <div class="fixedwidth">
-
-      <div id="copyright">&copy; 2009 Copyright - Liftium</div>
-		<ul class="nav">
-			<li><a href="http://www.liftium.com/">Home</a></li>
-			<li><a href="http://www.liftium.com/publishers">Publishers</a></li>
-			<li><a href="http://www.liftium.com/publishers/technology">Technology</a></li>
-			<li><a href="http://www.liftium.com/publishers/success-stories">Success Stories</a></li>
-
-			<li><a href="http://www.liftium.com/about-us">About Us</a></li>
-                        <li><a href="http://www.liftium.com/about-us/careers">Careers</a></li>
-			<li class="noborder"><a href="http://www.liftium.com/contact-us">Contact Us</a></li>
-		</ul>
-      </ul>
-
+	<!-- Empty -->
     </div><!-- fixedwidth -->
  </div><!-- footer -->
 
