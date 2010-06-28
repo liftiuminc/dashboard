@@ -14,6 +14,7 @@ function isOnePlacementSet() {
 	});
 }
 function doesTagSizePlacementSizeMatch() {
+	return true; // Nice idea, but doesn't always work . Will fix permanently later
 	var tag_size = $("tag_size").getValue();
 
 	var placement_size = []
@@ -193,7 +194,7 @@ function confirmForm(f){
           end
 	end
     %>
- <%- if @tag.publisher_id = 999 %> <!-- #Wikia only customizations -->
+ <%- if @tag.publisher_id == 999 %> <!-- #Wikia only customizations -->
  <% @wikia_hubs = ["Auto", "Creative", "Education", "Entertainment", "Finance",
 		"Gaming", "Green", "Humor", "Lifestyle", "Music", "Philosophy",
 		"Politics", "Science", "Sports", "Technology", "Toys", "Travel", "Wikia"]

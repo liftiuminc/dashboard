@@ -69,7 +69,8 @@ class TagTarget < ActiveRecord::Base
 	out.sort
 	
      else
-	all_placements
+	out = { "ATF" => "ATF", "BTF" => "BTF" }
+	out.sort
      end
   end
 
