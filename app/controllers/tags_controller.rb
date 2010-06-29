@@ -162,9 +162,7 @@ class TagsController < ApplicationController
     @tag_orig = Tag.find(params[:id])
     @tag = @tag_orig.clone
 
-    ### add the date to the name, as names are unique and an error will
-    ### occur on the 2nd copy otherwise
-    @tag.tag_name = "Copy of #{@tag.tag_name} made at " + DateTime.now.to_s
+    @tag.tag_name = "Copy of #{@tag.tag_name}" 
 
     ### clone the options
     options = @tag_orig.tag_options.map { |to|
