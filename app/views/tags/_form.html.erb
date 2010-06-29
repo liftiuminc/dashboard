@@ -194,7 +194,7 @@ function confirmForm(f){
           end
 	end
     %>
- <%- if @tag.publisher_id == 999 %> <!-- #Wikia only customizations -->
+ <%- if current_user.publisher_id == 999 %><!-- #Wikia only customizations -->
  <% @wikia_hubs = ["Auto", "Creative", "Education", "Entertainment", "Finance",
 		"Gaming", "Green", "Humor", "Lifestyle", "Music", "Philosophy",
 		"Politics", "Science", "Sports", "Technology", "Toys", "Travel", "Wikia"]
