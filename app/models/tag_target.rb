@@ -58,7 +58,6 @@ class TagTarget < ActiveRecord::Base
 	   "300x250 INCONTENT_BOXAD_1" => "INCONTENT_BOXAD_1",                        
 	   "300x250 INCONTENT_BOXAD_2" => "INCONTENT_BOXAD_2",                        
 	   "300x250 TOP_RIGHT_BOXAD" => "TOP_RIGHT_BOXAD",                            
-	   "500x280 RICH_MEDIA_AD_TAG" => "RICH_MEDIA_AD_TAG",                        
 	   "600x250 PREFOOTER_BIG" => "PREFOOTER_BIG",                                
 	   "728x90 INCONTENT_LEADERBOARD_1" => "INCONTENT_LEADERBOARD_1",             
 	   "728x90 HOME_TOP_LEADERBOARD" => "HOME_TOP_LEADERBOARD",                   
