@@ -242,6 +242,7 @@ class TagsController < ApplicationController
 
   def generator
     @tag = Tag.new
+    @placements = TagTarget.new.all_placements
   end
 
   def html_preview

@@ -16,9 +16,10 @@ TagGenerator.generateTag = function(f) {
 		return false;
 	}
 	var comments = $("comments").checked;
+	var placement = $("placementDD").value;
 
 	if ($("delivery_iframe").checked){
-		var t = $("tag").value = TagGenerator.generateIframeTag(pubid, size, comments);
+		var t = $("tag").value = TagGenerator.generateIframeTag(pubid, size, comments, placement);
 		$("tag").value = t;
 		if ($("preview").checked){
 			$("preview_div").innerHTML = t;
@@ -26,13 +27,13 @@ TagGenerator.generateTag = function(f) {
 			$("preview_div").show();
 		}
 	} else if ($("delivery_adserver").checked){
-		$("tag").value = TagGenerator.generateAdServerTag(pubid, size, comments);
+		$("tag").value = TagGenerator.generateAdServerTag(pubid, size, comments, placement);
 		if ($("preview").checked){
 			$("preview_div").innerHTML = "";
 			TagGenerator.doPreview();
 		}
 	} else {
-		$("tag").value = TagGenerator.generateScriptTag(pubid, size, comments);
+		$("tag").value = TagGenerator.generateScriptTag(pubid, size, comments, placement);
 		if ($("preview").checked){
 			$("preview_div").innerHTML = "";
 			TagGenerator.doPreview();
@@ -46,8 +47,8 @@ TagGenerator.generateTag = function(f) {
   }
 };
 
-TagGenerator.generateIframeTag = function(pubid, size, comments){
-	var url = TagGenerator.deliveryHost + "tag_iframe?pubid=" + pubid + '&size=' + size;
+TagGenerator.generateIframeTag = function(pubid, size, comments, placement){
+	var url = TagGenerator.deliveryHost + "tag_iframe?pubid=" + pubid + '&size=' + size + '&placement=' + escape(placement);
 	var t = '';
 	if (comments){ t += '<!-- Begin Liftium Tag -->\n'; }
 
@@ -64,14 +65,14 @@ TagGenerator.generateIframeTag = function(pubid, size, comments){
 	return t;
 };
 
-TagGenerator.generateScriptTag = function(pubid, size, comments){
+TagGenerator.generateScriptTag = function(pubid, size, comments, placement){
         var t = '';
         if (comments){
                 t += '<!-- Begin Liftium set up. \n' +
                      'This only needs to appear once on your page, anywhere above the tag. -->\n';
         }
 
-        t += '<script>LiftiumOptions = {pubid:' + pubid + '}<\/script>\n' +
+        t += '<script>LiftiumOptions = {pubid:' + pubid + ', placement : "' + placement + '"}<\/script>\n' +
             '<script src="' + TagGenerator.deliveryHost + 'js/Liftium.js"><\/script>\n';
 
         if (comments){ t += '<!-- End Liftium set up -->\n'; }
@@ -80,8 +81,8 @@ TagGenerator.generateScriptTag = function(pubid, size, comments){
         return t;
 };
 
-TagGenerator.generateAdServerTag = function(pubid, size, comments){
-        var t = '<script src="' + TagGenerator.deliveryHost + 'callAd?pubid=' + pubid + '&slot=' + size + '"><\/script>';
+TagGenerator.generateAdServerTag = function(pubid, size, comments, placement){
+        var t = '<script src="' + TagGenerator.deliveryHost + 'callAd?pubid=' + pubid + '&slot=' + size + '&placement=' + escape(placement) +'"><\/script>';
         return t;
 };
 

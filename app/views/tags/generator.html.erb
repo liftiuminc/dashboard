@@ -24,6 +24,13 @@
     </select>
   </div>
   <div class="fieldset">
+    <%= label_tag :placement, nil, :class => "left_label" %>
+    <select name="placement" id="placementDD">
+      <option value="">
+      <%= options_for_select @placements, params[:placement] %>
+    </select>
+  </div>
+  <div class="fieldset">
     <%= label_tag :options, nil, :class => "left_label" %>
     <%= check_box_tag("comments", 1, true) %><%= label_tag :comments, "Helpful comments" %> 
     <%= check_box_tag("preview", 1, true) %><%= label_tag :preview, "Show Preview" %>
