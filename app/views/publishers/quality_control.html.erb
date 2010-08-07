@@ -41,7 +41,7 @@ Higher Quality Ads
 <br />
 More revenue
 <% 
-for num in 9.downto(0) %>
+for num in (0..9).to_a.reverse %>
 <%= radio_button_tag name="publisher[hoptime]", num*300, @publisher.hoptime == num*300, :title => (num*300).to_s + "ms" %>&nbsp;
 <% end %>
 Faster Ads
